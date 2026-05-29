@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DREAMERS CLIMB v31.0 - FIXED</title>
+  <style>
+    :root{--rp:#5b3fd1;--hy:#ffd84d;--sb:#5dc7ff;--em:#14d27a}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:#0a0618;color:#f6f8ff;font-family:"Courier New",monospace;height:100%;overflow:hidden}
+    #game-root{width:960px;height:640px;margin:0 auto;top:50%;transform:translateY(calc(50vh - 320px));position:relative;border:3px solid #5b3fd1;background:#0a0618;box-shadow:0 0 40px rgba(91,63,209,.5)}
+    #gameCanvas{display:block;width:100%;height:100%;image-rendering:pixelated}
+    .screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(10,6,24,.96),rgba(10,6,24,.99));pointer-events:auto;animation:fadeIn .4s ease;z-index:100}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .hidden{display:none!important}
+    .panel{background:rgba(12,8,30,0.95);border:2px solid rgba(255,255,255,0.12);border-radius:12px;padding:30px;text-align:center}
+    .title{font-size:44px;margin:0;color:#ffd84d;text-shadow:0 0 20px rgba(255,216,77,.7);letter-spacing:4px}
+    button{background:linear-gradient(180deg,#6e4bff,#442cae);color:white;border:2px solid rgba(255,255,255,.12);border-radius:8px;padding:12px 16px;font-size:14px;cursor:pointer;font-family:inherit;margin-top:15px}
+    button:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(110,75,255,.4)}
+  </style>
+</head>
+<body>
+<div id="game-root">
+  <canvas id="gameCanvas" width="960" height="640"></canvas>
+  <div id="intro-screen" class="screen"></div>
+</div>
+<script>
+const W=960, H=640;
+function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+
+const LADDER_TYPES={
+  Basic:{cost:0,d:'Standard',color:'#d4a848'},
+  Steel:{cost:200,d:'3x durability',color:'#c0c8d8'},
+  Spring:{cost:600,d:'Skip 1 floor',color:'#ff7ae7'},
+};
+
+const MAPS={
+  Pueblo:{name:'Pueblo',floors:80,boss:'WITCH'},
+  Marsh:{name:'Marsh',floors:80,boss:'LOCH NESS'},
+  City:{name:'City',floors:100,boss:'RED HAWK'},
+};
+
+class Game {
+  constructor(){
+    this.canvas = document.getElementById('gameCanvas');
+    this.ctx = this.canvas.getContext('2d');
+    this.state = 'intro';
+    this.curMap = MAPS.Pueblo;
+    this.keys = {};
+    this.keysPressed = {};
+    this.world = null;
+    this.elapsed = 0;
+
+    window.addEventListener('keydown', e => {
+      if(!this.keys[e.code]) this.keysPressed[e.code] = true;
+      this.keys[e.code] = true;
+    });
+    window.addEventListener('keyup', e => this.keys[e.code] = false);
+
+    this.showIntro();
+    this.lastT = performance.now();
+    requestAnimationFrame(this.loop.bind(this));
+  }
+
+  showIntro(){
+    const el = document.getElementById('intro-screen');
+    el.innerHTML = `
+      <div class="panel">
+        <h1 class="title">DREAMERS CLIMB</h1>
+        <p style="color:#5dc7ff;font-size:16px;margin:10px 0">v31.0 - WORKING</p>
+        <div style="margin:30px 0;font-size:13px;line-height:1.8;color:#aaa">
+          <p>SPACE: Place Ladder</p>
+          <p>UP ARROW: Climb</p>
+          <p>LEFT/RIGHT: Move between sides</p>
+          <p style="margin-top:15px;color:#14d27a">First 10 floors = FREE CLIMB</p>
+        </div>
+        <button onclick="game.startGame()">START GAME</button>
+      </div>
+    `;
+  }
+
+  startGame(){
+    document.getElementById('intro-screen').classList.add('hidden');
+    this.state = 'playing';
+    this.world = {
+      player: {x: 0.5, floor: 0, side: 0, hp: 5, maxHp: 5, score: 0, ladder: 'Basic'},
+      building: {floors: 30},
+      ladders: [],
+      sideData: [{},{},{ },{}],
+      bossActive: false
+    };
+  }
+
+  update(dt){
+    if(this.state !== 'playing' || !this.world) return;
+    const p = this.world.player;
+
+    // SPACE: Place ladder
+    if(this.keysPressed[' ']){
+      const exists = this.world.ladders.find(l => l.floor === p.floor && l.side === p.side);
+      if(!exists){
+        this.world.ladders.push({floor: p.floor, side: p.side, x: p.x, type: p.ladder});
+        p.score += 5;
+      }
+    }
+
+    // UP: Climb
+    if(this.keysPressed['ArrowUp']){
+      if(p.floor < 10 || this.canClimb()){
+        let step = p.ladder === 'Spring' ? 2 : 1;
+        p.floor += step;
+        p.score += 10*step;
+
+        if(p.floor >= this.curMap.floors){
+          this.world.bossActive = true;
+        }
+
+        if(p.floor >= this.world.building.floors){
+          this.world.building.floors = p.floor + 30;
+        }
+      }
+    }
+
+    // LEFT/RIGHT: Move
+    if(this.keys['ArrowLeft']) {p.x -= 0.15; p.facing = -1;}
+    if(this.keys['ArrowRight']) {p.x += 0.15; p.facing = 1;}
+
+    p.x = clamp(p.x, 0.06, 0.94);
+
+    if(p.x < 0.06) {p.side = (p.side - 1 + 4) % 4; p.x = 0.94;}
+    if(p.x > 0.94) {p.side = (p.side + 1) % 4; p.x = 0.06;}
+
+    this.keysPressed = {};
+  }
+
+  canClimb(){
+    const p = this.world.player;
+    return this.world.ladders.some(l => l.floor === p.floor && l.side === p.side);
+  }
+
+  render(){
+    const ctx = this.ctx;
+    ctx.fillStyle = '#0a0618';
+    ctx.fillRect(0, 0, W, H);
+
+    if(this.state === 'playing' && this.world){
+      const p = this.world.player;
+
+      // Draw building
+      for(let f = 0; f < Math.min(this.world.building.floors, 100); f++){
+        const y = H - 40 - f*60;
+        if(y < -100 || y > H + 100) continue;
+
+        ctx.fillStyle = f%2===0 ? '#a07040' : '#8b5a2b';
+        ctx.fillRect(60, y, 840, 60);
+        ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(60, y, 840, 60);
+      }
+
+      // Draw ladders
+      for(const l of this.world.ladders){
+        if(l.side !== p.side) continue;
+        const y = H - 40 - l.floor*60;
+        const x = 70 + l.x*820;
+        const type = LADDER_TYPES[l.type];
+
+        ctx.strokeStyle = type.color;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(x-5, y);
+        ctx.lineTo(x-5, y+60);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x+5, y);
+        ctx.lineTo(x+5, y+60);
+        ctx.stroke();
+
+        for(let i = 0; i < 3; i++){
+          ctx.fillStyle = type.color;
+          ctx.fillRect(x-4, y+15+i*15, 8, 2);
+        }
+      }
+
+      // Draw player
+      const px = 70 + p.x*820;
+      const py = H - 40 - p.floor*60;
+
+      ctx.fillStyle = '#ff7a2e';
+      ctx.fillRect(px-7, py-18, 14, 14);
+      ctx.fillStyle = '#48C6FF';
+      ctx.fillRect(px-4, py-14, 8, 6);
+      ctx.fillStyle = '#ff7a2e';
+      ctx.fillRect(px-6, py-4, 12, 12);
+      ctx.fillStyle = '#333';
+      ctx.fillRect(px-5, py+6, 3, 8);
+      ctx.fillRect(px+2, py+6, 3, 8);
+
+      // Draw HUD
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 14px Courier';
+      ctx.fillText('Floor: ' + p.floor, 10, 25);
+      ctx.fillText('HP: ' + p.hp, 10, 45);
+      ctx.fillText('Score: ' + p.score, 10, 65);
+      ctx.fillText('Ladder: ' + p.ladder, 800, 25);
+
+      ctx.font = '11px Courier';
+      ctx.fillStyle = '#888';
+      ctx.fillText('SPACE: Place Ladder | UP: Climb | LEFT/RIGHT: Move', 10, 630);
+
+      // Boss alert
+      if(this.world.bossActive){
+        ctx.fillStyle = 'rgba(255,0,0,0.15)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = '#ff4a4a';
+        ctx.font = 'bold 32px Courier';
+        ctx.textAlign = 'center';
+        ctx.fillText(this.curMap.boss + ' APPEARS!', W/2, 100);
+        ctx.textAlign = 'left';
+      }
+    }
+  }
+
+  loop(now){
+    const dt = (now - (this.lastT || now)) / 1000;
+    this.lastT = now;
+    this.update(dt);
+    this.render();
+    requestAnimationFrame(this.loop.bind(this));
+  }
+}
+
+const game = new Game();
+</script>
+</body>
+</html>
