@@ -1,6 +1,6 @@
 # Dreamers
 
-A Web3 gaming ecosystem built by Izzo on Solana, featuring the tower climbing game **Dreamers Climb**, a $DREAM token economy, NFT system, DAO governance, marketplace, and artist showcase. Powered by the SHADDAI 7-Agent System.
+A Web3 gaming ecosystem built by Izzo on Solana, featuring the tower climbing game **Dreamers Climb**, a $DREAM token economy, NFT system, DAO governance, marketplace, and artist showcase.
 
 ## 🎮 Dreamers Climb — Tower Climbing Game
 
@@ -32,7 +32,6 @@ The ecosystem control panel — monitor agents, manage your wallet, and explore 
 | **DAO Governance** | $DREAM holders vote on treasury spending, features, partnerships |
 | **Marketplace** | Buy/sell digital goods, physical merch, services — all priced in $DREAM |
 | **Artist Showcase** | Platform for independent creators to mint and sell work |
-| **7 Agents** | SHADDAI, ZEROX, ORACLE, NEXUS, TURTLE, QUILL, PIKADON — 380+ skills total |
 
 [→ See ecosystem docs](ecosystem/)
 
@@ -46,9 +45,8 @@ The ecosystem control panel — monitor agents, manage your wallet, and explore 
 
 - **Game Repo:** https://github.com/IzzoIzzoIzzo/Dreamers
 - **Obsidian Vault:** `C:\Users\Brittany\OneDrive\Desktop\OBSIDIAN\SHADDAI OBSIDIAN\04 Dreamers\`
-- **SHADDAI Agents:** https://github.com/anomalyco/opencode (via skills)
 
 ---
 
-*Built with ❤️ • 7 Agents • 380+ Skills • Solana*  
+*Built with ❤️ • Solana*  
 *Dreamers® and PlaySys® are registered trade marks. All Rights Reserved PlaySys 2007 - 2026*
