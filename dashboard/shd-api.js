@@ -47,6 +47,15 @@
         };
       },
       grant: function (amount, reason) { return call('POST', '/api/economy/grant', { amount: amount, reason: reason }); },
+      // AI song via HF MusicGen. Returns { ok, audio(dataURI)|null, error?, needsKey?, suggestUpgrade? }.
+      async song(prompt) {
+        var d = await call('POST', '/api/media-gen/music', { prompt: prompt });
+        return {
+          ok: !!(d && d.ok), audio: (d && d.audio) || null,
+          needsKey: !!(d && d.needsKey), suggestUpgrade: !!(d && d.suggestUpgrade),
+          error: (d && d.error) || null,
+        };
+      },
     };
   }
 

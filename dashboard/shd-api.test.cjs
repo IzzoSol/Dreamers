@@ -7,6 +7,7 @@ const fakeFetch = async (url, opts) => {
   lastCall = { url, opts };
   if (url.includes('/api/economy/balance')) return jsonRes({ ok: true, sparks_balance: 1234 });
   if (url.endsWith('/api/agentic/run')) return jsonRes({ ok: true, response: 'hi', toolsUsed: ['web_search'] });
+  if (url.endsWith('/api/media-gen/music')) return jsonRes({ ok: true, audio: 'data:audio/wav;base64,AAAA', bytes: 4 });
   if (url.endsWith('/api/health')) return jsonRes({ ok: true });
   throw new Error('unexpected url ' + url);
 };
@@ -30,6 +31,11 @@ function jsonRes(obj){ return { ok: true, status: 200, json: async () => obj, te
   const out = await shd.chat({ agent: 'TURTLE', message: 'hi' });
   assert.equal(out.reply, 'hi');
   assert.deepEqual(out.tools, ['web_search'], 'chat() normalizes tools-used receipt');
+
+  // song() returns normalized shape from /api/media-gen/music
+  const song = await shd.song('lofi dream beat');
+  assert.equal(song.ok, true);
+  assert.ok(song.audio.startsWith('data:audio'), 'song() returns audio data URI');
 
   console.log('shd-api tests passed');
 })();

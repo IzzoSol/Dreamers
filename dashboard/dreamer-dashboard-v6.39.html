@@ -383,6 +383,7 @@ const HEALING_BUDDIES = [
     <button onclick="go('profile')" data-tab="profile" class="nav-item w-full text-left px-4 py-3 flex items-center gap-3 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60"><span class="material-symbols-outlined text-lg">person</span>Profile</button>
     <button onclick="go('community')" data-tab="community" class="nav-item w-full text-left px-4 py-3 flex items-center gap-3 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60"><span class="material-symbols-outlined text-lg">groups</span>Community</button>
     <button onclick="go('create')" data-tab="create" class="nav-item w-full text-left px-4 py-3 flex items-center gap-3 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60"><span class="material-symbols-outlined text-lg">palette</span>Create Studio</button>
+    <button onclick="go('shaddai-music')" data-tab="shaddai-music" class="nav-item w-full text-left px-4 py-3 flex items-center gap-3 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60"><span class="material-symbols-outlined text-lg">graphic_eq</span>SHADDAI Music</button>
 
     <!-- WELLNESS SECTION -->
     <hr class="border-white/10 my-2"/>
@@ -1706,6 +1707,54 @@ const HEALING_BUDDIES = [
 </section>
 
 <!-- ──────────────────── TAB 8: BINARY MUSIC ──────────────────── -->
+<section id="tab-shaddai-music" class="tab-panel p-6 md:p-10 space-y-8">
+  <div>
+    <h2 class="font-display text-2xl md:text-3xl text-white mb-1">SHADDAI Music</h2>
+    <p class="text-on-surface/60 text-sm">Your artist studio — powered by the SHADDAI council. Make binaural soundscapes, AI tracks, and lyrics.</p>
+  </div>
+  <!-- Module selector (glow-on-hover per TURTLE direction) -->
+  <div class="flex flex-wrap gap-3">
+    <button onclick="showMusicModule('binaural')" data-mod="binaural" class="music-mod group flex items-center gap-2 px-4 py-3 bg-surface border border-primary/40 rounded hover:shadow-[0_0_18px_#cc97ff66] transition">
+      <span class="material-symbols-outlined text-primary group-hover:drop-shadow-[0_0_6px_#cc97ff]">spa</span><span class="font-label font-bold text-[11px] uppercase tracking-widest text-white">Binaural</span></button>
+    <button onclick="showMusicModule('song')" data-mod="song" class="music-mod group flex items-center gap-2 px-4 py-3 bg-surface border border-primary/40 rounded hover:shadow-[0_0_18px_#cc97ff66] transition">
+      <span class="material-symbols-outlined text-primary group-hover:drop-shadow-[0_0_6px_#cc97ff]">music_note</span><span class="font-label font-bold text-[11px] uppercase tracking-widest text-white">AI Song</span></button>
+    <button onclick="showMusicModule('lyrics')" data-mod="lyrics" class="music-mod group flex items-center gap-2 px-4 py-3 bg-surface border border-primary/40 rounded hover:shadow-[0_0_18px_#cc97ff66] transition">
+      <span class="material-symbols-outlined text-primary group-hover:drop-shadow-[0_0_6px_#cc97ff]">edit_note</span><span class="font-label font-bold text-[11px] uppercase tracking-widest text-white">Lyrics</span></button>
+  </div>
+  <!-- Workspace -->
+  <div class="bg-surface-lighter border border-white/10 rounded-lg p-6 min-h-[280px]">
+    <!-- Binaural -->
+    <div id="music-ws-binaural" class="music-ws">
+      <h3 class="font-label font-bold text-xs uppercase tracking-widest text-primary mb-4">Binaural Soundscape</h3>
+      <div class="flex flex-wrap gap-2 mb-5">
+        <button onclick="setBinaural(200,10)" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary">Focus · 10 Hz</button>
+        <button onclick="setBinaural(150,7.83)" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary">Meditate · 7.83 Hz</button>
+        <button onclick="setBinaural(160,6)" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary">Relax · 6 Hz</button>
+        <button onclick="setBinaural(140,3)" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary">Sleep · 3 Hz</button>
+      </div>
+      <div class="flex items-center gap-4">
+        <button id="bin-toggle" onclick="toggleBinaural()" class="px-6 py-3 bg-primary text-surface font-label font-bold text-xs uppercase tracking-widest rounded">▶ Play</button>
+        <span id="bin-status" class="text-on-surface/60 text-[11px]">Focus · base 200 Hz · beat 10 Hz — use headphones</span>
+      </div>
+      <p class="text-on-surface/40 text-[10px] mt-4">Binaural beats play locally in your browser (no server). Headphones required for the effect.</p>
+    </div>
+    <!-- AI Song -->
+    <div id="music-ws-song" class="music-ws hidden">
+      <h3 class="font-label font-bold text-xs uppercase tracking-widest text-primary mb-4">AI Song (MusicGen)</h3>
+      <textarea id="song-prompt" rows="3" class="w-full px-3 py-2 bg-surface border border-white/10 text-white text-sm placeholder:text-on-surface/40 focus:border-primary" placeholder="e.g. dreamy lofi beat with soft piano and rain, 90 bpm"></textarea>
+      <button onclick="generateSong()" class="mt-3 px-6 py-3 bg-primary text-surface font-label font-bold text-xs uppercase tracking-widest rounded">Generate Track</button>
+      <div id="song-out" class="mt-5"></div>
+    </div>
+    <!-- Lyrics -->
+    <div id="music-ws-lyrics" class="music-ws hidden">
+      <h3 class="font-label font-bold text-xs uppercase tracking-widest text-primary mb-4">Lyrics & Songwriting (QUILL)</h3>
+      <textarea id="lyrics-prompt" rows="3" class="w-full px-3 py-2 bg-surface border border-white/10 text-white text-sm placeholder:text-on-surface/40 focus:border-primary" placeholder="e.g. write an uplifting chorus about chasing dreams"></textarea>
+      <button onclick="generateLyrics()" class="mt-3 px-6 py-3 bg-primary text-surface font-label font-bold text-xs uppercase tracking-widest rounded">Write</button>
+      <div id="lyrics-out" class="mt-5 text-white text-sm whitespace-pre-wrap"></div>
+    </div>
+  </div>
+</section>
+
 <section id="tab-binary-music" class="tab-panel p-6 md:p-10 space-y-10">
   <div>
     <h1 class="font-headline text-5xl md:text-6xl font-black text-white italic uppercase leading-[.85] tracking-tighter">BINARY <span class="text-primary neon-text-p">MUSIC</span></h1>
@@ -3103,7 +3152,7 @@ const HEALING_BUDDIES = [
    DREAMER ECO v3 — Application Logic + Solana Wallet Integration
    ═══════════════════════════════════════════════════════════════ */
 
-const titles={dashboard:'DASHBOARD',sanctuary:'THE SANCTUARY',credits:'IMPACT CREDITS',market:'MARKET DATA',creator:'CREATOR STUDIO',flywheel:'$DREAM FLYWHEEL',community:'THE COLLECTIVE',create:'CREATE STUDIO',writer:'DREAM WRITER',nft:'NFT CREATE',food:'FOOD SWITCH',marketplace:'MARKETPLACE',about:'ABOUT',astrology:'YOUR COSMIC BLUEPRINT',turtle:'TURTLE AI ASSISTANT',news:'NEWS FEED',settings:'SETTINGS & CONFIGURATION','day-builder':'DAY BUILDER',calendar:'CALENDAR',practices:'VIBRATIONAL PRACTICES',workouts:'WORKOUT LIBRARY','herb-market':'HERB MARKETPLACE',shopping:'SMART SHOPPING LIST','healing-buddy':'HEALING BUDDY MARKETPLACE'};
+const titles={dashboard:'DASHBOARD',sanctuary:'THE SANCTUARY',credits:'IMPACT CREDITS',market:'MARKET DATA',creator:'CREATOR STUDIO',flywheel:'$DREAM FLYWHEEL',community:'THE COLLECTIVE',create:'CREATE STUDIO',writer:'DREAM WRITER',nft:'NFT CREATE',food:'FOOD SWITCH',marketplace:'MARKETPLACE',about:'ABOUT',astrology:'YOUR COSMIC BLUEPRINT',turtle:'TURTLE AI ASSISTANT',news:'NEWS FEED',settings:'SETTINGS & CONFIGURATION','day-builder':'DAY BUILDER',calendar:'CALENDAR',practices:'VIBRATIONAL PRACTICES',workouts:'WORKOUT LIBRARY','herb-market':'HERB MARKETPLACE',shopping:'SMART SHOPPING LIST','healing-buddy':'HEALING BUDDY MARKETPLACE','shaddai-music':'SHADDAI MUSIC'};
 
 // ═══════════════════════════════════════════════════════════════
 // STORAGE QUOTA MANAGEMENT
@@ -6338,6 +6387,66 @@ async function sendTurtleMessage(){
     document.getElementById('turtle-thinking')?.remove();
     append(`<div class="flex justify-start"><div class="bg-red-500/20 border-l-2 border-red-400 p-3 rounded max-w-xs"><p class="text-[11px] text-white">Couldn't reach the council. ${String(e.message||e).slice(0,80)}</p></div></div>`);
   }
+}
+
+// ─── SHADDAI MUSIC TAB ───
+function showMusicModule(mod){
+  document.querySelectorAll('.music-ws').forEach(w=>w.classList.add('hidden'));
+  document.getElementById('music-ws-'+mod)?.classList.remove('hidden');
+  document.querySelectorAll('.music-mod').forEach(b=>b.classList.remove('shadow-[0_0_18px_#cc97ff66]'));
+  document.querySelector(`.music-mod[data-mod="${mod}"]`)?.classList.add('shadow-[0_0_18px_#cc97ff66]');
+}
+// Binaural (client-side Web Audio dual-oscillator)
+var _binaural={ctx:null,oscL:null,oscR:null,base:200,beat:10,playing:false};
+function setBinaural(base,beat){
+  _binaural.base=base; _binaural.beat=beat;
+  const s=document.getElementById('bin-status');
+  if(s) s.textContent=`base ${base} Hz · beat ${beat} Hz — use headphones`;
+  if(_binaural.playing){ stopBinaural(); startBinaural(); }
+}
+function startBinaural(){
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return;
+    const ctx=new AC();
+    const merger=ctx.createChannelMerger(2);
+    const gain=ctx.createGain(); gain.gain.value=0.15;
+    const oscL=ctx.createOscillator(), oscR=ctx.createOscillator();
+    oscL.frequency.value=_binaural.base;
+    oscR.frequency.value=_binaural.base+_binaural.beat;
+    oscL.connect(merger,0,0); oscR.connect(merger,0,1);
+    merger.connect(gain).connect(ctx.destination);
+    oscL.start(); oscR.start();
+    _binaural.ctx=ctx; _binaural.oscL=oscL; _binaural.oscR=oscR; _binaural.playing=true;
+    const t=document.getElementById('bin-toggle'); if(t) t.textContent='⏸ Stop';
+  }catch(e){ console.warn('binaural start failed',e); }
+}
+function stopBinaural(){
+  try{ _binaural.oscL?.stop(); _binaural.oscR?.stop(); _binaural.ctx?.close(); }catch(e){}
+  _binaural.playing=false;
+  const t=document.getElementById('bin-toggle'); if(t) t.textContent='▶ Play';
+}
+function toggleBinaural(){ _binaural.playing?stopBinaural():startBinaural(); }
+// AI Song via seam (/api/media-gen/music)
+async function generateSong(){
+  const p=document.getElementById('song-prompt')?.value?.trim();
+  const out=document.getElementById('song-out');
+  if(!p||!out) return;
+  out.innerHTML='<p class="text-on-surface/60 text-[11px]">Composing… (free-tier model can take ~60s or be busy)</p>';
+  try{
+    const r=await window.shd.song(p);
+    if(r.ok&&r.audio){ out.innerHTML=`<audio controls src="${r.audio}" class="w-full"></audio>`; }
+    else if(r.needsKey){ out.innerHTML='<p class="text-accent text-[11px]">The music model needs a server API key. Binaural + Lyrics work now.</p>'; }
+    else { out.innerHTML=`<p class="text-accent text-[11px]">Music model busy on the free tier${r.suggestUpgrade?' — upgrade for reliable song gen':''}. Try again, or use Binaural/Lyrics. <span class="text-on-surface/40">(${(r.error||'').slice(0,60)})</span></p>`; }
+  }catch(e){ out.innerHTML=`<p class="text-red-400 text-[11px]">Couldn't reach the studio. ${String(e.message||e).slice(0,60)}</p>`; }
+}
+// Lyrics via seam (QUILL)
+async function generateLyrics(){
+  const p=document.getElementById('lyrics-prompt')?.value?.trim();
+  const out=document.getElementById('lyrics-out');
+  if(!p||!out) return;
+  out.textContent='Writing…';
+  try{ const {reply}=await window.shd.chat({agent:'QUILL',message:p}); out.textContent=reply||'(no reply)'; }
+  catch(e){ out.textContent='Couldn\'t reach QUILL. '+String(e.message||e).slice(0,60); }
 }
 
 // NEWS TAB
