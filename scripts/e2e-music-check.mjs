@@ -1,4 +1,4 @@
-// E2E: SHADDAI Music tab — tab switch, binaural (no throw), lyrics via QUILL.
+// E2E: SHADDAI Music tab — tab switch, studio iframe, binaural (no throw), Council QUILL live.
 import { createRequire } from 'node:module';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
@@ -13,20 +13,20 @@ pg.on('pageerror', e => errs.push(e.message));
 await pg.goto(FILE, { waitUntil: 'domcontentloaded' });
 await new Promise(r => setTimeout(r, 1200));
 
-// Tab exists + activates
 const tabActive = await pg.evaluate(() => { go('shaddai-music'); return document.getElementById('tab-shaddai-music').classList.contains('active'); });
+const studioEmbedded = await pg.evaluate(() => !!document.querySelector('#music-ws-studio iframe[src="turtle-music-bot.html"]'));
+const binOk = await pg.evaluate(() => { try { showMusicModule('binaural'); setBinaural(200, 10); startBinaural(); stopBinaural(); return true; } catch (e) { return 'THREW: ' + e.message; } });
 
-// Binaural start/stop must not throw
-const binOk = await pg.evaluate(() => { try { setBinaural(200, 10); startBinaural(); stopBinaural(); return true; } catch (e) { return 'THREW: ' + e.message; } });
-
-// Lyrics via QUILL (live)
-await pg.evaluate(() => { showMusicModule('lyrics'); document.getElementById('lyrics-prompt').value = 'Write one short uplifting line about dreams.'; generateLyrics(); });
+// Council QUILL (live)
+await pg.evaluate(() => { showMusicModule('council'); document.getElementById('council-theme').value = 'chasing dreams at 3am'; councilAsk('QUILL'); });
 await new Promise(r => setTimeout(r, 18000));
-const lyrics = await pg.$eval('#lyrics-out', e => e.textContent);
+const council = await pg.$eval('#council-out', e => e.textContent);
 
 console.log('tab activates:', tabActive);
+console.log('studio embedded:', studioEmbedded);
 console.log('binaural ok:', binOk);
-console.log('lyrics out:', JSON.stringify((lyrics || '').slice(0, 160)));
+console.log('council(QUILL) out:', JSON.stringify((council || '').slice(0, 160)));
 console.log('page errors:', errs.length ? errs.slice(0, 5).join(' | ') : 'none');
+const ok = tabActive && studioEmbedded && binOk === true && council && council.length > 15 && !council.endsWith('thinking…');
 await b.close();
-process.exit(tabActive && binOk === true && lyrics && lyrics.length > 10 && lyrics !== 'Writing…' ? 0 : 1);
+process.exit(ok ? 0 : 1);
