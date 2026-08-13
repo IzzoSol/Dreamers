@@ -1,7 +1,9 @@
 # Dreamers ↔ SHADDAI Integration — SP-4: Wire the Working Dashboard + Create Studio Media Hub
 
 **Date:** 2026-08-13
-**Status:** Design — awaiting user review
+**Status:** SP-4 foundation slice BUILT + verified — AI Chat runs on the real `/api/agentic/run` tool path with a live "tools used" receipt (proven headless, e2e, 0 CORS failures). Credits pill wired to `/api/economy/balance` but BLOCKED by a backend mount bug (see below). Remaining tabs + Create Studio = follow-on plans.
+
+> **Backend blocker (needs decision):** `economy-routes.js` exports a factory (`module.exports = createRouter`) but `server-production.js:1425` mounts it un-called (`app.use('/api/economy', require('./economy-routes'))`). Express treats the factory as middleware → request hangs → "fetch failed". One-char fix: `require('./economy-routes')()`. This lives in the **SHADDAI repo** (not Dreamers) and requires a Render redeploy. Until fixed, `refreshSparks()` degrades gracefully (keeps prior/zero display).
 **Sub-project:** SP-4 (first of the program; see Program Map below)
 **Assisted by:** TURTLE (visual direction), SHADDAI RAG (mastery grounding)
 
