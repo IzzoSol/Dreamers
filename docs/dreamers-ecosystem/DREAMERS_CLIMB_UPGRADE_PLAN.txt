@@ -1,0 +1,125 @@
+================================================================================
+DREAMERS CLIMB v16.39 - MASTER PLAN
+================================================================================
+
+VERSION: v16.39
+LAST UPDATED: March 27, 2026
+STATUS: IN PROGRESS
+
+================================================================================
+CURRENT STATE
+================================================================================
+
+WORKING:
+- Game starts and runs
+- Basic climbing mechanics  
+- Building renders (but has floating tile squares issue)
+- WindFan and DreamCatcher attacks work (ONLY 2)
+- Spring ladder (double jump) is effective
+
+NOT WORKING / NEEDS FIXING:
+- Building has floating grey/yellow tile squares (lines 540-541)
+- Only 2 attacks work (WindFan, DreamCatcher)
+- Radio has no button/sound/battery system
+- VS mode is "COMING SOON" not implemented
+- 8 radios need to be reduced to 3 with powers
+
+================================================================================
+SPRITES AVAILABLE
+================================================================================
+
+Path: C:\Users\Brittany\OneDrive\Desktop\THE DREAMERS ECOSYSTEM\sprites\16.39\
+
+Tools/Attacks:
+- charged1.png - charged6.png (for WindFan, DreamCatcher)
+
+Radio:
+- PUEBLO RADIO.png (use for all 3 stations)
+
+Pickups:
+- GOLD BAR PUEBLO.png
+- HEALTH HEART SPRITES.png
+- MARSH HEALTH RESTORE SPRITE PICKUP.png
+- FOOD HEALTH PUEBLO.png
+
+================================================================================
+MASTER UPGRADE PLAN
+================================================================================
+
+=== PHASE 1: BUILDING FIX (CRITICAL) ===
+Location: Lines 540-541 (drawBuilding)
+Action: REMOVE floating tile overlay code
+Problem: Grey/yellow squares appear every 3rd floor
+
+=== PHASE 2: ATTACKS - Only working ones ===
+Location: Line 178 (TOOLS constant)
+Action: Simplify to only working attacks
+
+WORKING ATTACKS (keep):
+- WindFan: Projectile blast (UTL:70, CMB:90, MAG:70) - uses 'projectile' type
+- DreamCatcher: Charged cannon (UTL:110, CMB:80, MAG:150) - uses 'projectile' type
+
+NOT WORKING (remove):
+- Paintbrush, Grapple, TimeWatch, ShieldGen, MagnetGlove, GhostLantern
+- Reason: These use 'melee', 'hook', 'pulse', 'shield', 'magnet', 'beam' types 
+  that aren't implemented in the game code
+
+=== PHASE 3: RADIO SYSTEM (Major) ===
+Location: Line 177 (RADIOS constant)
+Action: Replace 8 radios with 3 stations
+
+NEW RADIO SYSTEM:
+| Radio Name | Power | Effect |
+|------------|-------|---------|
+| Attract | Attract emeralds | Pulls emeralds toward player |
+| Repel | Repel debris | Pushes hazards away from player |
+| Heal | Heal health | Gradually restores HP over time |
+
+NEW FEATURES NEEDED:
+- Radio battery/charge system (depletes over time)
+- Radio pickup items to recharge battery
+- Radio button in HUD to toggle on/off
+- Sound emission when radio plays
+
+=== PHASE 4: VS MODE ===
+Location: Line 449 (showCompete function)
+Action: Implement Team VS (Player vs CPU)
+
+FEATURES:
+- Player vs CPU (like Super Smash Bros)
+- CPU can climb and attack
+- Allow building in VS mode
+- Basic AI for CPU movement and attacks
+
+=== PHASE 5: LADDER SYSTEM ===
+- Spring (double jump) is most effective - KEEP
+- Other ladders can be simplified
+
+================================================================================
+CODE LOCATIONS REFERENCE
+================================================================================
+
+| Feature | Line(s) | Description |
+|---------|---------|-------------|
+| RADIOS constant | 177 | Radio definitions |
+| TOOLS constant | 178 | Attack/tool definitions |
+| drawBuilding | 538-541 | Building rendering |
+| showCompete | 449 | VS mode menu |
+| showShop | 451-486 | Shop display |
+| HUD display | 427-429 | In-game HUD |
+| Radio effects | 328-331 | Radio power effects |
+
+================================================================================
+IMPLEMENTATION ORDER
+================================================================================
+
+1. FIRST: Remove floating tile squares (lines 540-541) - FIXES BUILDING
+2. SECOND: Simplify TOOLS to WindFan + DreamCatcher only
+3. THIRD: Update radio to 3 stations with powers
+4. FOURTH: Add battery system to radio
+5. FIFTH: Implement VS mode
+6. TEST after each change
+
+================================================================================
+END OF PLAN
+================================================================================

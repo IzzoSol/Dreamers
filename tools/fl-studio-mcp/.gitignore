@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environment
+.env
+.env.local
+.env.*.local
+*.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# Audio / MIDI / generated media
+audio/
+exports/
+*.wav
+*.mp3
+*.ogg
+*.flac
+*.aiff
+*.mid
+*.midi
+*.json
+
+# Keep reference MIDI files
+!beat.mid
+!export_test.mid
+!test.mid
+!test2.mid
+!final.mid
+!test_export.mid
+
+# Test artifacts
+__pycache__/
+
+# API keys / secrets (just in case)
+**/secrets.json
+**/credentials.json
+**/keys.json
+**/api_keys.json

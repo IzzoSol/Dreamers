@@ -1,0 +1,670 @@
+DREAMERS ECOSYSTEM — MASTER BUILD PLAN
+Organized by Phase, Priority & Dependencies
+
+🏗️ PRE-BUILD: FOUNDATION DECISIONS (Do These First)
+Before touching a single tool or platform, lock these down:
+Foundation Checklist
+DecisionOptionsLock DateLegal EntityLLC / DAO LLC / FoundationWeek 1Primary BlockchainEthereum / Solana / Base / PolygonWeek 1Token StandardERC-20 / SPLWeek 1NFT StandardERC-721 / ERC-1155Week 1Primary Dev StackNext.js / React / NodeWeek 2DatabaseSupabase / PostgreSQL / FirebaseWeek 2Wallet IntegrationPrivy / RainbowKit / PhantomWeek 2AI ProviderOpenAI / Anthropic / Open SourceWeek 2Domain & Brand AssetsLockedWeek 1
+
+📋 MASTER BUILD PHASES
+Overview Timeline
+CopyPHASE 0 → PHASE 1 → PHASE 2 → PHASE 3 → PHASE 4 → PHASE 5
+Foundation  Core MVP   Economy    AI Layer   Scale      Ascension
+(Weeks 1-3) (Mo 1-2)  (Mo 3-4)   (Mo 4-5)  (Mo 6-9)  (Mo 10-12)
+
+PHASE 0 — FOUNDATION
+⏱️ Weeks 1–3 | Zero users, pure infrastructure
+0.1 Brand & Identity
+
+ Finalize Dreamers logo, color palette, typography
+ Write core manifesto (1 page — the WHY)
+ Define the 3 founding archetypes (user personas)
+ Secure: domain, Twitter/X, TikTok, Instagram, Discord handles
+ Build a simple coming-soon landing page with email capture
+
+0.2 Legal & Structure
+
+ Form legal entity
+ Draft Terms of Service + Privacy Policy
+ Understand token/NFT legal classification in your jurisdiction
+ Set up business bank account + crypto treasury wallet (multi-sig)
+
+0.3 Team & Roles
+CopyMINIMUM FOUNDING TEAM:
+├── Vision Lead (You)
+├── Lead Developer (Full Stack)
+├── Smart Contract Developer
+├── UI/UX Designer
+├── Community Manager
+└── Content Creator / AI Influencer Operator
+0.4 Tech Infrastructure Setup
+
+ GitHub organization created + repos structured
+ Dev / Staging / Production environments set up
+ Figma workspace for all UI design
+ Notion or Linear for project management
+ Discord server built with proper channels
+
+
+PHASE 1 — CORE MVP
+⏱️ Months 1–2 | First users, real feedback
+Goal: Get real people inside a working Dreamers profile + community
+1.1 Node 2 — Identity & Profile Layer (BUILD FIRST)
+This is the spine. Everything connects here.
+Build List:
+
+ User Authentication
+
+Email + password
+Wallet connect (Privy recommended for Web2/Web3 bridge)
+
+
+ Dreamers Profile Page
+
+Username + avatar
+Bio + role tags (artist, dev, thinker, learner)
+Skill tags (manually selected at first)
+XP counter (display only in MVP)
+Wallet address displayed
+
+
+ Basic Dashboard
+
+Shows: XP, badges earned, content created, connections
+
+
+ Database Schema
+CopyUsers Table:
+- user_id
+- wallet_address
+- username
+- skill_tags[ ]
+- xp_total
+- reputation_score
+- ai_companion_id
+- created_at
+
+
+1.2 Node 3 — Learning Layer (Simplified MVP)
+Build List:
+
+ Micro-Lesson System
+
+5–10 launch lessons (Finance 101, Creative Mind, AI Basics)
+Each lesson = video or text + quiz
+Completion = XP awarded
+
+
+ Gamified Progression
+
+Level 1–5 for MVP
+Progress bar visible on profile
+
+
+ Content Format
+
+Short form (3–7 min lessons)
+Mobile first
+
+
+
+Content to Create (Pre-Launch):
+CopyLesson 1: What is Dreamers? (Onboarding)
+Lesson 2: Breaking Debt Consciousness (Philosophy)
+Lesson 3: Your Creative Value (Art/Economy)
+Lesson 4: How AI Can Work For You (AI Basics)
+Lesson 5: What is a Token? (Finance)
+1.3 Node 1 — Entry Points (Launch Content Strategy)
+Build List:
+
+ Social Content Calendar (pre-launch)
+
+TikTok: 3x per week minimum
+X/Twitter: Daily posts
+Instagram: 4x per week
+
+
+ AI Influencer / Virtual Persona
+
+Name + visual identity decided
+First 10 pieces of content created
+Tools: HeyGen / Runway / ElevenLabs for voice
+
+
+ Waitlist Funnel
+
+Landing page → email capture → Discord invite
+Goal: 1,000 waitlist before full launch
+
+
+
+1.4 Discord Community (Your First Real Product)
+
+ Build proper Discord structure:
+CopyDREAMERS DISCORD STRUCTURE:
+├── 📢 announcements
+├── 👋 introductions
+├── 🧠 philosophy-and-ideas
+├── 🎨 creators-showcase
+├── 💻 builders-chat
+├── 🎮 games-and-play
+├── 💰 economy-and-tokens
+├── 🔮 ai-tools-and-agents
+└── 🏛️ governance (locked until Phase 3)
+
+ Launch community events: weekly AMA, creator showcase
+ First 100 members = Founding Dreamers badge
+
+
+PHASE 2 — ECONOMY LAYER
+⏱️ Months 3–4 | Value starts flowing
+Goal: Real ownership, real transactions, first revenue
+2.1 Node 6 — NFT System
+Build List:
+
+ Smart Contract Development
+
+Access NFT contract (ERC-721)
+Skill NFT contract (ERC-1155 for multiple tiers)
+Audit before launch (use a reputable auditor)
+
+
+ NFT Types for Launch
+CopyACCESS NFTs:
+├── Dreamer Genesis Pass (founding member)
+├── Creator Pass (unlocks Creation Layer)
+└── Scholar Pass (unlocks advanced lessons)
+
+SKILL NFTs (earned, not bought):
+├── Finance Apprentice
+├── Creative Mind
+└── AI Operator
+
+ NFT Metadata System
+
+IPFS storage for assets (use Pinata or NFT.Storage)
+Dynamic metadata that updates with XP
+
+
+ Minting Interface
+
+Clean mint page on website
+Mobile compatible
+
+
+
+2.2 Node 7 — Marketplace (MVP Version)
+Build List:
+
+ Phase 2 Marketplace = Simple P2P trading
+
+List NFT for sale
+Buy NFT with ETH/SOL
+Revenue split: 85% creator / 10% treasury / 5% burn
+
+
+ Do NOT build everything at once
+
+No merch in Phase 2
+No game items yet
+Just NFTs + digital goods
+
+
+
+2.3 Node 9 — Treasury (Basic Setup)
+Build List:
+
+ Multi-sig Treasury Wallet
+
+3-of-5 signers minimum (Gnosis Safe)
+
+
+ Treasury Tracking Dashboard (internal first)
+
+Inputs logged: mint fees, marketplace fees
+Outputs logged: grants paid, burns executed
+
+
+ First Treasury Policy Document
+
+What % goes where
+Who can propose spending
+How burns are triggered
+
+
+
+2.4 Node 5 — Creation Layer (Open to Users)
+Build List:
+
+ Creator Submission System
+
+Upload: art, music, writing, video
+Auto-tags with AI
+Links to user profile
+Can be minted as NFT directly
+
+
+ Collaboration Tags
+
+"Looking for: musician / visual artist / writer"
+Match with other creators by skill tags
+
+
+ Content Moderation
+
+AI-assisted flagging + human review queue
+
+
+
+
+PHASE 3 — AI AGENT LAYER
+⏱️ Months 4–5 | Intelligence activates
+Goal: Every user has a personalized AI guide working for them
+3.1 Node 4 — AI Agent System
+Build List:
+
+ Personal AI Mentor (Core Agent)
+
+Built on: OpenAI API / Claude API
+Has access to: user profile, XP, skill tags, lesson history
+Functions:
+
+Recommend next lesson
+Suggest collaborators
+Answer questions about Dreamers ecosystem
+Daily check-in prompts
+
+
+Interface: Chat window in dashboard
+
+
+ Artist AI Manager
+
+Analyzes creator's portfolio
+Suggests pricing for NFTs
+Recommends content formats
+Tracks what's selling in marketplace
+
+
+ Project Planner AI
+
+User inputs a goal
+AI breaks into steps
+Assigns tasks
+Tracks progress
+Links to relevant lessons
+
+
+ AI Agent Architecture
+CopyUSER INPUT
+    ↓
+Context Builder (pulls user profile + history)
+    ↓
+Agent Router (which AI handles this?)
+    ↓
+├── Mentor Agent
+├── Artist Manager Agent
+├── Project Planner Agent
+    ↓
+Response + Action (lesson suggested / collab found / task created)
+    ↓
+XP Logged + Profile Updated
+
+
+3.2 AI Companion Assignment
+
+ 4–6 Companion Archetypes at launch
+CopyTHE ORACLE — philosophical guide, big questions
+THE ARCHITECT — project planning, systems thinking
+THE MUSE — creative direction, art and music
+THE STRATEGIST — finance, token economy, growth
+THE HEALER — breathwork, nervous system, well-being
+THE REBEL — unconventional paths, anti-system thinking
+
+ User selects companion at onboarding
+ Companion has unique voice + personality in chat
+ Built on same underlying model, different system prompts
+
+3.3 Collective Intelligence Agent
+
+ Analyzes ecosystem-wide patterns
+ Surfaces trending skills, topics, collaborations
+ Feeds data to DAO proposals
+ Dashboard: "What Dreamers are working on right now"
+
+
+PHASE 4 — SCALE & TOKEN
+⏱️ Months 6–9 | Real economy, real governance
+Goal: Token launch, DAO activation, game layer opens
+4.1 Dreamers Token Launch
+Pre-Launch Requirements (ALL must be done first):
+
+ Legal opinion on token classification
+ Tokenomics document finalized and published
+ Smart contract audited
+ Liquidity pool plan confirmed
+
+Tokenomics Framework:
+CopyDREAMERS TOKEN — SUPPLY ALLOCATION:
+├── 30% — Community Rewards (learning + creating)
+├── 20% — Treasury
+├── 20% — Team (2-year vesting, 6-month cliff)
+├── 15% — Ecosystem Development
+├── 10% — Liquidity Pool
+└── 5%  — Advisors (1-year vesting)
+
+TOKEN UTILITY:
+├── Governance voting
+├── AI agent access (premium tier)
+├── Staking for rewards
+├── Marketplace currency
+└── DAO proposal submission
+4.2 Node 8 — DAO & Governance
+Build List:
+
+ Governance Smart Contract (use Compound Governor or Tally)
+ Proposal System
+
+Minimum tokens to propose: set threshold
+Voting period: 7 days
+Execution: timelock (48 hour delay)
+
+
+ First 5 Official Proposals (pre-written by founding team)
+
+Treasury allocation for Q1
+First creator grant recipients
+New lesson topics approved
+Marketplace fee structure
+Game layer partnerships
+
+
+
+4.3 Node 10 — Game Layer (MVP)
+Build List:
+
+ Game 1: Economic Simulation
+
+Players manage a virtual creative economy
+Buy/sell/trade resources
+Learn real financial concepts
+Tokenized rewards for winning strategies
+
+
+ Game 2: Consciousness Puzzles
+
+Pattern recognition challenges
+Philosophy-based narrative choices
+XP rewards + Lore NFT unlocks
+
+
+ Game Engine Choice: Phaser.js (2D, web-based) for MVP
+ Connect to Profile: game XP feeds main XP
+
+
+PHASE 5 — ASCENSION
+⏱️ Months 10–12 | Full ecosystem live
+Goal: Users become builders, system self-sustains
+5.1 Node 11 — Spiritual Layer (Always Running)
+This is not a feature to build — it's a philosophy to embed in everything
+Implementation Checklist:
+
+ Every lesson references self-sovereignty
+ AI companions ask questions, not just give answers
+ Breathwork modules live in the learning layer
+ Onboarding includes "What do YOU want to create?"
+ Community rituals: weekly intention setting in Discord
+
+5.2 Node 12 — Ascension State Features
+Build List:
+
+ Mentor Mode — high XP users can create lessons
+
+Submit lesson → community votes → if approved → earns tokens
+
+
+ Builder Status
+
+Unlocked at Level 10+
+Can create sub-DAOs within Dreamers
+Can propose new marketplace categories
+
+
+ Legacy NFTs
+
+Awarded to top contributors each season
+On-chain record of what they built
+
+
+ Alumni/Mentor Directory
+
+Public profiles of Ascended Dreamers
+Available for collaboration requests
+
+
+
+5.3 Node 13 — Feedback Loops (Systematic)
+Build List:
+
+ Weekly Ecosystem Report (auto-generated by AI)
+
+Active users
+XP distributed
+NFTs minted
+Treasury balance
+Top creators
+
+
+ Quarterly Retrospectives (DAO-run)
+
+What worked
+What to fund next
+Community sentiment
+
+
+ Loop Metrics Dashboard (internal + public)
+CopyHEALTH METRICS TO TRACK:
+├── User retention (Day 1, Day 7, Day 30)
+├── Lesson completion rate
+├── NFT mint-to-trade ratio
+├── Token velocity
+├── DAO participation rate
+└── Creator revenue growth MoM
+
+
+
+🔧 TECH STACK — COMPLETE RECOMMENDED BUILD
+CopyFRONTEND:
+├── Next.js 14 (React framework)
+├── TailwindCSS (styling)
+├── Framer Motion (animations)
+└── Wagmi + Viem (wallet interactions)
+
+BACKEND:
+├── Node.js / Express OR Next.js API routes
+├── PostgreSQL (main database)
+├── Supabase (auth + real-time + storage)
+└── Redis (caching + sessions)
+
+BLOCKCHAIN:
+├── Solidity (smart contracts)
+├── Hardhat (development framework)
+├── OpenZeppelin (contract standards)
+└── The Graph (blockchain data indexing)
+
+AI LAYER:
+├── OpenAI GPT-4o (primary LLM)
+├── Anthropic Claude (secondary / reasoning tasks)
+├── Pinecone (vector database for memory)
+└── LangChain (agent orchestration)
+
+STORAGE:
+├── IPFS via Pinata (NFT assets)
+├── AWS S3 or Cloudflare R2 (media)
+└── Arweave (permanent storage for lore)
+
+PAYMENTS:
+├── Stripe (fiat subscriptions)
+├── Coinbase Commerce (crypto payments)
+└── Smart contracts (token transactions)
+
+COMMUNICATIONS:
+├── Discord (community)
+├── Resend or SendGrid (email)
+└── Push Protocol (Web3 notifications)
+
+ANALYTICS:
+├── Mixpanel (user behavior)
+├── Dune Analytics (on-chain data)
+└── Custom dashboard (treasury + ecosystem)
+
+📊 BUILD PRIORITY MATRIX
+CopyCRITICAL — Build First (Blocks everything else)
+├── User auth + profile
+├── Discord community
+├── Landing page + waitlist
+└── Legal entity + treasury wallet
+
+HIGH — Build in Phase 1-2
+├── Lesson system
+├── XP engine
+├── NFT contracts
+└── Basic marketplace
+
+MEDIUM — Build in Phase 3-4
+├── AI companions
+├── Token launch
+├── DAO governance
+└── Game layer MVP
+
+LOWER — Build in Phase 5
+├── Mentor mode
+├── Sub-DAOs
+├── Legacy NFTs
+└── Full analytics dashboard
+
+💰 REVENUE STREAMS (By Phase)
+CopyPHASE 1:
+└── Waitlist merch drop / Genesis NFT presale
+
+PHASE 2:
+├── NFT mint fees
+├── Marketplace transaction fees (10%)
+└── Creator Pass sales
+
+PHASE 3:
+├── AI companion premium subscriptions
+└── Pro creator tools subscription
+
+PHASE 4:
+├── Token launch liquidity events
+├── Game in-app purchases
+└── Advertising in game (non-intrusive)
+
+PHASE 5:
+├── B2B licensing (white-label learning system)
+├── Brand partnerships
+└── IRL events + experiences
+
+📅 WEEK-BY-WEEK: FIRST 30 DAYS
+CopyWEEK 1:
+├── Lock all foundation decisions
+├── Form legal entity
+├── Secure all social handles + domain
+├── Write manifesto
+└── Set up GitHub, Notion, Discord (private)
+
+WEEK 2:
+├── Design system started (Figma)
+├── Landing page live with email capture
+├── Dev environment set up
+├── Begin user auth + profile build
+└── Hire / confirm core team
+
+WEEK 3:
+├── Profile MVP functional (local/staging)
+├── First 5 lessons scripted
+├── AI influencer character designed
+├── First social content posted
+└── Discord opened to first 50 people (private beta)
+
+WEEK 4:
+├── Profile MVP deployed (live)
+├── First 3 lessons published
+├── Waitlist at 200+ goal
+├── First Discord community event held
+└── Begin NFT contract development
+
+⚠️ CRITICAL RULES FOR BUILDING
+CopyRULE 1: One phase at a time. Do not skip ahead.
+
+RULE 2: Community before product. 
+        Discord + content = your first product.
+
+RULE 3: Simple contracts only until audited.
+        Never rush smart contracts.
+
+RULE 4: Every feature must connect to a node.
+        If it doesn't fit the map, cut it.
+
+RULE 5: Measure everything from Day 1.
+        No data = no direction.
+
+RULE 6: The spiritual layer is not optional.
+        It must be in the copy, UX, and community.
+
+RULE 7: Protect the treasury.
+        Multi-sig from Day 1. No exceptions.
+
+This is your complete organized build plan. Start at Phase 0. Lock your foundation decisions this week. Everything else builds from that.
+
+PRIORITY ORDER (strict sequence):
+
+STEP 1 — ICP Web App Foundation (Next.js/React)
+├── Dependencies: NONE (this is the base)
+├── AI-Codeable: Solo
+├── Effort: Medium
+├── Cost: $$
+└── WHY FIRST: Core platform everything else builds on
+
+STEP 2 — Auth System (email + Solana wallet/Socket.io)
+├── Dependencies: ICP Web App Foundation
+├── AI-Codeable: Solo
+├── Effort: Medium
+├── Cost: $
+└── WHY: Required for user accounts + wallet connectivity
+
+STEP 3 — User Database & Profiles
+├── Dependencies: Auth System
+├── AI-Codeable: Solo
+├── Effort: Medium
+├── Cost: $
+└── WHY: Enables role-based access (Learner/Creator/Guardian/Admin)
+
+STEP 4 — Basic Education Engine
+├── Dependencies: User Database & Profiles
+├── AI-Codeable: Solo
+├── Effort: LARGE
+├── Cost: $$
+└── WHY: Core learning functionality for the platform
+
+STEP 5 — Process Goal Tracking Engine
+├── Dependencies: User Database & Profiles
+├── AI-Codeable: Solo
+├── Effort: Medium
+├── Cost: $
+└── WHY: Powers core habit-building functionality
+
+STEP 6 — Learner Dashboard
+├── Dependencies: Process Goal Tracking Engine
+├── AI-Codeable: Solo
+├── Effort: Medium
+├── Cost: $
+└── WHY: Main user interface for daily engagement
+
+STEP 7 — Mind & Energy Module
+├── Dependencies: Basic Education Engine
+├── AI-Codeable: Solo
+├── Effort: Medium
+├── Cost: $
+└── WHY: Differentiating feature for holistic development
