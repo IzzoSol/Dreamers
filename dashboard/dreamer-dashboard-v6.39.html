@@ -3211,13 +3211,18 @@ function updateProfileDisplay(user){
 
 // Check for logged in user on load
 function checkLoggedIn(){
-  const userId=localStorage.getItem('current_user_id');
-  if(userId){
-    const users=JSON.parse(localStorage.getItem('dreamer_users')||'[]');
-    const user=users.find(u=>u.id===userId);
-    if(user)updateProfileDisplay(user);
-  }
+  try{
+    const userId=localStorage.getItem('current_user_id');
+    if(userId){
+      const users=JSON.parse(localStorage.getItem('dreamer_users')||'[]');
+      const user=users.find(u=>u.id===userId);
+      if(user)updateProfileDisplay(user);
+    }
+  }catch(e){console.warn('checkLoggedIn: bad stored data',e);}
 }
+// Wired to the Sign In / Register buttons; route to the profile tab.
+function openLoginModal(){ try{ if(typeof go==='function') go('profile'); document.getElementById('login-section')?.scrollIntoView({behavior:'smooth'}); }catch(e){} }
+function openRegisterModal(){ try{ if(typeof go==='function') go('profile'); document.getElementById('register-section')?.scrollIntoView({behavior:'smooth'}); }catch(e){} }
 
 function logout(){
   localStorage.removeItem('current_user_id');
@@ -4101,7 +4106,7 @@ function showToast(title, msg, explorerUrl, type) {
 
   // Color the border by type
   const borderEl = toast.querySelector('div > div');
-  borderEl.className = borderEl.className.replace(/border-(success|error|secondary|primary)\/40/g, '');
+  borderEl.className = borderEl.className.replace(/border-(success|error|secondary|primary|accent)\/40/g, '');
   const colorMap = { success: 'success', error: 'error', warning: 'accent', info: 'secondary' };
   borderEl.classList.add(`border-${colorMap[type] || 'success'}/40`);
 
@@ -4149,7 +4154,7 @@ async function autoReconnect() {
 // This acts as a lightweight data layer. In production, swap with real API calls.
 
 const DreamerAPI = {
-  _store: JSON.parse(localStorage.getItem('dreamer_store') || 'null') || {
+  _store: (function(){try{return JSON.parse(localStorage.getItem('dreamer_store')||'null')}catch(e){return null}})() || {
     credits: 2450,
     impactScore: 88,
     zenStreak: 14,
@@ -6376,7 +6381,7 @@ function saveSettingsNotifications(){
 function applyTheme(theme){
   document.documentElement.dataset.theme=theme;
   localStorage.setItem('ui_theme',theme);
-  document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('border-primary').add('border-transparent'));
+  document.querySelectorAll('.theme-btn').forEach(b=>{b.classList.remove('border-primary');b.classList.add('border-transparent');});
   document.querySelector(`.theme-btn[onclick*="'${theme}'"]`)?.classList.add('border-primary');
 }
 
