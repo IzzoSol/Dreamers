@@ -245,6 +245,7 @@ const HEALING_BUDDIES = [
 </script>
 </head>
 <body>
+<div id="shd-wake-hint" class="fixed bottom-3 right-3 z-50 text-[10px] px-3 py-1 bg-primary/20 border border-primary text-white rounded">Waking the council…</div>
 <div class="grain"></div>
 
 <!-- ═══════════════════════════════════════ WALLET MODAL ═══════════════════════════════════════ -->
@@ -3081,6 +3082,22 @@ const HEALING_BUDDIES = [
 </nav>
 
 <!-- ═══════════════════════════════════════ JAVASCRIPT ═══════════════════════════════════════ -->
+<script src="shd-api.js"></script>
+<script>
+  // Boot the single backend seam. userId = existing dashboard user id if present, else a persisted anon id.
+  (function(){
+    let uid = localStorage.getItem('dreamer_uid');
+    if(!uid){ uid = 'dreamer-' + Math.random().toString(36).slice(2,10); localStorage.setItem('dreamer_uid', uid); }
+    const origin = localStorage.getItem('shd_origin') || 'https://shaddai-g81x.onrender.com';
+    window.shd = window.createShd({ origin, userId: uid });
+    // Wake-ping (free Render cold start). Non-blocking; UI shows a hint until it resolves.
+    document.addEventListener('DOMContentLoaded', function(){
+      const hint = document.getElementById('shd-wake-hint');
+      window.shd.health().then(()=>{ if(hint) hint.remove(); })
+        .catch(()=>{ if(hint) hint.textContent = 'Council is waking… retrying shortly.'; });
+    });
+  })();
+</script>
 <script>
 /* ═══════════════════════════════════════════════════════════════
    DREAMER ECO v3 — Application Logic + Solana Wallet Integration
@@ -4044,6 +4061,18 @@ function updateWalletUI() {
   document.getElementById('sol-balance').textContent = walletState.balance.toFixed(4);
   document.getElementById('dream-balance').textContent = walletState.dreamBalance.toLocaleString();
   document.getElementById('onchain-credits').textContent = walletState.credits.toLocaleString();
+}
+
+// Real shared Sparks balance (Dreamers "Impact Credits" == SHADDAI Sparks)
+async function refreshSparks(){
+  try {
+    const sparks = await window.shd.balance();
+    walletState.credits = sparks;
+    const el = document.getElementById('onchain-credits');
+    if(el) el.textContent = Number(sparks).toLocaleString();
+    const hdr = document.getElementById('hdr-credits');
+    if(hdr) hdr.textContent = Number(sparks).toLocaleString();
+  } catch(e){ console.warn('sparks refresh failed (backend balance route pending fix):', e && e.message); }
 }
 
 // Shorten address for display
@@ -6291,36 +6320,24 @@ function setTurtleCategory(cat){
   window.turtleCategory=cat;
 }
 
-function sendTurtleMessage(){
+async function sendTurtleMessage(){
   const input=document.getElementById('turtle-input');
   const msg=input?.value?.trim();
   if(!msg) return;
   const hist=document.getElementById('turtle-chat-history');
-  if(hist){
-    const userDiv=document.createElement('div');
-    userDiv.className='flex justify-end';
-    userDiv.innerHTML=`<div class="bg-primary text-surface p-3 rounded max-w-xs"><p class="text-[11px]">${msg.replace(/[<]/g,'&lt;')}</p></div>`;
-    hist.appendChild(userDiv);
-  }
+  const append=(html)=>{ if(hist){ const d=document.createElement('div'); d.innerHTML=html; hist.appendChild(d.firstElementChild); hist.scrollTop=hist.scrollHeight; } };
+  append(`<div class="flex justify-end"><div class="bg-primary text-surface p-3 rounded max-w-xs"><p class="text-[11px]">${msg.replace(/[<]/g,'&lt;')}</p></div></div>`);
   input.value='';
-  setTimeout(()=>{
-    const apiKey=localStorage.getItem('apiKey_openai');
-    if(!apiKey){
-      if(hist){
-        const sysDiv=document.createElement('div');
-        sysDiv.className='flex justify-start';
-        sysDiv.innerHTML=`<div class="bg-primary/20 border-l-2 border-primary p-3 rounded max-w-xs"><p class="text-[11px] text-white">Please add your OpenAI API key in Settings to enable this feature.</p></div>`;
-        hist.appendChild(sysDiv);
-      }
-      return;
-    }
-    if(hist){
-      const respDiv=document.createElement('div');
-      respDiv.className='flex justify-start';
-      respDiv.innerHTML=`<div class="bg-primary/20 border-l-2 border-primary p-3 rounded max-w-xs"><p class="text-[11px] text-white">I'm ready to help with ${window.turtleCategory||'wellness'}. Tell me more!</p></div>`;
-      hist.appendChild(respDiv);
-    }
-  },500);
+  append(`<div class="flex justify-start" id="turtle-thinking"><div class="bg-primary/20 border-l-2 border-primary p-3 rounded max-w-xs"><p class="text-[11px] text-white/70">Thinking…</p></div></div>`);
+  try {
+    const { reply, tools } = await window.shd.chat({ agent: 'TURTLE', message: msg });
+    document.getElementById('turtle-thinking')?.remove();
+    const receipt = tools && tools.length ? `<p class="text-[9px] text-accent mt-1">tools used: ${tools.join(', ')}</p>` : '';
+    append(`<div class="flex justify-start"><div class="bg-primary/20 border-l-2 border-primary p-3 rounded max-w-xs"><p class="text-[11px] text-white">${(reply||'(no reply)').replace(/[<]/g,'&lt;')}</p>${receipt}</div></div>`);
+  } catch (e) {
+    document.getElementById('turtle-thinking')?.remove();
+    append(`<div class="flex justify-start"><div class="bg-red-500/20 border-l-2 border-red-400 p-3 rounded max-w-xs"><p class="text-[11px] text-white">Couldn't reach the council. ${String(e.message||e).slice(0,80)}</p></div></div>`);
+  }
 }
 
 // NEWS TAB
@@ -6911,6 +6928,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 <script>
 document.addEventListener('DOMContentLoaded', async function() {
   try {
+    if (typeof refreshSparks === 'function') refreshSparks();
     // Prepare data from global RECIPES, WORKOUTS, PRACTICES, HERBS, HEALING_BUDDIES arrays
     const wellnessData = {
       recipes: typeof RECIPES !== 'undefined' ? RECIPES : [],
