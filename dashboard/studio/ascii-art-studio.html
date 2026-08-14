@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Art Studio</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0f;
+            color: #00ff88;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #1a1a2e;
+            border-radius: 10px;
+            border: 1px solid #00ff88;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        label { color: #00ffff; font-size: 0.9em; }
+        input, select, button {
+            padding: 10px;
+            background: #0a0a0f;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            font-family: inherit;
+            font-size: 1em;
+        }
+        button {
+            background: #ff00ff;
+            color: #0a0a0f;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #00ff88;
+            box-shadow: 0 0 15px #00ff88;
+        }
+        #preview {
+            background: #000;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ff00ff;
+            overflow-x: auto;
+            min-height: 300px;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            line-height: 1;
+            white-space: pre;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: #1a1a2e;
+            border: 1px solid #00ff88;
+            cursor: pointer;
+        }
+        .tab.active {
+            background: #00ff88;
+            color: #0a0a0f;
+        }
+        .charset-preview {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        .charset-btn {
+            padding: 5px 10px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 ASCII Art Studio</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>Upload Image</label>
+                <input type="file" id="imageInput" accept="image/*">
+            </div>
+            <div class="control-group">
+                <label>Width (chars)</label>
+                <input type="range" id="widthSlider" min="50" max="200" value="100">
+                <span id="widthValue">100</span>
+            </div>
+            <div class="control-group">
+                <label>Character Set</label>
+                <select id="charset">
+                    <option value="simple">Simple ( .:-=+*#%@)</option>
+                    <option value="detailed">Detailed (@%#*+=-:. )</option>
+                    <option value="blocks">Blocks (█▓▒░ )</option>
+                    <option value="matrix">Matrix (▁▂▃▄▅▆▇█)</option>
+                    <option value="detailed2">Detailed 2 ($@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~&lt;&gt;i!lI;:,"^`'. )</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Mode</label>
+                <select id="mode">
+                    <option value="grayscale">Grayscale</option>
+                    <option value="color">Colored</option>
+                    <option value="inverted">Inverted</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Actions</label>
+                <button onclick="convertImage()">Convert</button>
+            </div>
+            <div class="control-group">
+                <label>Export</label>
+                <button onclick="exportAscii()">Download .txt</button>
+            </div>
+        </div>
+
+        <div id="preview">Upload an image to generate ASCII art...</div>
+    </div>
+
+    <script>
+        const CHARSETS = {
+            simple: ' .:-=+*#%@',
+            detailed: '@%#*+=-:. ',
+            blocks: ' ▓▒░',
+            matrix: '▁▂▃▄▅▆▇█',
+            detailed2: '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
+        };
+
+        let currentAscii = '';
+        let originalImage = null;
+
+        document.getElementById('widthSlider').addEventListener('input', function(e) {
+            document.getElementById('widthValue').textContent = e.target.value;
+        });
+
+        function loadImage(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                originalImage = new Image();
+                originalImage.onload = function() {
+                    convertImage();
+                };
+                originalImage.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        document.getElementById('imageInput').addEventListener('change', loadImage);
+
+        function convertImage() {
+            if (!originalImage) return;
+
+            const width = parseInt(document.getElementById('widthSlider').value);
+            const charset = CHARSETS[document.getElementById('charset').value];
+            const mode = document.getElementById('mode').value;
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const aspectRatio = originalImage.height / originalImage.width;
+            const height = Math.floor(width * aspectRatio * 0.5);
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            ctx.drawImage(originalImage, 0, 0, width, height);
+            
+            const imageData = ctx.getImageData(0, 0, width, height);
+            const pixels = imageData.data;
+            
+            let ascii = '';
+            
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const idx = (y * width + x) * 4;
+                    const r = pixels[idx];
+                    const g = pixels[idx + 1];
+                    const b = pixels[idx + 2];
+                    
+                    const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+                    let charIndex = Math.floor((gray / 255) * (charset.length - 1));
+                    
+                    if (mode === 'inverted') {
+                        charIndex = (charset.length - 1) - charIndex;
+                    }
+                    
+                    const char = charset[charIndex];
+                    
+                    if (mode === 'color') {
+                        const hex = '#' + 
+                            r.toString(16).padStart(2, '0') + 
+                            g.toString(16).padStart(2, '0') + 
+                            b.toString(16).padStart(2, '0');
+                        ascii += `<span style="color:${hex}">${char}</span>`;
+                    } else {
+                        ascii += char;
+                    }
+                }
+                ascii += '\n';
+            }
+            
+            currentAscii = ascii;
+            
+            const preview = document.getElementById('preview');
+            if (mode === 'color') {
+                preview.innerHTML = ascii;
+            } else {
+                preview.textContent = ascii;
+            }
+        }
+
+        function exportAscii() {
+            if (!currentAscii) {
+                alert('No ASCII art to export!');
+                return;
+            }
+            
+            const mode = document.getElementById('mode').value;
+            let content;
+            
+            if (mode === 'color') {
+                content = '<!-- Colored ASCII Art - Open in browser for color -->\\n' + currentAscii;
+            } else {
+                content = document.getElementById('preview').textContent;
+            }
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ascii-art.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

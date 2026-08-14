@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 ASCII Audio Visualizer</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0f;
+            color: #00ff88;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        h1 {
+            text-align: center;
+            color: #ff00ff;
+            text-shadow: 0 0 20px #ff00ff;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #00ffff;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 12px 24px;
+            background: #1a1a2e;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        .tab:hover { background: #2a2a4e; }
+        .tab.active {
+            background: #00ff88;
+            color: #0a0a0f;
+            font-weight: bold;
+        }
+        
+        .panel {
+            display: none;
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #00ff88;
+            margin-bottom: 20px;
+        }
+        .panel.active { display: block; }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        label { color: #00ffff; font-size: 0.85em; }
+        input, select {
+            padding: 8px;
+            background: #0a0a0f;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            font-family: inherit;
+        }
+        input[type="range"] { width: 100%; }
+        
+        button {
+            padding: 10px 20px;
+            background: #ff00ff;
+            color: #0a0a0f;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #00ff88;
+            box-shadow: 0 0 15px #00ff88;
+        }
+        
+        #asciiDisplay {
+            background: #000;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ff00ff;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 8px;
+            line-height: 1.1;
+            white-space: pre;
+            min-height: 400px;
+            text-align: center;
+        }
+        
+        .upload-zone {
+            border: 2px dashed #00ff88;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+        .upload-zone:hover { background: #0a0a0f; border-color: #ff00ff; }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .gallery-item {
+            background: #0a0a0f;
+            padding: 10px;
+            border: 1px solid #00ff88;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .gallery-item:hover { border-color: #ff00ff; }
+        
+        .color-palettes {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .palette {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #00ff88;
+            cursor: pointer;
+        }
+        .palette:hover { transform: scale(1.2); }
+        
+        .effects-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .effect-btn {
+            padding: 8px 16px;
+            background: #0a0a0f;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85em;
+        }
+        .effect-btn.active { background: #ff00ff; color: #0a0a0f; }
+        
+        .info-box {
+            background: #0a0a0f;
+            padding: 15px;
+            border-left: 3px solid #ff00ff;
+            margin-top: 15px;
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 ASCII Audio Visualizer</h1>
+        <p class="subtitle">Convert audio, images, video & binary to ASCII art</p>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('image')">🖼️ Image</button>
+            <button class="tab" onclick="showTab('audio')">🎵 Audio</button>
+            <button class="tab" onclick="showTab('camera')">📷 Camera</button>
+            <button class="tab" onclick="showTab('text')">📝 Text Banner</button>
+            <button class="tab" onclick="showTab('binary')">💾 Binary</button>
+            <button class="tab" onclick="showTab('gallery')">🖼️ Gallery</button>
+        </div>
+        
+        <!-- IMAGE PANEL -->
+        <div class="panel active" id="panel-image">
+            <div class="upload-zone" onclick="document.getElementById('imageInput').click()">
+                📁 Click to upload image (PNG, JPG, GIF)
+                <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="loadImage(event)">
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label>Width: <span id="widthVal">100</span></label>
+                    <input type="range" id="widthRange" min="40" max="200" value="100" oninput="updateWidth()">
+                </div>
+                <div class="control-group">
+                    <label>Character Set</label>
+                    <select id="charset" onchange="convertImage()">
+                        <option value="detailed2">Standard (@%#*+=)</option>
+                        <option value="simple">Simple ( .:-=+*)</option>
+                        <option value="blocks">Blocks (█▓▒░)</option>
+                        <option value="matrix">Matrix (▁▂▃▄▅)</option>
+                        <option value="detailed">Extended (+=-:. )</option>
+                        <option value="binary">Binary (01)</option>
+                        <option value="braille">Braille (⠁⠂⠃)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Color Mode</label>
+                    <select id="colorMode" onchange="convertImage()">
+                        <option value="grayscale">Grayscale</option>
+                        <option value="color">Colored</option>
+                        <option value="inverted">Inverted</option>
+                        <option value=" threshold">Threshold</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Contrast</label>
+                    <input type="range" id="contrast" min="50" max="200" value="100" oninput="convertImage()">
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="convertImage()">🔄 Convert</button>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="downloadASCII()">💾 Download</button>
+                </div>
+            </div>
+            <div id="asciiDisplay">Upload an image to begin...</div>
+        </div>
+        
+        <!-- AUDIO PANEL -->
+        <div class="panel" id="panel-audio">
+            <div class="upload-zone" onclick="document.getElementById('audioInput').click()">
+                🎵 Click to upload audio (MP3, WAV, OGG)
+                <input type="file" id="audioInput" accept="audio/*" style="display:none" onchange="loadAudio(event)">
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label>Visualization</label>
+                    <select id="audioViz">
+                        <option value="waveform">Waveform</option>
+                        <option value="spectrum">Spectrum Bars</option>
+                        <option value="mirror">Mirror Wave</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Height</label>
+                    <input type="range" id="audioHeight" min="10" max="50" value="25">
+                </div>
+                <div class="control-group">
+                    <label>Width</label>
+                    <input type="range" id="audioWidth" min="50" max="150" value="100">
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="playAudio()">▶ Play & Visualize</button>
+                </div>
+            </div>
+            <div id="asciiDisplayAudio" class="ascii-display">Upload audio to visualize...</div>
+            <div class="info-box">
+                💡 Tip: The audio visualizer renders a real-time representation of audio frequencies as ASCII bars!
+            </div>
+        </div>
+        
+        <!-- CAMERA PANEL -->
+        <div class="panel" id="panel-camera">
+            <div class="controls">
+                <div class="control-group">
+                    <label>Resolution</label>
+                    <select id="camRes">
+                        <option value="160">Low (160x120)</option>
+                        <option value="200">Medium (200x150)</option>
+                        <option value="120">Small (120x90)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Char Set</label>
+                    <select id="camCharset">
+                        <option value="detailed2">Standard</option>
+                        <option value="blocks">Blocks</option>
+                        <option value="simple">Simple</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="startCamera()">📷 Start Camera</button>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="stopCamera()">⏹ Stop</button>
+                </div>
+            </div>
+            <video id="cameraVideo" style="display:none" autoplay playsinline></video>
+            <canvas id="cameraCanvas" style="display:none"></canvas>
+            <div id="asciiDisplayCam">Click "Start Camera" to begin...</div>
+        </div>
+        
+        <!-- TEXT BANNER PANEL -->
+        <div class="panel" id="panel-text">
+            <div class="controls">
+                <div class="control-group" style="grid-column: span 2;">
+                    <label>Enter Text</label>
+                    <input type="text" id="bannerText" placeholder="Type something..." value="ASCII">
+                </div>
+                <div class="control-group">
+                    <label>Font Style</label>
+                    <select id="bannerFont">
+                        <option value="standard">Standard</option>
+                        <option value="big">Big</option>
+                        <option value="block">Block</option>
+                        <option value="slant">Slant</option>
+                        <option value="small">Small</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Width</label>
+                    <input type="range" id="bannerWidth" min="40" max="100" value="60">
+                </div>
+                <div class="control-group">
+                    <label>Color</label>
+                    <select id="bannerColor">
+                        <option value="#00ff88">Green</option>
+                        <option value="#ff00ff">Magenta</option>
+                        <option value="#00ffff">Cyan</option>
+                        <option value="#ffff00">Yellow</option>
+                        <option value="#ff0000">Red</option>
+                        <option value="#ffffff">White</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="generateBanner()">✨ Generate</button>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="downloadBanner()">💾 Download</button>
+                </div>
+            </div>
+            <div id="bannerOutput"></div>
+        </div>
+        
+        <!-- BINARY PANEL -->
+        <div class="panel" id="panel-binary">
+            <div class="upload-zone" onclick="document.getElementById('binaryInput').click()">
+                💾 Click to upload ANY file (images, executables, documents)
+                <input type="file" id="binaryInput" style="display:none" onchange="analyzeBinary(event)">
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label>Visualization</label>
+                    <select id="binaryMode">
+                        <option value="byte Histogram">Byte Histogram</option>
+                        <option value="pattern">Pattern Grid</option>
+                        <option value="entropy">Entropy View</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Resolution</label>
+                    <input type="range" id="binaryRes" min="30" max="100" value="50">
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="visualizeBinary()">🔍 Analyze</button>
+                </div>
+            </div>
+            <div id="binaryInfo" class="info-box" style="display:none"></div>
+            <div id="asciiDisplayBinary">Upload a file to analyze...</div>
+        </div>
+        
+        <!-- GALLERY PANEL -->
+        <div class="panel" id="panel-gallery">
+            <p>Sample ASCII art - click to load:</p>
+            <div class="gallery" id="galleryGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        const CHARSETS = {
+            simple: ' .:-=+*#%@',
+            detailed: '@%#*+=-:. ',
+            detailed2: '@%#*+=-:. ',
+            blocks: ' ░▒▓█',
+            matrix: ' ▁▂▃▄▅▆▇█',
+            binary: '01',
+            braille: '⠁⠂⠃⠄⠅⠆⠇⠈⠉⠊⠋⠌⠍⠎⠏⠐⠑⠒⠓⠔⠕⠖⠗⠘⠙⠚⠛⠜⠝⠞⠟⠠⠡⠢⠣⠤⠥⠦⠧⠨⠩⠪⠫⠬⠭⠮⠯⠰⠱⠲⠳⠴⠵⠶⠷⠸⠹⠺⠻⠼⠽⠾⠿'
+        };
+        
+        let currentImage = null;
+        let currentAscii = '';
+        let cameraInterval = null;
+        
+        // BANNER FONTS (FIGlet-style)
+        const BANNERS = {
+            standard: [
+                '╔══════════════════╗',
+                '║     ASCII        ║',
+                '╚══════════════════╝'
+            ],
+            big: [
+                '██████╗ ██╗██████╗     ██████╗ ███████╗ █████╗ ████████╗███████╗██╗',
+                '██╔══██╗██║██╔══██╗    ██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝██║',
+                '██████╔╝██║██████╔╝    ██║  ██║█████╗  ███████║   ██║   █████╗  ██║',
+                '██╔═══╝ ██║██╔══██╗    ██║  ██║██╔══╝  ██╔══██║   ██║   ██╔══╝  ██║',
+                '██║     ██║██║  ██║    ██████╔╝███████╗██║  ██║   ██║   ███████╗███████╗',
+                '╚═╝     ╚═╝╚═╝  ╚═╝    ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚══════╝'
+            ],
+            block: [
+                '┌───────────────┐',
+                '│     ASCII     │',
+                '└───────────────┘'
+            ],
+            slant: [
+                '  _________ ',
+                ' /         \\',
+                '|   ASCII   |',
+                ' \\_________/'
+            ],
+            small: [
+                '_ASCII_',
+                ' ascii '
+            ]
+        };
+        
+        // Gallery items
+        const GALLERY = [
+            { name: 'Cat', char: '🐱', preset: 'detailed2' },
+            { name: 'Heart', char: '❤️', preset: 'blocks' },
+            { name: 'Star', char: '⭐', preset: 'matrix' },
+            { name: 'Fire', char: '🔥', preset: 'detailed' },
+            { name: 'Music', char: '🎵', preset: 'simple' },
+            { name: 'Rocket', char: '🚀', preset: 'detailed2' }
+        ];
+        
+        // Initialize gallery
+        const galleryGrid = document.getElementById('galleryGrid');
+        GALLERY.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'gallery-item';
+            div.innerHTML = `<div style="font-size:30px">${item.char}</div><div>${item.name}</div>`;
+            div.onclick = () => loadGalleryPreset(item);
+            galleryGrid.appendChild(div);
+        });
+        
+        function loadGalleryPreset(item) {
+            document.getElementById('charset').value = item.preset;
+            showTab('image');
+            document.getElementById('asciiDisplay').innerHTML = `
+// Pre-set loaded: ${item.name}
+// Upload an image or use sample data to generate ASCII art!
+//
+// Character set: ${item.preset}
+//
+             \\|/_\n          __/ \\__\n        /  O    O  \\\n       |     __     |\n       \\    /  \\    /\n        \\__|    |__/\n           |    |\n          /|    |\\
+         / |    | \\
+        (__|    |__)
+           |    |\n          /|    |\\
+         / |    | \\
+        (__|    |__)
+           |____|`;
+        }
+        
+        function showTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`panel-${tabName}`).classList.add('active');
+        }
+        
+        function updateWidth() {
+            document.getElementById('widthVal').textContent = document.getElementById('widthRange').value;
+        }
+        
+        function loadImage(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentImage = new Image();
+                currentImage.onload = function() { convertImage(); };
+                currentImage.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function convertImage() {
+            if (!currentImage) return;
+            
+            const width = parseInt(document.getElementById('widthRange').value);
+            const charset = CHARSETS[document.getElementById('charset').value];
+            const mode = document.getElementById('colorMode').value;
+            const contrast = parseInt(document.getElementById('contrast').value) / 100;
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const aspectRatio = currentImage.height / currentImage.width;
+            const height = Math.floor(width * aspectRatio * 0.5);
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            ctx.drawImage(currentImage, 0, 0, width, height);
+            
+            const imageData = ctx.getImageData(0, 0, width, height);
+            const pixels = imageData.data;
+            
+            let ascii = '';
+            
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const idx = (y * width + x) * 4;
+                    const r = pixels[idx];
+                    const g = pixels[idx + 1];
+                    const b = pixels[idx + 2];
+                    
+                    let gray = 0.299 * r + 0.587 * g + 0.114 * b;
+                    gray = ((gray - 128) * contrast) + 128;
+                    gray = Math.max(0, Math.min(255, gray));
+                    
+                    let charIndex = Math.floor((gray / 255) * (charset.length - 1));
+                    
+                    if (mode === 'inverted') charIndex = (charset.length - 1) - charIndex;
+                    if (mode === 'threshold') charIndex = gray > 127 ? charset.length - 1 : 0;
+                    
+                    const char = charset[charIndex] || ' ';
+                    
+                    if (mode === 'color') {
+                        const hex = '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('');
+                        ascii += `<span style="color:${hex}">${char}</span>`;
+                    } else {
+                        ascii += char;
+                    }
+                }
+                ascii += '\n';
+            }
+            
+            currentAscii = ascii;
+            const display = document.getElementById('asciiDisplay');
+            if (mode === 'color') {
+                display.innerHTML = ascii;
+            } else {
+                display.textContent = ascii;
+            }
+        }
+        
+        function downloadASCII() {
+            if (!currentAscii) { alert('Nothing to download!'); return; }
+            const content = document.getElementById('asciiDisplay').textContent;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'ascii-art.txt';
+            a.click();
+        }
+        
+        // Audio visualization
+        let audioContext, analyser, audioSource;
+        
+        function loadAudio(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const display = document.getElementById('asciiDisplayAudio');
+            display.textContent = 'Audio loaded: ' + file.name + '\n\nClick "Play & Visualize" to see the waveform!';
+        }
+        
+        async function playAudio() {
+            const file = document.getElementById('audioInput').files[0];
+            if (!file) { alert('Please upload an audio file first!'); return; }
+            
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+            }
+            
+            const arrayBuffer = await file.arrayBuffer();
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            
+            if (audioSource) audioSource.stop();
+            audioSource = audioContext.createBufferSource();
+            audioSource.buffer = audioBuffer;
+            audioSource.connect(analyser);
+            analyser.connect(audioContext.destination);
+            audioSource.start();
+            
+            visualizeAudio();
+        }
+        
+        function visualizeAudio() {
+            const display = document.getElementById('asciiDisplayAudio');
+            const vizType = document.getElementById('audioViz').value;
+            const height = parseInt(document.getElementById('audioHeight').value);
+            const width = parseInt(document.getElementById('audioWidth').value);
+            
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            
+            function draw() {
+                analyser.getByteFrequencyData(dataArray);
+                
+                let ascii = '';
+                const chars = '@%#*+=-:. ';
+                
+                for (let y = 0; y < height; y++) {
+                    let row = '';
+                    for (let x = 0; x < width; x++) {
+                        const idx = Math.floor((x / width) * dataArray.length);
+                        const val = dataArray[idx];
+                        const charIdx = Math.floor((val / 255) * (chars.length - 1));
+                        row += chars[charIdx];
+                    }
+                    ascii += row + '\n';
+                }
+                
+                display.textContent = ascii;
+                requestAnimationFrame(draw);
+            }
+            
+            draw();
+        }
+        
+        // Camera
+        async function startCamera() {
+            try {
+                const video = document.getElementById('cameraVideo');
+                video.srcObject = await navigator.mediaDevices.getUserMedia({ video: true });
+                
+                const res = parseInt(document.getElementById('camRes').value);
+                const canvas = document.createElement('canvas');
+                canvas.width = res;
+                canvas.height = Math.floor(res * 0.75);
+                
+                const ctx = canvas.getContext('2d');
+                
+                cameraInterval = setInterval(() => {
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const ascii = imageToAscii(imageData, res, document.getElementById('camCharset').value);
+                    document.getElementById('asciiDisplayCam').textContent = ascii;
+                }, 100);
+            } catch (err) {
+                alert('Camera not available: ' + err.message);
+            }
+        }
+        
+        function stopCamera() {
+            if (cameraInterval) clearInterval(cameraInterval);
+            const video = document.getElementById('cameraVideo');
+            if (video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
+        }
+        
+        function imageToAscii(imageData, width, charsetName) {
+            const { data, width: w, height: h } = imageData;
+            const charset = CHARSETS[charsetName] || CHARSETS.detailed2;
+            const aspectRatio = h / w / 2;
+            const height = Math.floor(width * aspectRatio);
+            
+            let ascii = '';
+            const xStep = w / width;
+            const yStep = h / height;
+            
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const px = Math.floor(x * xStep);
+                    const py = Math.floor(y * yStep);
+                    const idx = (py * w + px) * 4;
+                    const gray = (data[idx] + data[idx+1] + data[idx+2]) / 3;
+                    const charIdx = Math.floor((gray / 255) * (charset.length - 1));
+                    ascii += charset[charIdx] || ' ';
+                }
+                ascii += '\n';
+            }
+            return ascii;
+        }
+        
+        // Banner
+        function generateBanner() {
+            const text = document.getElementById('bannerText').value.toUpperCase();
+            const font = document.getElementById('bannerFont').value;
+            const width = parseInt(document.getElementById('bannerWidth').value);
+            const color = document.getElementById('bannerColor').value;
+            
+            const output = document.getElementById('bannerOutput');
+            
+            // Simple banner generation
+            let banner = '';
+            const charset = '@%#*+=-:. ';
+            
+            for (let i = 0; i < 5; i++) {
+                let row = '';
+                for (let char of text) {
+                    const code = char.charCodeAt(0);
+                    const offset = (code % 10 + i) % charset.length;
+                    row += charset[offset].repeat(3);
+                }
+                banner += row + '\n';
+            }
+            
+            output.innerHTML = `<pre style="color:${color};font-size:12px;line-height:1">${banner}</pre>`;
+        }
+        
+        function downloadBanner() {
+            const content = document.getElementById('bannerOutput').textContent;
+            if (!content) { alert('Generate a banner first!'); return; }
+            const blob = new Blob([content], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'ascii-banner.txt';
+            a.click();
+        }
+        
+        // Binary analysis
+        function analyzeBinary(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const info = document.getElementById('binaryInfo');
+            info.style.display = 'block';
+            info.innerHTML = `
+                <strong>File Info:</strong><br>
+                Name: ${file.name}<br>
+                Size: ${(file.size / 1024).toFixed(2)} KB<br>
+                Type: ${file.type || 'Unknown'}<br>
+                <br>Click "Analyze" to visualize the binary data!
+            `;
+        }
+        
+        function visualizeBinary() {
+            const file = document.getElementById('binaryInput').files[0];
+            if (!file) { alert('Upload a file first!'); return; }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const bytes = new Uint8Array(e.target.result);
+                const res = parseInt(document.getElementById('binaryRes').value);
+                const mode = document.getElementById('binaryMode').value;
+                
+                let ascii = '';
+                const charset = '@#+=:. ';
+                
+                // Simple byte visualization
+                const step = Math.floor(bytes.length / (res * res));
+                
+                for (let y = 0; y < res; y++) {
+                    for (let x = 0; x < res; x++) {
+                        const idx = (y * res + x) * step;
+                        if (idx < bytes.length) {
+                            const val = bytes[idx];
+                            const charIdx = Math.floor((val / 255) * (charset.length - 1));
+                            ascii += charset[charIdx];
+                        } else {
+                            ascii += ' ';
+                        }
+                    }
+                    ascii += '\n';
+                }
+                
+                document.getElementById('asciiDisplayBinary').textContent = ascii;
+            };
+            reader.readAsArrayBuffer(file);
+        }
+    </script>
+</body>
+</html>

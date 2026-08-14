@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔮 Binary Visualization Engine - Advanced</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #050508;
+            color: #00ff88;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        .container { max-width: 1600px; margin: 0 auto; }
+        
+        h1 {
+            text-align: center;
+            color: #ff00ff;
+            text-shadow: 0 0 40px #ff00ff, 0 0 80px #ff00ff;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        .subtitle { text-align: center; color: #00ffff; margin-bottom: 15px; font-size: 0.85em; }
+        
+        .tabs {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 8px 14px;
+            background: #0a0a15;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.8em;
+            transition: all 0.2s;
+        }
+        .tab:hover { background: #1a1a30; }
+        .tab.active { background: linear-gradient(135deg, #ff00ff, #00ff88); color: #050508; font-weight: bold; }
+        
+        .panel { display: none; background: #0a0a15; padding: 15px; border-radius: 8px; border: 1px solid #00ff88; margin-bottom: 10px; }
+        .panel.active { display: block; }
+        
+        .controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 10px; }
+        .control-group { display: flex; flex-direction: column; gap: 3px; }
+        label { color: #00ffff; font-size: 0.75em; }
+        input, select { padding: 6px; background: #050508; border: 1px solid #00ff88; color: #00ff88; font-family: inherit; font-size: 0.85em; }
+        
+        button {
+            padding: 8px 16px;
+            background: linear-gradient(90deg, #ff00ff, #00ff88);
+            color: #050508;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+        button:hover { transform: scale(1.05); box-shadow: 0 0 15px #ff00ff; }
+        
+        .ascii-display {
+            background: #000;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ff00ff;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 6px;
+            line-height: 1.1;
+            white-space: pre;
+            min-height: 200px;
+        }
+        
+        .upload-zone {
+            border: 2px dashed #00ff88;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+            font-size: 0.85em;
+        }
+        .upload-zone:hover { background: #0a0a15; border-color: #ff00ff; }
+        
+        .grid-viz { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px; }
+        .viz-box { background: #050508; padding: 10px; border-radius: 5px; border: 1px solid #00ff88; }
+        .viz-box h4 { color: #ff00ff; margin-bottom: 8px; font-size: 0.85em; }
+        
+        canvas { max-width: 100%; border: 1px solid #ff00ff; border-radius: 5px; }
+        
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #00ff88;
+            width: 0%;
+            transition: width 0.3s;
+            margin-top: 5px;
+        }
+        
+        .info-tag {
+            display: inline-block;
+            background: #1a1a30;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.75em;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-rain" id="matrixBg"></div>
+    
+    <div class="container">
+        <h1>🔮 Binary Visualization Engine</h1>
+        <p class="subtitle">Advanced file analysis, sonification, and art generation</p>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('digraph')">📊 Digraph</button>
+            <button class="tab" onclick="showTab('trigraph')">🌐 Trigraph 3D</button>
+            <button class="tab" onclick="showTab('entropy')">📈 Entropy</button>
+            <button class="tab" onclick="showTab('pattern')">🎯 Pattern</button>
+            <button class="tab" onclick="showTab('sonic')">🔊 Sonic</button>
+            <button class="tab" onclick="showTab('spectrogram')">📻 Spectrogram</button>
+            <button class="tab" onclick="showTab('hexview')">🔢 Hex View</button>
+            <button class="tab" onclick="showTab('export')">💾 Export</button>
+        </div>
+        
+        <!-- DIGRAPH PANEL -->
+        <div class="panel active" id="panel-digraph">
+            <div class="upload-zone" onclick="document.getElementById('digraphFile').click()">
+                📁 Upload ANY file to visualize as 2D directed graph
+                <input type="file" id="digraphFile" style="display:none" onchange="runDigraph(event)">
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label>Resolution</label>
+                    <select id="digraphRes" onchange="runDigraphFromData()">
+                        <option value="64">64x64</option>
+                        <option value="128">128x128</option>
+                        <option value="256" selected>256x256</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Point Size</label>
+                    <input type="range" id="digraphPoint" min="1" max="10" value="3" onchange="runDigraphFromData()">
+                </div>
+                <div class="control-group">
+                    <label>Color Map</label>
+                    <select id="digraphColor">
+                        <option value="neon">Neon</option>
+                        <option value="fire">Fire</option>
+                        <option value="ocean">Ocean</option>
+                        <option value="matrix">Matrix</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="runDigraphFromData()">🔄 Re-render</button>
+                </div>
+            </div>
+            <div class="progress-bar" id="digraphProgress"></div>
+            <div id="digraphOutput" class="ascii-display">Upload a file to generate directed graph visualization...</div>
+            <canvas id="digraphCanvas" style="display:none;margin-top:10px"></canvas>
+        </div>
+        
+        <!-- TRIGRAPH 3D PANEL -->
+        <div class="panel" id="panel-trigraph">
+            <div class="upload-zone" onclick="document.getElementById('trigraphFile').click()">
+                🌐 Upload file for 3D point cloud visualization
+                <input type="file" id="trigraphFile" style="display:none" onchange="runTrigraph(event)">
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label>3D Resolution</label>
+                    <input type="range" id="trigraphRes" min="16" max="64" value="32" onchange="runTrigraphFromData()">
+                </div>
+                <div class="control-group">
+                    <label>Rotation</label>
+                    <input type="range" id="trigraphRot" min="0" max="360" value="0" onchange="runTrigraphFromData()">
+                </div>
+                <div class="control-group">
+                    <label>View Angle</label>
+                    <input type="range" id="trigraphAngle" min="0" max="90" value="45" onchange="runTrigraphFromData()">
+                </div>
+                <div class="control-group">
+                    <label>Projection</label>
+                    <select id="trigraphProj">
+                        <option value="perspective">Perspective</option>
+                        <option value="orthographic">Orthographic</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="runTrigraphFromData()">🎲 Update 3D View</button>
+                </div>
+            </div>
+            <div id="trigraphOutput" class="ascii-display">Upload a file to generate 3D point cloud...</div>
+            <div id="trigraph3D" style="margin-top:10px"></div>
+        </div>
+        
+        <!-- ENTROPY PANEL -->
+        <div class="panel" id="panel-entropy">
+            <div class="upload-zone" onclick="document.getElementById('entropyFile').click()">
+                📈 Analyze file entropy and compression patterns
+                <input type="file" id="entropyFile" style="display:none" onchange="runEntropy(event)">
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label>Block Size</label>
+                    <input type="range" id="entropyBlock" min="16" max="256" value="64">
+                </div>
+                <div class="control-group">
+                    <label>View Mode</label>
+                    <select id="entropyMode">
+                        <option value="bars">ASCII Bars</option>
+                        <option value="heatmap">Heatmap</option>
+                        <option value="values">Numeric</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="runEntropyFromData()">📊 Calculate</button>
+                </div>
+            </div>
+            <div id="entropyStats" style="font-size:0.8em;margin-bottom:10px"></div>
+            <div id="entropyOutput" class="ascii-display">Upload a file to analyze entropy...</div>
+        </div>
+        
+        <!-- PATTERN PANEL -->
+        <div class="panel" id="panel-pattern">
+            <div class="upload-zone" onclick="document.getElementById('patternFile').click()">
+                🎯 Find and visualize repeating patterns
+                <input type="file" id="patternFile" style="display:none" onchange="runPattern(event)">
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label>Min Pattern Length</label>
+                    <input type="range" id="patternMin" min="2" max="16" value="4">
+                </div>
+                <div class="control-group">
+                    <label>Search Depth</label>
+                    <select id="patternDepth">
+                        <option value="shallow">Shallow</option>
+                        <option value="deep">Deep</option>
+                        <option value="exhaustive">Exhaustive</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="runPatternFromData()">🔍 Find Patterns</button>
+                </div>
+            </div>
+            <div id="patternStats" style="font-size:0.8em;margin-bottom:10px"></div>
+            <div id="patternOutput" class="ascii-display">Upload a file to find patterns...</div>
+        </div>
+        
+        <!-- SONIC PANEL -->
+        <div class="panel" id="panel-sonic">
+            <div class="upload-zone" onclick="document.getElementById('sonicFile').click()">
+                🔊 Convert binary to audio - multiple algorithms
+                <input type="file" id="sonicFile" style="display:none" onchange="loadSonic(event)">
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label>Algorithm</label>
+                    <select id="sonicAlgo">
+                        <option value="direct">Direct Byte→Freq</option>
+                        <option value="delta">Delta Encoding</option>
+                        <option value="runlength">Run Length</option>
+                        <option value="address">Address-Value</option>
+                        <option value="checksum">Checksum Melody</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Sample Rate</label>
+                    <select id="sonicRate">
+                        <option value="8000">8000 Hz</option>
+                        <option value="22050" selected>22050 Hz</option>
+                        <option value="44100">44100 Hz</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Waveform</label>
+                    <select id="sonicWave">
+                        <option value="sine">Sine</option>
+                        <option value="square">Square</option>
+                        <option value="sawtooth">Sawtooth</option>
+                        <option value="triangle">Triangle</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Duration (sec)</label>
+                    <input type="range" id="sonicDur" min="1" max="60" value="10">
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="playSonic()">▶ Play</button>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="downloadSonic()">💾 Save WAV</button>
+                </div>
+            </div>
+            <div id="sonicViz" class="ascii-display" style="min-height:100px">Load a file and click Play...</div>
+        </div>
+        
+        <!-- SPECTROGRAM PANEL -->
+        <div class="panel" id="panel-spectrogram">
+            <div class="upload-zone" onclick="document.getElementById('specFile').click()">
+                📻 Visualize frequency spectrum over time
+                <input type="file" id="specFile" style="display:none" onchange="loadSpec(event)">
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label>FFT Size</label>
+                    <select id="specFft">
+                        <option value="256">256</option>
+                        <option value="512" selected>512</option>
+                        <option value="1024">1024</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Color Scheme</label>
+                    <select id="specColor">
+                        <option value="viridis">Viridis</option>
+                        <option value="magma">Magma</option>
+                        <option value="inferno">Inferno</option>
+                        <option value="plasma">Plasma</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="generateSpectrogram()">🎨 Render</button>
+                </div>
+            </div>
+            <canvas id="specCanvas" style="margin-top:10px;width:100%;max-width:800px"></canvas>
+            <div id="specOutput" class="ascii-display" style="margin-top:10px"></div>
+        </div>
+        
+        <!-- HEX VIEW PANEL -->
+        <div class="panel" id="panel-hexview">
+            <div class="upload-zone" onclick="document.getElementById('hexFile').click()">
+                🔢 Traditional hex editor view
+                <input type="file" id="hexFile" style="display:none" onchange="runHexView(event)">
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label>Bytes per row</label>
+                    <select id="hexBytes">
+                        <option value="16">16</option>
+                        <option value="32">32</option>
+                        <option value="8">8</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Start Offset</label>
+                    <input type="number" id="hexStart" value="0" min="0">
+                </div>
+                <div class="control-group">
+                    <label>Show as</label>
+                    <select id="hexShow">
+                        <option value="hex">Hex</option>
+                        <option value="dec">Decimal</option>
+                        <option value="bin">Binary</option>
+                        <option value="ascii">ASCII</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="runHexFromData()">🔄 Update</button>
+                </div>
+            </div>
+            <div id="hexOutput" class="ascii-display" style="font-size:7px">Upload a file to view hex...</div>
+        </div>
+        
+        <!-- EXPORT PANEL -->
+        <div class="panel" id="panel-export">
+            <h4 style="color:#ff00ff;margin-bottom:10px">💾 Export Options</h4>
+            <div class="controls">
+                <div class="control-group">
+                    <label>Export Format</label>
+                    <select id="exportFormat">
+                        <option value="png">PNG Image</option>
+                        <option value="gif">Animated GIF</option>
+                        <option value="json">JSON Data</option>
+                        <option value="wav">WAV Audio</option>
+                        <option value="mid">MIDI File</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Resolution</label>
+                    <input type="number" id="exportRes" value="512" min="64" max="2048">
+                </div>
+                <div class="control-group">
+                    <label>Filename</label>
+                    <input type="text" id="exportName" placeholder="my-binary-art">
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="exportData()">🚀 Export</button>
+                </div>
+            </div>
+            <div id="exportPreview" style="margin-top:15px"></div>
+        </div>
+    </div>
+
+    <script>
+        let binaryData = null;
+        let fileName = '';
+        let audioCtx = null;
+        
+        // Matrix background effect
+        const matrixChars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEF';
+        
+        function initMatrix() {
+            const canvas = document.createElement('canvas');
+            canvas.className = 'matrix-rain';
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            document.body.insertBefore(canvas, document.body.firstChild);
+            
+            const ctx = canvas.getContext('2d');
+            const cols = Math.floor(canvas.width / 20);
+            const drops = Array(cols).fill(1);
+            
+            setInterval(() => {
+                ctx.fillStyle = 'rgba(0,0,0,0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#00ff88';
+                ctx.font = '14px monospace';
+                
+                drops.forEach((y, i) => {
+                    const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                    ctx.fillText(char, i * 20, y * 20);
+                    if (y > canvas.height / 20 && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                });
+            }, 50);
+        }
+        
+        initMatrix();
+        
+        function showTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`panel-${tabName}`).classList.add('active');
+        }
+        
+        // ============ DIGRAPH ============
+        function runDigraph(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            fileName = file.name;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                binaryData = new Uint8Array(ev.target.result);
+                runDigraphFromData();
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function runDigraphFromData() {
+            if (!binaryData) return;
+            
+            const res = parseInt(document.getElementById('digraphRes').value);
+            const pointSize = parseInt(document.getElementById('digraphPoint').value);
+            const colorMode = document.getElementById('digraphColor').value;
+            
+            document.getElementById('digraphProgress').style.width = '50%';
+            
+            // Create point pairs for directed graph
+            const points = [];
+            const step = Math.max(1, Math.floor(binaryData.length / (res * res * 2)));
+            
+            for (let i = 0; i < binaryData.length - 1; i += step) {
+                const x = binaryData[i];
+                const y = binaryData[i + 1];
+                const intensity = (x + y) / 510;
+                points.push({ x, y, intensity });
+            }
+            
+            // Draw on canvas
+            const canvas = document.getElementById('digraphCanvas');
+            canvas.style.display = 'block';
+            canvas.width = res;
+            canvas.height = res;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, res, res);
+            
+            const colors = {
+                neon: ['#00ff88', '#ff00ff', '#00ffff'],
+                fire: ['#ff0000', '#ff8800', '#ffff00'],
+                ocean: ['#0000ff', '#0088ff', '#00ffff'],
+                matrix: ['#003300', '#00ff00', '#88ff88']
+            };
+            const palette = colors[colorMode] || colors.neon;
+            
+            points.forEach(p => {
+                const px = (p.x / 255) * res;
+                const py = (p.y / 255) * res;
+                const color = palette[Math.floor(p.intensity * (palette.length - 1))];
+                
+                ctx.fillStyle = color;
+                ctx.globalAlpha = p.intensity * 0.8 + 0.2;
+                ctx.beginPath();
+                ctx.arc(px, py, pointSize, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            ctx.globalAlpha = 1;
+            document.getElementById('digraphProgress').style.width = '100%';
+            
+            // ASCII representation
+            let ascii = '';
+            for (let y = 0; y < res; y += 4) {
+                for (let x = 0; x < res; x += 2) {
+                    const idx = Math.floor((y * res + x) / (res * res) * points.length);
+                    const p = points[Math.min(idx, points.length - 1)];
+                    const chars = ' .:-=+*#%@';
+                    const char = chars[Math.floor(p.intensity * (chars.length - 1))];
+                    ascii += char;
+                }
+                ascii += '\n';
+            }
+            
+            document.getElementById('digraphOutput').textContent = ascii.slice(0, 2000);
+        }
+        
+        // ============ TRIGRAPH 3D ============
+        function runTrigraph(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                binaryData = new Uint8Array(ev.target.result);
+                runTrigraphFromData();
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function runTrigraphFromData() {
+            if (!binaryData) return;
+            
+            const res = parseInt(document.getElementById('trigraphRes').value);
+            const rotation = parseInt(document.getElementById('trigraphRot').value);
+            const angle = parseInt(document.getElementById('trigraphAngle').value);
+            
+            // Create 3D points (x, y, z from consecutive bytes)
+            const points = [];
+            for (let i = 0; i < binaryData.length - 2; i += 3) {
+                points.push({
+                    x: binaryData[i],
+                    y: binaryData[i + 1],
+                    z: binaryData[i + 2],
+                    intensity: (binaryData[i] + binaryData[i+1] + binaryData[i+2]) / 765
+                });
+            }
+            
+            // Project to 2D with rotation
+            const rad = rotation * Math.PI / 180;
+            const projPoints = points.map(p => {
+                // Rotate around Y axis
+                const rx = p.x * Math.cos(rad) - p.z * Math.sin(rad);
+                const rz = p.x * Math.sin(rad) + p.z * Math.cos(rad);
+                const ry = p.y;
+                
+                // Simple perspective projection
+                const scale = 200 / (200 + rz);
+                return {
+                    x: rx * scale + 128,
+                    y: ry * scale * Math.cos(angle * Math.PI / 180) + 64,
+                    intensity: p.intensity
+                };
+            });
+            
+            // ASCII output
+            const grid = Array(50).fill(null).map(() => Array(80).fill(' '));
+            const chars = ' .:-=+*#%@';
+            
+            projPoints.forEach(p => {
+                const gx = Math.floor(p.x / 4);
+                const gy = Math.floor(p.y / 3);
+                if (gx >= 0 && gx < 80 && gy >= 0 && gy < 50) {
+                    const idx = Math.floor(p.intensity * (chars.length - 1));
+                    grid[gy][gx] = chars[idx];
+                }
+            });
+            
+            let ascii = grid.map(row => row.join('')).join('\n');
+            document.getElementById('trigraphOutput').textContent = ascii;
+            
+            // Simple 3D visual with Three.js-like approach (using canvas)
+            const canvas = document.createElement('canvas');
+            canvas.width = 400;
+            canvas.height = 300;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, 400, 300);
+            
+            projPoints.forEach(p => {
+                ctx.fillStyle = `rgba(0, 255, ${Math.floor(p.intensity * 255)}, ${p.intensity})`;
+                ctx.fillRect(p.x * 1.5, p.y * 2, 2, 2);
+            });
+            
+            document.getElementById('trigraph3D').innerHTML = '';
+            document.getElementById('trigraph3D').appendChild(canvas);
+        }
+        
+        // ============ ENTROPY ============
+        function runEntropy(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                binaryData = new Uint8Array(ev.target.result);
+                runEntropyFromData();
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function runEntropyFromData() {
+            if (!binaryData) return;
+            
+            const blockSize = parseInt(document.getElementById('entropyBlock').value);
+            const mode = document.getElementById('entropyMode').value;
+            
+            const blocks = Math.ceil(binaryData.length / blockSize);
+            let output = '';
+            let totalEntropy = 0;
+            
+            for (let b = 0; b < blocks; b++) {
+                const start = b * blockSize;
+                const end = Math.min(start + blockSize, binaryData.length);
+                const block = binaryData.slice(start, end);
+                
+                // Calculate entropy
+                const freq = {};
+                block.forEach(v => freq[v] = (freq[v] || 0) + 1);
+                
+                let entropy = 0;
+                Object.values(freq).forEach(f => {
+                    const p = f / block.length;
+                    entropy -= p * Math.log2(p);
+                });
+                
+                totalEntropy += entropy;
+                
+                const chars = ' ▁▂▃▄▅▆▇█';
+                const charIdx = Math.min(Math.floor(entropy / 8 * (chars.length - 1)), chars.length - 1);
+                const bar = chars[charIdx].repeat(Math.ceil(entropy * 5));
+                
+                if (mode === 'bars') {
+                    output += `Block ${b.toString().padStart(3,'0')}: ${bar} (${entropy.toFixed(2)})\n`;
+                } else if (mode === 'heatmap') {
+                    output += chars[charIdx];
+                    if ((b + 1) % 32 === 0) output += '\n';
+                } else {
+                    output += `${b}: ${entropy.toFixed(3)}\n`;
+                }
+            }
+            
+            document.getElementById('entropyStats').innerHTML = `
+                <span class="info-tag">Blocks: ${blocks}</span>
+                <span class="info-tag">Avg Entropy: ${(totalEntropy / blocks).toFixed(3)}</span>
+                <span class="info-tag">Max Possible: 8.0</span>
+            `;
+            
+            document.getElementById('entropyOutput').textContent = output;
+        }
+        
+        // ============ PATTERN ============
+        function runPattern(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                binaryData = new Uint8Array(ev.target.result);
+                runPatternFromData();
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function runPatternFromData() {
+            if (!binaryData) return;
+            
+            const minLen = parseInt(document.getElementById('patternMin').value);
+            const depth = document.getElementById('patternDepth').value;
+            
+            // Simple pattern finder - find repeating sequences
+            const patterns = {};
+            const maxSearch = depth === 'shallow' ? 100 : depth === 'deep' ? 1000 : binaryData.length;
+            
+            for (let len = minLen; len <= minLen * 4; len++) {
+                for (let i = 0; i < maxSearch; i++) {
+                    const pattern = Array.from(binaryData.slice(i, i + len)).join(',');
+                    patterns[pattern] = (patterns[pattern] || 0) + 1;
+                }
+            }
+            
+            // Sort by frequency
+            const top = Object.entries(patterns)
+                .filter(([k, v]) => v > 1)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 20);
+            
+            let output = 'Top repeating patterns:\n\n';
+            top.forEach(([pat, count], i) => {
+                const bytes = pat.split(',').slice(0, 8).map(b => parseInt(b).toString(16).padStart(2,'0')).join(' ');
+                output += `${i+1}. Count: ${count} | Bytes: ${bytes}...\n`;
+            });
+            
+            document.getElementById('patternStats').innerHTML = `
+                <span class="info-tag">Patterns Found: ${top.length}</span>
+                <span class="info-tag">Search Depth: ${maxSearch}</span>
+            `;
+            
+            document.getElementById('patternOutput').textContent = output || 'No repeating patterns found';
+        }
+        
+        // ============ SONIC ============
+        function loadSonic(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                binaryData = new Uint8Array(ev.target.result);
+                document.getElementById('sonicViz').textContent = `Loaded ${binaryData.length} bytes. Click Play to generate audio.`;
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function playSonic() {
+            if (!binaryData) return;
+            
+            const algo = document.getElementById('sonicAlgo').value;
+            const rate = parseInt(document.getElementById('sonicRate').value);
+            const wave = document.getElementById('sonicWave').value;
+            const dur = parseInt(document.getElementById('sonicDur').value);
+            
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const samples = rate * dur;
+            const buffer = audioCtx.createBuffer(1, samples, rate);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < samples; i++) {
+                let val = 0;
+                const byteIdx = Math.floor((i / samples) * binaryData.length);
+                const byte = binaryData[byteIdx] || 0;
+                
+                switch(algo) {
+                    case 'direct':
+                        val = (byte / 255) * 2 - 1;
+                        break;
+                    case 'delta':
+                        const prev = binaryData[byteIdx - 1] || 128;
+                        val = ((byte - prev) / 255);
+                        break;
+                    case 'runlength':
+                        if (byte > 128) val = (byte - 128) / 127;
+                        else val = -byte / 128;
+                        break;
+                    case 'address':
+                        val = Math.sin((byteIdx / 100) * (byte / 127 + 0.1)) * (byte / 255);
+                        break;
+                    case 'checksum':
+                        let sum = 0;
+                        for (let j = 0; j <= byteIdx; j++) sum += binaryData[j] || 0;
+                        val = Math.sin(sum * 0.001 + i * 0.01) * (byte / 255);
+                        break;
+                }
+                
+                // Apply waveform
+                const t = i / rate;
+                switch(wave) {
+                    case 'square': val = val > 0 ? 1 : -1; break;
+                    case 'sawtooth': val = (t * 440 * (byte/255 + 0.5)) % 2 - 1; break;
+                    case 'triangle': val = Math.abs((t * 440) % 2 - 1) * 2 - 1; break;
+                }
+                
+                data[i] = val * 0.3;
+            }
+            
+            const source = audioCtx.createBufferSource();
+            source.buffer = buffer;
+            source.connect(audioCtx.destination);
+            source.start();
+            
+            // Visualize
+            let viz = '';
+            for (let i = 0; i < 50; i++) {
+                const idx = Math.floor((i / 50) * data.length);
+                const amp = Math.abs(data[idx]) * 20;
+                viz += '█'.repeat(Math.min(amp, 30)) + '\n';
+            }
+            document.getElementById('sonicViz').textContent = viz;
+        }
+        
+        function downloadSonic() {
+            // Placeholder - would generate actual WAV file
+            alert('WAV export requires additional libraries. Use Play to listen!');
+        }
+        
+        // ============ SPECTROGRAM ============
+        function loadSpec(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                binaryData = new Uint8Array(ev.target.result);
+                document.getElementById('specOutput').textContent = `Loaded ${binaryData.length} bytes. Click Render.`;
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function generateSpectrogram() {
+            if (!binaryData) return;
+            
+            const fft = parseInt(document.getElementById('specFft').value);
+            const colorScheme = document.getElementById('specColor').value;
+            
+            const canvas = document.getElementById('specCanvas');
+            canvas.width = 800;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            
+            const colors = {
+                viridis: ['#440154', '#482878', '#3e4a89', '#31688e', '#26828e', '#1f9e89', '#35b779', '#6dcd59', '#b4de2b', '#fde725'],
+                magma: ['#000004', '#180f3d', '#440f76', '#721f81', '#9e2f7f', '#cd4071', '#f1605d', '#fd9567', '#feca8d', '#fcfdbf'],
+                inferno: ['#000004', '#1b0c41', '#4a0c6b', '#781c6d', '#a52c60', '#cf4446', '#ed6925', '#fb9a06', '#f7d13d', '#fcffa4'],
+                plasma: ['#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdc328', '#f0f921']
+            };
+            
+            const palette = colors[colorScheme] || colors.viridis;
+            
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, 800, 256);
+            
+            // Simple spectrogram simulation from binary data
+            const timeSteps = 100;
+            const freqBins = 64;
+            
+            for (let t = 0; t < timeSteps; t++) {
+                for (let f = 0; f < freqBins; f++) {
+                    const idx = (t * freqBins + f) % binaryData.length;
+                    const val = binaryData[idx] / 255;
+                    
+                    // Simulate frequency content
+                    const freq = Math.sin(t * 0.1 + f * 0.2) * val;
+                    const colorIdx = Math.floor(freq * (palette.length - 1) + palette.length / 2);
+                    const color = palette[Math.max(0, Math.min(colorIdx, palette.length - 1))];
+                    
+                    ctx.fillStyle = color;
+                    ctx.fillRect(t * 8, 256 - f * 4 - 4, 7, 3);
+                }
+            }
+            
+            // ASCII output
+            let ascii = '';
+            for (let f = 0; f < 16; f++) {
+                for (let t = 0; t < 50; t++) {
+                    const idx = (t * 16 + f) % binaryData.length;
+                    const chars = ' ░▒▓█';
+                    const char = chars[Math.floor(binaryData[idx] / 255 * 4)];
+                    ascii += char;
+                }
+                ascii += '\n';
+            }
+            document.getElementById('specOutput').textContent = ascii;
+        }
+        
+        // ============ HEX VIEW ============
+        function runHexView(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                binaryData = new Uint8Array(ev.target.result);
+                runHexFromData();
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function runHexFromData() {
+            if (!binaryData) return;
+            
+            const bytesPerRow = parseInt(document.getElementById('hexBytes').value);
+            const start = parseInt(document.getElementById('hexStart').value);
+            const show = document.getElementById('hexShow').value;
+            
+            let output = '';
+            const maxRows = 64;
+            
+            for (let row = 0; row < maxRows; row++) {
+                const offset = start + row * bytesPerRow;
+                if (offset >= binaryData.length) break;
+                
+                let line = offset.toString(16).padStart(8, '0') + '  ';
+                let ascii = ' ';
+                
+                for (let i = 0; i < bytesPerRow; i++) {
+                    const idx = offset + i;
+                    if (idx >= binaryData.length) {
+                        line += '   ';
+                        ascii += ' ';
+                        continue;
+                    }
+                    
+                    const b = binaryData[idx];
+                    
+                    if (show === 'hex') line += b.toString(16).padStart(2, '0') + ' ';
+                    else if (show === 'dec') line += b.toString().padStart(3, ' ') + ' ';
+                    else if (show === 'bin') line += b.toString(2).padStart(8, '0').slice(0, 4) + ' ';
+                    else line += b.toString(16).padStart(2, '0') + ' ';
+                    
+                    ascii += (b >= 32 && b < 127) ? String.fromCharCode(b) : '.';
+                }
+                
+                output += line + ' |' + ascii + '|\n';
+            }
+            
+            document.getElementById('hexOutput').textContent = output;
+        }
+        
+        // ============ EXPORT ============
+        function exportData() {
+            const format = document.getElementById('exportFormat').value;
+            const res = parseInt(document.getElementById('exportRes').value);
+            const name = document.getElementById('exportName').value || 'binary-export';
+            
+            if (format === 'png' && binaryData) {
+                const canvas = document.createElement('canvas');
+                canvas.width = res;
+                canvas.height = res;
+                const ctx = canvas.getContext('2d');
+                
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, res, res);
+                
+                for (let i = 0; i < Math.min(binaryData.length, res * res); i++) {
+                    const x = i % res;
+                    const y = Math.floor(i / res);
+                    const b = binaryData[i];
+                    ctx.fillStyle = `rgb(${b}, ${255-b}, ${b%128+128})`;
+                    ctx.fillRect(x, y, 1, 1);
+                }
+                
+                const a = document.createElement('a');
+                a.href = canvas.toDataURL('image/png');
+                a.download = name + '.png';
+                a.click();
+            } else if (format === 'json' && binaryData) {
+                const data = {
+                    fileName: fileName,
+                    size: binaryData.length,
+                    bytes: Array.from(binaryData.slice(0, 1000)),
+                    stats: {
+                        unique: [...new Set(binaryData)].length,
+                        entropy: 'Calculated on render'
+                    }
+                };
+                
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+                a.download = name + '.json';
+                a.click();
+            } else {
+                alert('Export format ready! Generate some visualizations first.');
+            }
+            
+            document.getElementById('exportPreview').innerHTML = `<span class="info-tag">Exported: ${name}.${format}</span>`;
+        }
+    </script>
+</body>
+</html>

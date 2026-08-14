@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎛️ Creative Synthesis Engine</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #050508;
+            color: #00ff88;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        .container { max-width: 1600px; margin: 0 auto; }
+        
+        h1 {
+            text-align: center;
+            color: #ff00ff;
+            text-shadow: 0 0 40px #ff00ff;
+            font-size: 1.8em;
+        }
+        .subtitle { text-align: center; color: #00ffff; margin-bottom: 15px; font-size: 0.85em; }
+        
+        .tabs {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 8px 14px;
+            background: #0a0a15;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        .tab.active { background: linear-gradient(135deg, #ff00ff, #00ff88); color: #050508; }
+        
+        .panel { display: none; background: #0a0a15; padding: 15px; border-radius: 8px; border: 1px solid #00ff88; margin-bottom: 10px; }
+        .panel.active { display: block; }
+        
+        .controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 10px; }
+        .control-group { display: flex; flex-direction: column; gap: 3px; }
+        label { color: #00ffff; font-size: 0.75em; }
+        input, select { padding: 6px; background: #050508; border: 1px solid #00ff88; color: #00ff88; font-family: inherit; }
+        
+        button {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            color: #050508;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+        }
+        button:hover { transform: scale(1.02); }
+        
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .module {
+            background: #080810;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #00ff88;
+        }
+        .module h4 { color: #ff00ff; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+        
+        canvas { max-width: 100%; border: 1px solid #ff00ff; border-radius: 5px; }
+        
+        .display {
+            background: #000;
+            border: 1px solid #ff00ff;
+            min-height: 150px;
+            white-space: pre;
+            font-size: 6px;
+            line-height: 1.1;
+            overflow-x: auto;
+            padding: 10px;
+        }
+        
+        .pipeline {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .pipeline-step {
+            padding: 10px 15px;
+            background: #080810;
+            border: 1px solid #00ff88;
+            border-radius: 5px;
+            font-size: 0.85em;
+        }
+        .pipeline-arrow { color: #ff00ff; font-size: 1.5em; }
+        
+        .module-btn {
+            padding: 8px 12px;
+            background: #0a0a15;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            cursor: pointer;
+            margin: 3px;
+            font-size: 0.75em;
+        }
+        .module-btn.active { background: #00ff88; color: #050508; }
+        
+        .color-swatch {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #00ff88;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .connections {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .connection {
+            padding: 8px 12px;
+            background: #1a1a30;
+            border-radius: 5px;
+            font-size: 0.8em;
+            cursor: pointer;
+        }
+        .connection.active { background: #00ff88; color: #050508; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎛️ Creative Synthesis Engine</h1>
+        <p class="subtitle">Binary → Music → Art → NFT: Complete Creative Pipeline</p>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('pipeline')">🔗 Pipeline</button>
+            <button class="tab" onclick="showTab('sources')">📥 Sources</button>
+            <button class="tab" onclick="showTab('processors')">⚙️ Processors</button>
+            <button class="tab" onclick="showTab('outputs')">📤 Outputs</button>
+            <button class="tab" onclick="showTab('presets')">🎭 Presets</button>
+        </div>
+        
+        <!-- PIPELINE PANEL -->
+        <div class="panel active" id="panel-pipeline">
+            <div class="pipeline">
+                <div class="pipeline-step" onclick="showTab('sources')">
+                    📥 <strong>INPUT</strong><br>Select source
+                </div>
+                <span class="pipeline-arrow">→</span>
+                <div class="pipeline-step" onclick="showTab('processors')">
+                    ⚙️ <strong>PROCESS</strong><br>Transform
+                </div>
+                <span class="pipeline-arrow">→</span>
+                <div class="pipeline-step">
+                    🎵 <strong>SONIFY</strong><br>Audio
+                </div>
+                <span class="pipeline-arrow">→</span>
+                <div class="pipeline-step">
+                    🎨 <strong>VISUALIZE</strong><br>Art
+                </div>
+                <span class="pipeline-arrow">→</span>
+                <div class="pipeline-step" onclick="showTab('outputs')">
+                    💎 <strong>OUTPUT</strong><br>Export
+                </div>
+            </div>
+            
+            <div class="workspace">
+                <div class="module">
+                    <h4>🎵 Audio Synthesis</h4>
+                    <canvas id="audioCanvas" width="400" height="100"></canvas>
+                    <div class="controls">
+                        <button onclick="playPipelineAudio()">▶ Play</button>
+                        <button onclick="stopPipelineAudio()">⏹ Stop</button>
+                    </div>
+                </div>
+                
+                <div class="module">
+                    <h4>🎨 Visual Output</h4>
+                    <canvas id="visualCanvas" width="400" height="400"></canvas>
+                </div>
+            </div>
+            
+            <div class="controls" style="margin-top:15px">
+                <button onclick="runFullPipeline()" style="width:100%;font-size:1.1em">🚀 RUN FULL PIPELINE</button>
+            </div>
+        </div>
+        
+        <!-- SOURCES PANEL -->
+        <div class="panel" id="panel-sources">
+            <div class="module">
+                <h4>📥 Data Source</h4>
+                <div class="module-btn active" onclick="setSource('binary')">💾 Binary File</div>
+                <div class="module-btn" onclick="setSource('image')">🖼️ Image</div>
+                <div class="module-btn" onclick="setSource('audio')">🎵 Audio</div>
+                <div class="module-btn" onclick="setSource('text')">📝 Text</div>
+                <div class="module-btn" onclick="setSource('random')">🎲 Random</div>
+                
+                <input type="file" id="sourceFile" style="display:none" onchange="loadSource(event)">
+                <button onclick="document.getElementById('sourceFile').click()" style="margin-top:10px">📁 Load File</button>
+                
+                <div id="sourceInfo" style="margin-top:10px;font-size:0.85em;color:#888">No file loaded</div>
+            </div>
+        </div>
+        
+        <!-- PROCESSORS PANEL -->
+        <div class="panel" id="panel-processors">
+            <div class="workspace">
+                <div class="module">
+                    <h4>🎵 Audio Processors</h4>
+                    <div class="connections" id="audioProcs"></div>
+                    <div class="module-btn" onclick="addProcessor('audio','tone')">🎹 Tone Generator</div>
+                    <div class="module-btn" onclick="addProcessor('audio','noise')">🌊 Noise Generator</div>
+                    <div class="module-btn" onclick="addProcessor('audio','sample')">📼 Sample Playback</div>
+                    <div class="module-btn" onclick="addProcessor('audio','filter')">🔄 Filter</div>
+                    <div class="module-btn" onclick="addProcessor('audio','reverb')">🔊 Reverb</div>
+                </div>
+                
+                <div class="module">
+                    <h4>🎨 Visual Processors</h4>
+                    <div class="connections" id="visualProcs"></div>
+                    <div class="module-btn" onclick="addProcessor('visual','ascii')">ABC ASCII Render</div>
+                    <div class="module-btn" onclick="addProcessor('visual','pixel')">👾 Pixelate</div>
+                    <div class="module-btn" onclick="addProcessor('visual','glitch')">🌐 Glitch</div>
+                    <div class="module-btn" onclick="addProcessor('visual','neon')">💡 Neon Glow</div>
+                    <div class="module-btn" onclick="addProcessor('visual','fractal')">🌀 Fractal</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- OUTPUTS PANEL -->
+        <div class="panel" id="panel-outputs">
+            <div class="workspace">
+                <div class="module">
+                    <h4>📤 Export Options</h4>
+                    <div class="controls">
+                        <button onclick="exportWAV()">🎵 Export WAV</button>
+                        <button onclick="exportPNG()">🖼️ Export PNG</button>
+                        <button onclick="exportGIF()">🎞️ Export GIF</button>
+                        <button onclick="exportNFT()">💎 Export NFT</button>
+                        <button onclick="exportJSON()">📋 Export JSON</button>
+                    </div>
+                </div>
+                
+                <div class="module">
+                    <h4>📊 Pipeline Status</h4>
+                    <div id="pipelineStatus" style="font-size:0.85em">
+                        <div>Source: <span id="statusSource">None</span></div>
+                        <div>Processors: <span id="statusProcs">0</span></div>
+                        <div>Audio: <span id="statusAudio">Not generated</span></div>
+                        <div>Visual: <span id="statusVisual">Not generated</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- PRESETS PANEL -->
+        <div class="panel" id="panel-presets">
+            <div class="module">
+                <h4>🎭 Creative Presets</h4>
+                <div class="module-btn" onclick="loadPreset('binary-beat')">💾 Binary Beat</div>
+                <div class="module-btn" onclick="loadPreset('glitch-art')">🌐 Glitch Art</div>
+                <div class="module-btn" onclick="loadPreset('noise-melody')">🌊 Noise Melody</div>
+                <div class="module-btn" onclick="loadPreset('fractal-dreams')">🌀 Fractal Dreams</div>
+                <div class="module-btn" onclick="loadPreset('ascii-symphony')">ABC ASCII Symphony</div>
+                <div class="module-btn" onclick="loadPreset('nft-generator')">💎 NFT Generator</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let sourceData = null;
+        let sourceName = '';
+        let audioCtx = null;
+        let audioBuffer = null;
+        let visualCanvas = null;
+        let visualCtx = null;
+        let audioProcessors = [];
+        let visualProcessors = [];
+        let isPlaying = false;
+        
+        function init() {
+            visualCanvas = document.getElementById('visualCanvas');
+            visualCtx = visualCanvas.getContext('2d');
+            
+            // Initialize audio canvas
+            const audioCanvas = document.getElementById('audioCanvas');
+            const ctx = audioCanvas.getContext('2d');
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, 400, 100);
+            
+            drawWelcome();
+        }
+        
+        function drawWelcome() {
+            const ctx = visualCtx;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, 400, 400);
+            
+            ctx.font = '30px Courier New';
+            ctx.fillStyle = '#ff00ff';
+            ctx.textAlign = 'center';
+            ctx.fillText('CREATIVE', 200, 150);
+            ctx.fillText('SYNTHESIS', 200, 200);
+            ctx.fillText('ENGINE', 200, 250);
+            
+            ctx.font = '12px Courier New';
+            ctx.fillStyle = '#00ff88';
+            ctx.fillText('Load a file and run pipeline', 200, 320);
+        }
+        
+        function showTab(name) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${name}')"]`).classList.add('active');
+            document.getElementById(`panel-${name}`).classList.add('active');
+        }
+        
+        function setSource(type) {
+            document.querySelectorAll('.module-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (type !== 'random') {
+                document.getElementById('sourceFile').click();
+            } else {
+                generateRandomData();
+            }
+        }
+        
+        function loadSource(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                sourceData = new Uint8Array(ev.target.result);
+                sourceName = file.name;
+                
+                document.getElementById('sourceInfo').innerHTML = `
+                    ✅ <strong>${file.name}</strong><br>
+                    Size: ${sourceData.length} bytes<br>
+                    Type: ${file.type || 'Unknown'}
+                `;
+                
+                document.getElementById('statusSource').textContent = file.name;
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function generateRandomData() {
+            sourceData = new Uint8Array(10000);
+            for (let i = 0; i < 10000; i++) {
+                sourceData[i] = Math.floor(Math.random() * 256);
+            }
+            sourceName = 'Random Data';
+            document.getElementById('sourceInfo').textContent = 'Generated random data (10KB)';
+            document.getElementById('statusSource').textContent = 'Random';
+        }
+        
+        function addProcessor(type, proc) {
+            if (type === 'audio') {
+                audioProcessors.push(proc);
+                const div = document.createElement('div');
+                div.className = 'connection';
+                div.textContent = proc;
+                div.onclick = () => {
+                    audioProcessors = audioProcessors.filter(p => p !== proc);
+                    div.remove();
+                };
+                document.getElementById('audioProcs').appendChild(div);
+            } else {
+                visualProcessors.push(proc);
+                const div = document.createElement('div');
+                div.className = 'connection';
+                div.textContent = proc;
+                div.onclick = () => {
+                    visualProcessors = visualProcessors.filter(p => p !== proc);
+                    div.remove();
+                };
+                document.getElementById('visualProcs').appendChild(div);
+            }
+            
+            document.getElementById('statusProcs').textContent = audioProcessors.length + visualProcessors.length;
+        }
+        
+        function runFullPipeline() {
+            if (!sourceData) {
+                alert('Please load a source first!');
+                return;
+            }
+            
+            generateAudio();
+            generateVisual();
+            
+            document.getElementById('statusAudio').textContent = 'Generated';
+            document.getElementById('statusVisual').textContent = 'Generated';
+        }
+        
+        function generateAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            const sampleRate = 22050;
+            const duration = sourceData.length > 10000 ? 10 : sourceData.length / 1000;
+            const buffer = audioCtx.createBuffer(1, sampleRate * duration, sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            // Simple sonification based on processors
+            audioProcessors.forEach(proc => {
+                for (let i = 0; i < data.length; i++) {
+                    const byteIdx = Math.floor((i / data.length) * sourceData.length);
+                    const byte = sourceData[byteIdx] || 0;
+                    
+                    switch(proc) {
+                        case 'tone':
+                            const freq = 100 + (byte / 255) * 800;
+                            data[i] += Math.sin(i * freq / sampleRate * Math.PI * 2) * (byte / 255) * 0.3;
+                            break;
+                        case 'noise':
+                            data[i] += (Math.random() - 0.5) * (byte / 255) * 0.2;
+                            break;
+                        case 'filter':
+                            if (i > 0) data[i] = (data[i] + data[i-1]) / 2;
+                            break;
+                        default:
+                            data[i] += (byte / 255 - 0.5) * 0.1;
+                    }
+                }
+            });
+            
+            audioBuffer = buffer;
+            
+            // Draw waveform
+            const canvas = document.getElementById('audioCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, 400, 100);
+            
+            ctx.strokeStyle = '#00ff88';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            
+            const step = Math.floor(data.length / 400);
+            for (let i = 0; i < 400; i++) {
+                const sample = data[i * step] || 0;
+                const y = 50 - sample * 40;
+                if (i === 0) ctx.moveTo(i, y);
+                else ctx.lineTo(i, y);
+            }
+            ctx.stroke();
+            
+            // Add effects visualization
+            audioProcessors.forEach((proc, idx) => {
+                ctx.fillStyle = '#ff00ff';
+                ctx.fillText(proc, 10, 15 + idx * 12);
+            });
+        }
+        
+        function generateVisual() {
+            const canvas = visualCanvas;
+            const ctx = visualCtx;
+            
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, 400, 400);
+            
+            visualProcessors.forEach(proc => {
+                switch(proc) {
+                    case 'ascii':
+                        drawASCII(ctx, 400, 400);
+                        break;
+                    case 'pixel':
+                        drawPixel(ctx, 400, 400);
+                        break;
+                    case 'glitch':
+                        drawGlitch(ctx, 400, 400);
+                        break;
+                    case 'neon':
+                        drawNeon(ctx, 400, 400);
+                        break;
+                    case 'fractal':
+                        drawFractal(ctx, 400, 400);
+                        break;
+                    default:
+                        drawDefault(ctx, 400, 400);
+                }
+            });
+            
+            // If no processors, do default
+            if (visualProcessors.length === 0) {
+                drawDefault(ctx, 400, 400);
+            }
+        }
+        
+        function drawASCII(ctx, w, h) {
+            const chars = '@%#*+=-:. ';
+            const fontSize = 6;
+            const cols = Math.floor(w / fontSize);
+            const rows = Math.floor(h / fontSize);
+            
+            ctx.font = `${fontSize}px Courier New`;
+            ctx.fillStyle = '#00ff88';
+            
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    const idx = (y * cols + x) % sourceData.length;
+                    const char = chars[sourceData[idx] % chars.length];
+                    ctx.fillText(char, x * fontSize, y * fontSize + fontSize);
+                }
+            }
+        }
+        
+        function drawPixel(ctx, w, h) {
+            const size = 8;
+            const cols = Math.floor(w / size);
+            const rows = Math.floor(h / size);
+            
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    const idx = (y * cols + x) % sourceData.length;
+                    const b = sourceData[idx];
+                    
+                    ctx.fillStyle = `rgb(${b}, ${255-b}, ${b%128+128})`;
+                    ctx.fillRect(x * size, y * size, size - 1, size - 1);
+                }
+            }
+        }
+        
+        function drawGlitch(ctx, w, h) {
+            const colors = ['#00ff88', '#ff00ff', '#00ffff', '#ffff00'];
+            
+            for (let i = 0; i < 100; i++) {
+                const x = (sourceData[i * 3] / 255) * w;
+                const y = (sourceData[i * 3 + 1] / 255) * h;
+                const size = 10 + (sourceData[i * 3 + 2] / 255) * 50;
+                const color = colors[i % colors.length];
+                
+                const offsetX = (Math.random() - 0.5) * 30;
+                
+                ctx.fillStyle = color;
+                ctx.globalAlpha = 0.7;
+                ctx.fillRect(x + offsetX, y, size, size);
+            }
+            ctx.globalAlpha = 1;
+        }
+        
+        function drawNeon(ctx, w, h) {
+            const centerX = w / 2;
+            const centerY = h / 2;
+            
+            for (let i = 0; i < sourceData.length; i += 10) {
+                const angle = (i / sourceData.length) * Math.PI * 20;
+                const radius = 20 + (sourceData[i] / 255) * 150;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                
+                const color = `hsl(${sourceData[i]}, 100%, 50%)`;
+                
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = color;
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x, y, 3 + (sourceData[i] / 50), 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.shadowBlur = 0;
+        }
+        
+        function drawFractal(ctx, w, h) {
+            const maxIter = 30;
+            
+            for (let px = 0; px < w; px += 4) {
+                for (let py = 0; py < h; py += 4) {
+                    let x = (px - w/2) / 150;
+                    let y = (py - h/2) / 150;
+                    
+                    let cx = (sourceData[px % sourceData.length] / 255) * 2 - 1;
+                    let cy = (sourceData[py % sourceData.length] / 255) * 2 - 1;
+                    
+                    let iter = 0;
+                    while (x*x + y*y < 4 && iter < maxIter) {
+                        const xTemp = x*x - y*y + cx;
+                        y = 2*x*y + cy;
+                        x = xTemp;
+                        iter++;
+                    }
+                    
+                    if (iter < maxIter) {
+                        const hue = iter * 10;
+                        ctx.fillStyle = `hsl(${hue}, 100%, ${iter/maxIter * 50}%)`;
+                        ctx.fillRect(px, py, 4, 4);
+                    }
+                }
+            }
+        }
+        
+        function drawDefault(ctx, w, h) {
+            // Default pattern using source data
+            for (let i = 0; i < 50; i++) {
+                const x = (sourceData[i * 3] / 255) * w;
+                const y = (sourceData[i * 3 + 1] / 255) * h;
+                const size = 5 + (sourceData[i * 3 + 2] / 255) * 30;
+                
+                const hue = sourceData[i] % 360;
+                ctx.fillStyle = `hsl(${hue}, 80%, 60%)`;
+                ctx.globalAlpha = 0.5 + (i % 10) / 20;
+                ctx.fillRect(x, y, size, size);
+            }
+            ctx.globalAlpha = 1;
+        }
+        
+        function playPipelineAudio() {
+            if (!audioBuffer) {
+                generateAudio();
+            }
+            
+            if (audioBuffer && audioCtx) {
+                const source = audioCtx.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(audioCtx.destination);
+                source.start();
+                isPlaying = true;
+            }
+        }
+        
+        function stopPipelineAudio() {
+            if (audioCtx) {
+                audioCtx.close();
+                audioCtx = null;
+                isPlaying = false;
+            }
+        }
+        
+        function exportWAV() {
+            if (!audioBuffer) generateAudio();
+            
+            alert('WAV export ready - connect audio to download');
+        }
+        
+        function exportPNG() {
+            const link = document.createElement('a');
+            link.download = 'synthesis-art.png';
+            link.href = visualCanvas.toDataURL();
+            link.click();
+        }
+        
+        function exportGIF() {
+            alert('GIF export coming soon!');
+        }
+        
+        function exportNFT() {
+            // Prepare NFT metadata
+            const nftData = {
+                name: 'Synthesized Art #1',
+                description: 'Generated from ' + sourceName + ' using Creative Synthesis Engine',
+                image: visualCanvas.toDataURL(),
+                attributes: [
+                    { trait_type: 'Source Size', value: sourceData ? sourceData.length : 0 },
+                    { trait_type: 'Audio Processors', value: audioProcessors.join(', ') },
+                    { trait_type: 'Visual Processors', value: visualProcessors.join(', ') }
+                ]
+            };
+            
+            const blob = new Blob([JSON.stringify(nftData, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.download = 'nft-metadata.json';
+            link.href = URL.createObjectURL(blob);
+            link.click();
+        }
+        
+        function exportJSON() {
+            const data = {
+                source: sourceName,
+                sourceSize: sourceData ? sourceData.length : 0,
+                audioProcessors: audioProcessors,
+                visualProcessors: visualProcessors,
+                audioBuffer: audioBuffer ? 'Generated' : null,
+                timestamp: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.download = 'pipeline.json';
+            link.href = URL.createObjectURL(blob);
+            link.click();
+        }
+        
+        function loadPreset(name) {
+            // Clear existing
+            audioProcessors = [];
+            visualProcessors = [];
+            document.getElementById('audioProcs').innerHTML = '';
+            document.getElementById('visualProcs').innerHTML = '';
+            
+            switch(name) {
+                case 'binary-beat':
+                    addProcessor('audio', 'tone');
+                    addProcessor('audio', 'noise');
+                    addProcessor('visual', 'pixel');
+                    break;
+                case 'glitch-art':
+                    addProcessor('visual', 'glitch');
+                    addProcessor('visual', 'ascii');
+                    break;
+                case 'noise-melody':
+                    addProcessor('audio', 'noise');
+                    addProcessor('audio', 'filter');
+                    addProcessor('audio', 'reverb');
+                    break;
+                case 'fractal-dreams':
+                    addProcessor('visual', 'fractal');
+                    addProcessor('visual', 'neon');
+                    break;
+                case 'ascii-symphony':
+                    addProcessor('audio', 'tone');
+                    addProcessor('visual', 'ascii');
+                    break;
+                case 'nft-generator':
+                    addProcessor('visual', 'glitch');
+                    addProcessor('visual', 'neon');
+                    break;
+            }
+            
+            document.getElementById('statusProcs').textContent = audioProcessors.length + visualProcessors.length;
+        }
+        
+        init();
+    </script>
+</body>
+</html>

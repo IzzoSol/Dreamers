@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔊 Binary Music Studio - Sonification Engine</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a12;
+            color: #00ff88;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        h1 {
+            text-align: center;
+            color: #ff00ff;
+            text-shadow: 0 0 30px #ff00ff;
+            font-size: 2.2em;
+            margin-bottom: 5px;
+        }
+        .subtitle { text-align: center; color: #00ffff; margin-bottom: 20px; }
+        
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 12px 20px;
+            background: #1a1a2e;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        .tab:hover { background: #2a2a4e; }
+        .tab.active { background: #00ff88; color: #0a0a12; font-weight: bold; }
+        
+        .panel { display: none; background: #1a1a2e; padding: 20px; border-radius: 10px; border: 1px solid #00ff88; margin-bottom: 20px; }
+        .panel.active { display: block; }
+        
+        .controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .control-group { display: flex; flex-direction: column; gap: 5px; }
+        label { color: #00ffff; font-size: 0.85em; }
+        input, select { padding: 10px; background: #0a0a12; border: 1px solid #00ff88; color: #00ff88; font-family: inherit; }
+        
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            color: #0a0a12;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        button:hover { transform: scale(1.05); box-shadow: 0 0 20px #ff00ff; }
+        
+        .ascii-display {
+            background: #000;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ff00ff;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 8px;
+            line-height: 1;
+            white-space: pre;
+            min-height: 300px;
+            text-align: center;
+        }
+        
+        .upload-zone {
+            border: 2px dashed #00ff88;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+        .upload-zone:hover { background: #0a0a12; border-color: #ff00ff; }
+        
+        .visualizer {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .viz-box {
+            flex: 1;
+            min-width: 300px;
+            background: #0a0a12;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #00ff88;
+        }
+        
+        .nft-preview {
+            background: linear-gradient(135deg, #1a1a2e, #2a1a3e);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #ff00ff;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .nft-preview h3 { color: #ffff00; margin-bottom: 15px; }
+        .nft-canvas { background: #000; border-radius: 10px; margin: 10px auto; }
+        
+        .waveform {
+            width: 100%;
+            height: 100px;
+            background: #000;
+            border: 1px solid #00ff88;
+            margin-top: 10px;
+        }
+        
+        .status {
+            padding: 10px;
+            background: #0a0a12;
+            border-left: 3px solid #ff00ff;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔊 Binary Music Studio</h1>
+        <p class="subtitle">Convert ANY file → Music → Art → NFT</p>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('sonify')">🎵 Binary Sonification</button>
+            <button class="tab" onclick="showTab('music')">🎹 MIDI Generator</button>
+            <button class="tab" onclick="showTab('art')">🎨 Music to Art</button>
+            <button class="tab" onclick="showTab('nft')">💎 Create NFT</button>
+            <button class="tab" onclick="showTab('library')">📁 My Library</button>
+        </div>
+        
+        <!-- SONIFICATION PANEL -->
+        <div class="panel active" id="panel-sonify">
+            <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                📁 Upload ANY file to convert to music!
+                <input type="file" id="fileInput" style="display:none" onchange="loadFile(event)">
+            </div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label>Sound Type</label>
+                    <select id="soundType">
+                        <option value="sine">Sine Wave</option>
+                        <option value="square">Square Wave</option>
+                        <option value="sawtooth">Sawtooth</option>
+                        <option value="triangle">Triangle</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Base Frequency (Hz)</label>
+                    <input type="range" id="baseFreq" min="50" max="500" value="220" oninput="updateFreq()">
+                    <span id="freqVal">220 Hz</span>
+                </div>
+                <div class="control-group">
+                    <label>Duration per Byte (ms)</label>
+                    <input type="range" id="byteDuration" min="50" max="500" value="150">
+                </div>
+                <div class="control-group">
+                    <label>Scale Mode</label>
+                    <select id="scaleMode">
+                        <option value="chromatic">Chromatic</option>
+                        <option value="pentatonic">Pentatonic</option>
+                        <option value="major">Major Scale</option>
+                        <option value="minor">Minor Scale</option>
+                        <option value="binary">Binary (0=low, 1=high)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Amplitude Mapping</label>
+                    <select id="ampMap">
+                        <option value="direct">Direct Byte Value</option>
+                        <option value="log">Logarithmic</option>
+                        <option value="exp">Exponential</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="playBinaryMusic()">▶ Play Binary Music</button>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="stopPlayback()">⏹ Stop</button>
+                </div>
+            </div>
+            
+            <div class="status" id="sonifyStatus">
+                📊 Ready! Upload a file to convert its bytes into music. Each byte becomes a note based on its value.
+            </div>
+            
+            <div class="visualizer">
+                <div class="viz-box">
+                    <h4>📊 Byte Histogram</h4>
+                    <div id="byteHistogram" class="ascii-display" style="min-height:100px">Upload a file to see byte distribution...</div>
+                </div>
+                <div class="viz-box">
+                    <h4>🎵 Frequency Map</h4>
+                    <div id="freqMap" class="ascii-display" style="min-height:100px">Waiting for file...</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- MIDI PANEL -->
+        <div class="panel" id="panel-music">
+            <div class="controls">
+                <div class="control-group">
+                    <label>Instrument</label>
+                    <select id="instrument">
+                        <option value="0">Piano</option>
+                        <option value="1">Electric Piano</option>
+                        <option value="33">Electric Bass</option>
+                        <option value="56">Strings</option>
+                        <option value="80">Lead Synth</option>
+                        <option value="128">Drum Kit</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Tempo (BPM)</label>
+                    <input type="range" id="tempo" min="60" max="200" value="120">
+                </div>
+                <div class="control-group">
+                    <label>Pattern</label>
+                    <select id="pattern">
+                        <option value="sequential">Sequential</option>
+                        <option value="arpeggio">Arpeggio</option>
+                        <option value="chord">Chords</option>
+                        <option value="random">Random Walk</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>File Source</label>
+                    <select id="musicSource">
+                        <option value="last">Use Last Uploaded File</option>
+                        <option value="generate">Generate New</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="generateMIDI()">🎹 Generate MIDI</button>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="downloadMIDI()">💾 Download .mid</button>
+                </div>
+            </div>
+            <div id="midiStatus" class="status">🎼 Generate a MIDI file from your binary data!</div>
+        </div>
+        
+        <!-- MUSIC TO ART PANEL -->
+        <div class="panel" id="panel-art">
+            <div class="controls">
+                <div class="control-group">
+                    <label>Visualization Mode</label>
+                    <select id="vizMode">
+                        <option value="waveform">Waveform</option>
+                        <option value="spectrum">Spectrum Bars</option>
+                        <option value="circular">Circular</option>
+                        <option value="particles">Particles</option>
+                        <option value="spiral">Spiral</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Color Theme</label>
+                    <select id="colorTheme">
+                        <option value="neon">Neon (Green/Pink)</option>
+                        <option value="fire">Fire (Red/Orange)</option>
+                        <option value="ocean">Ocean (Blue/Cyan)</option>
+                        <option value="gold">Gold (Yellow/Gold)</option>
+                        <option value="rainbow">Rainbow</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Resolution</label>
+                    <input type="range" id="artRes" min="100" max="1000" value="400">
+                </div>
+                <div class="control-group">
+                    <label>Animation</label>
+                    <select id="animMode">
+                        <option value="static">Static Image</option>
+                        <option value="animated">Animated (GIF)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="generateArt()">🎨 Generate Art</button>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="downloadArt()">💾 Download</button>
+                </div>
+            </div>
+            <canvas id="artCanvas" width="400" height="400" style="background:#000; border: 2px solid #ff00ff; border-radius: 10px;"></canvas>
+        </div>
+        
+        <!-- NFT PANEL -->
+        <div class="panel" id="panel-nft">
+            <div class="nft-preview">
+                <h3>💎 NFT Preview</h3>
+                <canvas id="nftCanvas" width="512" height="512" class="nft-canvas"></canvas>
+                <div class="controls" style="margin-top:15px">
+                    <div class="control-group">
+                        <label>NFT Name</label>
+                        <input type="text" id="nftName" placeholder="My Binary Art #1">
+                    </div>
+                    <div class="control-group">
+                        <label>Description</label>
+                        <input type="text" id="nftDesc" placeholder="Generated from [filename]">
+                    </div>
+                    <div class="control-group">
+                        <label>Format</label>
+                        <select id="nftFormat">
+                            <option value="png">PNG Image</option>
+                            <option value="json">JSON Metadata</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>&nbsp;</label>
+                        <button onclick="exportNFT()">🚀 Export NFT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- LIBRARY PANEL -->
+        <div class="panel" id="panel-library">
+            <div class="controls">
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button onclick="saveToLibrary()">💾 Save Current to Library</button>
+                </div>
+            </div>
+            <div id="libraryList" style="margin-top:20px">
+                <p style="color:#666">Your saved creations will appear here...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let binaryData = null;
+        let audioContext = null;
+        let isPlaying = false;
+        let currentArtData = null;
+        
+        // Scale definitions (MIDI note numbers)
+        const SCALES = {
+            chromatic: Array.from({length: 128}, (_, i) => i),
+            pentatonic: [0,2,4,7,9,12,14,16,19,21,24,26,28,31,33,36,38,40,43,45],
+            major: [0,2,4,5,7,9,11,12,14,16,17,19,21,23,24,26,28,29,31,33,35],
+            minor: [0,2,3,5,7,8,10,12,14,15,17,19,20,22,24,26,27,29,31,32],
+            binary: [0, 12, 24, 36, 48, 60, 72, 84, 96, 108, 120]
+        };
+        
+        function showTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`panel-${tabName}`).classList.add('active');
+        }
+        
+        function updateFreq() {
+            document.getElementById('freqVal').textContent = document.getElementById('baseFreq').value + ' Hz';
+        }
+        
+        // Load file and analyze bytes
+        function loadFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                binaryData = new Uint8Array(event.target.result);
+                document.getElementById('sonifyStatus').innerHTML = `
+                    ✅ Loaded: <strong>${file.name}</strong> (${binaryData.length} bytes)
+                    <br>🎵 Ready to convert to music!
+                `;
+                analyzeBytes();
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function analyzeBytes() {
+            if (!binaryData) return;
+            
+            // Byte histogram
+            const histogram = new Array(256).fill(0);
+            binaryData.forEach(b => histogram[b]++);
+            
+            // Show top 32 byte values
+            let histAscii = '';
+            for (let i = 0; i < 32; i++) {
+                const count = histogram[i];
+                const bar = '█'.repeat(Math.floor(count / (binaryData.length / 50)) + 1);
+                histAscii += `0x${i.toString(16).padStart(2,'0')}: ${bar}\n`;
+            }
+            document.getElementById('byteHistogram').textContent = histAscii || 'No data';
+            
+            // Frequency map (unique bytes → notes)
+            const unique = [...new Set(binaryData)].slice(0, 20);
+            let freqAscii = '';
+            unique.forEach((byte, i) => {
+                const note = byteToNote(byte);
+                freqAscii += `Byte ${byte} → Note ${note}\n`;
+            });
+            document.getElementById('freqMap').textContent = freqAscii || 'Waiting...';
+        }
+        
+        function byteToNote(byte) {
+            const scale = SCALES[document.getElementById('scaleMode').value];
+            const idx = byte % scale.length;
+            return scale[idx] + 21; // MIDI note offset
+        }
+        
+        // Binary to music
+        function playBinaryMusic() {
+            if (!binaryData) { alert('Upload a file first!'); return; }
+            
+            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            const soundType = document.getElementById('soundType').value;
+            const baseFreq = parseInt(document.getElementById('baseFreq').value);
+            const byteDuration = parseInt(document.getElementById('byteDuration').value);
+            const scaleMode = document.getElementById('scaleMode').value;
+            const ampMap = document.getElementById('ampMap').value;
+            
+            const scale = SCALES[scaleMode];
+            const duration = byteDuration / 1000;
+            
+            let time = audioContext.currentTime;
+            const sampleSize = Math.min(binaryData.length, 1000); // Limit for performance
+            
+            for (let i = 0; i < sampleSize; i++) {
+                const byte = binaryData[i];
+                const noteIdx = byte % scale.length;
+                const freq = baseFreq * Math.pow(2, scale[noteIdx] / 12);
+                
+                let amp = byte / 255;
+                if (ampMap === 'log') amp = Math.log(1 + amp * 9) / Math.log(10);
+                if (ampMap === 'exp') amp = Math.pow(amp, 2);
+                
+                playNote(freq, time, duration, soundType, amp * 0.3);
+                time += duration * 0.5; // Overlap for smoother sound
+            }
+            
+            isPlaying = true;
+            document.getElementById('sonifyStatus').innerHTML = '🎵 Playing... Watch the visualization!';
+        }
+        
+        function playNote(freq, time, duration, type, amp) {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, time);
+            
+            gain.gain.setValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(amp, time + 0.01);
+            gain.gain.linearRampToValueAtTime(amp * 0.5, time + duration * 0.8);
+            gain.gain.linearRampToValueAtTime(0, time + duration);
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.start(time);
+            osc.stop(time + duration);
+        }
+        
+        function stopPlayback() {
+            isPlaying = false;
+            if (audioContext) audioContext.close();
+            audioContext = null;
+            document.getElementById('sonifyStatus').textContent = '⏹ Stopped';
+        }
+        
+        // Generate MIDI
+        function generateMIDI() {
+            if (!binaryData) { alert('Upload a file first!'); return; }
+            
+            const tempo = parseInt(document.getElementById('tempo').value);
+            const instrument = parseInt(document.getElementById('instrument').value);
+            const pattern = document.getElementById('pattern').value;
+            
+            // Simple MIDI generation
+            const events = [];
+            const scale = SCALES.pentatonic;
+            const deltaTime = Math.floor(480000 / tempo);
+            
+            // Program change (instrument)
+            events.push({ type: 'program', channel: 0, program: instrument, time: 0 });
+            
+            // Note events
+            let time = deltaTime;
+            const sampleSize = Math.min(binaryData.length, 64);
+            
+            for (let i = 0; i < sampleSize; i++) {
+                const byte = binaryData[i];
+                let note, duration;
+                
+                switch(pattern) {
+                    case 'arpeggio':
+                        note = scale[(byte >> 4) % scale.length] + 60;
+                        duration = deltaTime;
+                        break;
+                    case 'chord':
+                        note = scale[byte % scale.length] + 48;
+                        duration = deltaTime * 2;
+                        break;
+                    case 'random':
+                        note = scale[Math.floor(Math.random() * scale.length)] + 48 + (byte % 24);
+                        duration = deltaTime * (0.5 + (byte % 10) / 10);
+                        break;
+                    default: // sequential
+                        note = scale[byte % scale.length] + 48 + Math.floor(byte / 32);
+                        duration = deltaTime;
+                }
+                
+                events.push({ type: 'noteOn', channel: 0, note: note, velocity: 64 + (byte % 32), time: time });
+                events.push({ type: 'noteOff', channel: 0, note: note, velocity: 0, time: time + duration });
+                time += duration;
+            }
+            
+            window.midiData = { events, tempo };
+            document.getElementById('midiStatus').innerHTML = '✅ MIDI Generated! <a href="#" onclick="downloadMIDI()">Download .mid</a>';
+        }
+        
+        function downloadMIDI() {
+            if (!window.midiData) { alert('Generate MIDI first!'); return; }
+            
+            // Simple MIDI file creation
+            const { events, tempo } = window.midiData;
+            
+            // MIDI header
+            const header = [0x4D, 0x54, 0x68, 0x64, 0x00, 0x00, 0x00, 0x06, 0x00, 0x01, 0x00, 0x01, 0x00, 0x80];
+            
+            // Track data
+            let trackData = [];
+            
+            // Tempo
+            const microseconds = Math.floor(60000000 / tempo);
+            trackData.push(0x00, 0xFF, 0x51, 0x03, (microseconds >> 16) & 0xFF, (microseconds >> 8) & 0xFF, microseconds & 0xFF);
+            
+            events.forEach(e => {
+                if (e.type === 'program') {
+                    trackData.push(0x00, 0xC0 | e.channel, e.program);
+                } else if (e.type === 'noteOn') {
+                    trackData.push(0x00, 0x90 | e.channel, e.note, e.velocity);
+                } else if (e.type === 'noteOff') {
+                    trackData.push(0x00, 0x80 | e.channel, e.note, e.velocity);
+                }
+            });
+            
+            trackData.push(0x00, 0xFF, 0x2F, 0x00); // End of track
+            
+            const trackLength = trackData.length;
+            const trackHeader = [0x4D, 0x54, 0x72, 0x6B, (trackLength >> 24) & 0xFF, (trackLength >> 16) & 0xFF, (trackLength >> 8) & 0xFF, trackLength & 0xFF];
+            
+            const midi = new Uint8Array([...header, ...trackHeader, ...trackData]);
+            const blob = new Blob([midi], { type: 'audio/midi' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'binary-music.mid';
+            a.click();
+        }
+        
+        // Generate Art from Binary/Music
+        function generateArt() {
+            if (!binaryData) {
+                // Generate procedural art if no file
+                binaryData = new Uint8Array(1000);
+                for (let i = 0; i < 1000; i++) binaryData[i] = Math.floor(Math.random() * 256);
+            }
+            
+            const canvas = document.getElementById('artCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const mode = document.getElementById('vizMode').value;
+            const theme = document.getElementById('colorTheme').value;
+            
+            const colors = {
+                neon: ['#00ff88', '#ff00ff', '#00ffff', '#ffff00'],
+                fire: ['#ff0000', '#ff4400', '#ff8800', '#ffcc00'],
+                ocean: ['#0000ff', '#0088ff', '#00ffff', '#00ff88'],
+                gold: ['#ffd700', '#ffaa00', '#ff8800', '#ff4400'],
+                rainbow: ['#ff0000', '#ff8800', '#ffff00', '#00ff00', '#0088ff', '#8800ff']
+            };
+            
+            const palette = colors[theme] || colors.neon;
+            
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Generate art based on mode
+            if (mode === 'waveform') {
+                ctx.beginPath();
+                ctx.strokeStyle = palette[0];
+                ctx.lineWidth = 2;
+                
+                for (let i = 0; i < binaryData.length; i++) {
+                    const x = (i / binaryData.length) * width;
+                    const y = height - (binaryData[i] / 255) * height * 0.8 - height * 0.1;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                
+                // Add glow
+                ctx.shadowColor = palette[1];
+                ctx.shadowBlur = 20;
+                ctx.stroke();
+            }
+            else if (mode === 'spectrum') {
+                const barWidth = width / 32;
+                for (let i = 0; i < 32; i++) {
+                    const idx = Math.floor((i / 32) * binaryData.length);
+                    const barHeight = (binaryData[idx] / 255) * height * 0.8;
+                    ctx.fillStyle = palette[i % palette.length];
+                    ctx.fillRect(i * barWidth, height - barHeight, barWidth - 2, barHeight);
+                }
+            }
+            else if (mode === 'circular') {
+                const centerX = width / 2;
+                const centerY = height / 2;
+                
+                for (let i = 0; i < binaryData.length; i++) {
+                    const angle = (i / binaryData.length) * Math.PI * 2;
+                    const radius = 50 + (binaryData[i] / 255) * 150;
+                    const x = centerX + Math.cos(angle) * radius;
+                    const y = centerY + Math.sin(angle) * radius;
+                    
+                    ctx.fillStyle = palette[i % palette.length];
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            else if (mode === 'particles') {
+                for (let i = 0; i < 500; i++) {
+                    const x = Math.random() * width;
+                    const y = Math.random() * height;
+                    const idx = Math.floor(Math.random() * binaryData.length);
+                    const size = (binaryData[idx] / 255) * 10 + 1;
+                    
+                    ctx.fillStyle = palette[idx % palette.length];
+                    ctx.globalAlpha = binaryData[idx] / 255;
+                    ctx.beginPath();
+                    ctx.arc(x, y, size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+            }
+            else if (mode === 'spiral') {
+                for (let i = 0; i < binaryData.length; i++) {
+                    const angle = i * 0.1;
+                    const radius = i * 0.5;
+                    const x = width/2 + Math.cos(angle) * radius;
+                    const y = height/2 + Math.sin(angle) * radius;
+                    
+                    ctx.fillStyle = palette[i % palette.length];
+                    ctx.globalAlpha = binaryData[i] / 255;
+                    ctx.beginPath();
+                    ctx.arc(x, y, (binaryData[i] / 255) * 8 + 1, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+            }
+            
+            currentArtData = canvas.toDataURL();
+            
+            // Also update NFT preview
+            const nftCanvas = document.getElementById('nftCanvas');
+            const nftCtx = nftCanvas.getContext('2d');
+            nftCtx.drawImage(canvas, 0, 0);
+            addNFTMetadata();
+        }
+        
+        function addNFTMetadata() {
+            const nftCanvas = document.getElementById('nftCanvas');
+            const ctx = nftCanvas.getContext('2d');
+            
+            // Add border
+            ctx.strokeStyle = '#ff00ff';
+            ctx.lineWidth = 10;
+            ctx.strokeRect(0, 0, 512, 512);
+            
+            // Add watermark
+            ctx.fillStyle = '#00ff88';
+            ctx.font = '20px Courier New';
+            ctx.fillText('BINARY MUSIC STUDIO', 20, 500);
+            ctx.fillText(new Date().toISOString().slice(0,10), 400, 500);
+        }
+        
+        function downloadArt() {
+            if (!currentArtData) { alert('Generate art first!'); return; }
+            const a = document.createElement('a');
+            a.href = currentArtData;
+            a.download = 'binary-art.png';
+            a.click();
+        }
+        
+        function exportNFT() {
+            const format = document.getElementById('nftFormat').value;
+            const name = document.getElementById('nftName').value || 'Binary Art NFT';
+            const desc = document.getElementById('nftDesc').value || 'Generated from binary data';
+            
+            if (format === 'png') {
+                const canvas = document.getElementById('nftCanvas');
+                const a = document.createElement('a');
+                a.href = canvas.toDataURL('image/png');
+                a.download = `${name.replace(/\s+/g,'-')}.png`;
+                a.click();
+            } else {
+                const metadata = {
+                    name: name,
+                    description: desc,
+                    image: currentArtData,
+                    attributes: binaryData ? [
+                        { trait_type: 'File Size', value: binaryData.length + ' bytes' },
+                        { trait_type: 'Unique Bytes', value: [...new Set(binaryData)].length },
+                        { trait_type: 'Created', value: new Date().toISOString() }
+                    ] : []
+                };
+                const blob = new Blob([JSON.stringify(metadata, null, 2)], { type: 'application/json' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `${name.replace(/\s+/g,'-')}.json`;
+                a.click();
+            }
+        }
+        
+        function saveToLibrary() {
+            const list = document.getElementById('libraryList');
+            const item = document.createElement('div');
+            item.style.cssText = 'background:#0a0a12;padding:15px;margin:10px 0;border:1px solid #00ff88;border-radius:5px';
+            item.innerHTML = `
+                <strong>${new Date().toLocaleString()}</strong><br>
+                <small>${binaryData ? binaryData.length + ' bytes' : 'Procedural'}</small>
+                ${currentArtData ? '<br><img src="' + currentArtData + '" style="width:100px;margin-top:10px">' : ''}
+            `;
+            list.prepend(item);
+        }
+    </script>
+</body>
+</html>
