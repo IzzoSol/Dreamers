@@ -1,0 +1,94 @@
+{
+  "_meta": {
+    "title": "Dreamers Wisdom Codex",
+    "description": "Structured knowledge frameworks to power agent tooling, daily wisdom, and learning features across the Dreamers ecosystem. Sourced from owner-provided reference material (2026-08-14).",
+    "usage": "Feed to QUILL/ORACLE as reference, surface as a 'Codex' dashboard section, power a daily-wisdom card, or ground the education engine."
+  },
+  "paradoxes": {
+    "title": "20 Most Powerful Paradoxes of Life",
+    "source": "Sahil Bloom",
+    "items": [
+      {"name": "The Growth Paradox", "text": "Growth takes much longer than you think, then happens much faster than you ever imagined."},
+      {"name": "The Persuasion Paradox", "text": "The most persuasive people don't argue — they observe, listen, and ask questions."},
+      {"name": "The Effort Paradox", "text": "You have to put in more effort to make something appear effortless."},
+      {"name": "The Wisdom Paradox", "text": "The more I learn, the more I realize how much I don't know. (Einstein)"},
+      {"name": "The Productivity Paradox", "text": "Work longer, get less done."},
+      {"name": "The Speed Paradox", "text": "You have to slow down to speed up — slowing down lets you be deliberate."},
+      {"name": "The Money Paradox", "text": "You have to lose money in order to make money."},
+      {"name": "The News Paradox", "text": "The more news you consume, the less well-informed you actually are."},
+      {"name": "The Icarus Paradox", "text": "What makes you successful can lead to your downfall."},
+      {"name": "The Failure Paradox", "text": "You have to fail more to succeed more."},
+      {"name": "The Shrinking Paradox", "text": "In order to grow, sometimes you need to shrink."},
+      {"name": "The Tony Robbins Paradox", "text": "In investing, admitting you have no edge can be the ultimate edge."},
+      {"name": "The Death Paradox", "text": "Know your death in order to truly live your life."},
+      {"name": "The Say No Paradox", "text": "Take on less, accomplish more."},
+      {"name": "The Talking Paradox", "text": "Two ears, one mouth — listen twice as much as you speak. (Epictetus)"},
+      {"name": "The Connectedness Paradox", "text": "More connectedness, less connected."},
+      {"name": "The Control Paradox", "text": "More controlling, less control."},
+      {"name": "The Looking Paradox", "text": "You may have to stop looking to find what you're looking for."},
+      {"name": "The Constant Change Paradox", "text": "When you are finished changing, you are finished. (Franklin)"},
+      {"name": "The Fear Paradox", "text": "The thing we fear most is often the thing we need to prioritize above all else."}
+    ]
+  },
+  "logicTypes": {
+    "title": "7 Types of Logic",
+    "source": "Natan Mohart",
+    "items": [
+      {"name": "Deductive", "text": "From general principles to specific cases. All mammals breathe air; a whale is a mammal; a whale breathes air."},
+      {"name": "Inductive", "text": "From specific observations to general rules. The sun has risen every morning, so it always rises."},
+      {"name": "Abductive", "text": "Best explanation from incomplete data. The road is wet, so it probably rained."},
+      {"name": "Modal", "text": "Reasoning about possibility, necessity, and impossibility."},
+      {"name": "Fuzzy", "text": "Truth exists on a spectrum. The soup is 'warm', not hot or cold."},
+      {"name": "Dialectical", "text": "Ideas evolve through contradictions: thesis → antithesis → synthesis."},
+      {"name": "Informal", "text": "Everyday reasoning with claims and arguments."}
+    ]
+  },
+  "thinkingBehaviours": {
+    "title": "9 Thinking Behaviours (Intellectual Standards)",
+    "source": "Richard Paul & Linda Elder, Critical Thinking (2006)",
+    "items": [
+      {"name": "Clarity", "prompt": "Could you elaborate? Could you give an example?"},
+      {"name": "Accuracy", "prompt": "How could we check that? How do we know it's true?"},
+      {"name": "Precision", "prompt": "Could you be more specific / exact?"},
+      {"name": "Relevance", "prompt": "How does this relate to the problem?"},
+      {"name": "Depth", "prompt": "What makes this difficult? Have you predicted outcomes?"},
+      {"name": "Breadth", "prompt": "Do you need to consider other points of view?"},
+      {"name": "Logic", "prompt": "Does this make sense together? Does it follow the evidence?"},
+      {"name": "Fairness", "prompt": "Am I considering the thinking of others? Is my purpose fair?"},
+      {"name": "Significance", "prompt": "Which of these facts are the most important?"}
+    ]
+  },
+  "healingFrequencies": {
+    "title": "Solfeggio Healing Frequencies (wired into the Music tab Binaural module)",
+    "note": "Western A is typically 440Hz; historically 432Hz is claimed to align with natural resonance.",
+    "solfeggio": [
+      {"hz": 396, "chakra": "Root", "meaning": "energy, stability, comfort, safety", "color": "#e2444a"},
+      {"hz": 417, "chakra": "Sacral", "meaning": "sensuality, pleasure, change, flow", "color": "#f2913d"},
+      {"hz": 528, "chakra": "Solar Plexus", "meaning": "strength, personality, power, determination", "color": "#f2cd3d"},
+      {"hz": 639, "chakra": "Heart", "meaning": "acceptance, love, compassion, sincerity", "color": "#3dd07a"},
+      {"hz": 741, "chakra": "Throat", "meaning": "communication, expression, creativity, inspiration", "color": "#2db7f2"},
+      {"hz": 852, "chakra": "Third Eye", "meaning": "intuition, lucidity, meditation, trust", "color": "#7a5cf6"},
+      {"hz": 963, "chakra": "Crown", "meaning": "knowledge, consciousness, fulfillment, spirituality", "color": "#cc97ff"}
+    ],
+    "chakraSets": [
+      {"chakra": "Crown", "hz": [216, 432, 864], "note": "A"},
+      {"chakra": "Third Eye", "hz": [144, 288, 576], "note": "D"},
+      {"chakra": "Throat", "hz": [192, 384, 768], "note": "G"},
+      {"chakra": "Heart", "hz": [128, 256, 512], "note": "C"},
+      {"chakra": "Solar Plexus", "hz": [182, 364, 728], "note": "F#"},
+      {"chakra": "Sacral", "hz": [303, 606, 1212], "note": "Eb"},
+      {"chakra": "Root", "hz": [228, 456, 912], "note": "B"}
+    ]
+  },
+  "referenceMaps": {
+    "title": "Reference diagrams (owner library — for a future Codex/learning surface)",
+    "note": "Complex visual frameworks kept as references rather than fully transcribed.",
+    "items": [
+      "Thinking Maps (8 tools: circle, bubble, double-bubble, tree, brace, flow, multi-flow, bridge)",
+      "Schwartz Values Map (intrinsic vs extrinsic; self-direction, universalism, benevolence, achievement, power, security, etc.)",
+      "Map of the Human Soul (Zoran Minov)",
+      "Map of the System of Human Knowledge (memory / reason / imagination)",
+      "Graphic Organisers (spider, concept map, cycle, flow, fishbone, Venn, Y-chart, T-chart)"
+    ]
+  }
+}

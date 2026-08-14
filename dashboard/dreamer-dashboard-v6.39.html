@@ -1732,11 +1732,22 @@ const HEALING_BUDDIES = [
     <!-- Binaural -->
     <div id="music-ws-binaural" class="music-ws hidden">
       <h3 class="font-label font-bold text-xs uppercase tracking-widest text-primary mb-4">Binaural Soundscape</h3>
+      <div class="text-[10px] font-label uppercase tracking-widest text-on-surface/50 mb-2">Brainwave</div>
+      <div class="flex flex-wrap gap-2 mb-4">
+        <button onclick="setBinaural(200,10,'Focus (Alpha)')" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary">Focus · 10 Hz</button>
+        <button onclick="setBinaural(150,7.83,'Meditate (Schumann)')" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary">Meditate · 7.83 Hz</button>
+        <button onclick="setBinaural(160,6,'Relax (Theta)')" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary">Relax · 6 Hz</button>
+        <button onclick="setBinaural(140,3,'Sleep (Delta)')" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary">Sleep · 3 Hz</button>
+      </div>
+      <div class="text-[10px] font-label uppercase tracking-widest text-on-surface/50 mb-2">Healing · Solfeggio (carrier tone, meditative theta beat)</div>
       <div class="flex flex-wrap gap-2 mb-5">
-        <button onclick="setBinaural(200,10)" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary">Focus · 10 Hz</button>
-        <button onclick="setBinaural(150,7.83)" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary">Meditate · 7.83 Hz</button>
-        <button onclick="setBinaural(160,6)" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary">Relax · 6 Hz</button>
-        <button onclick="setBinaural(140,3)" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary">Sleep · 3 Hz</button>
+        <button onclick="setBinaural(396,7,'396 · Root — grounding &amp; safety')" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary" style="border-left:3px solid #e2444a">396 · Root</button>
+        <button onclick="setBinaural(417,7,'417 · Sacral — change &amp; flow')" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary" style="border-left:3px solid #f2913d">417 · Sacral</button>
+        <button onclick="setBinaural(528,7,'528 · Solar — transformation &amp; power')" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary" style="border-left:3px solid #f2cd3d">528 · Solar</button>
+        <button onclick="setBinaural(639,7,'639 · Heart — love &amp; connection')" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary" style="border-left:3px solid #3dd07a">639 · Heart</button>
+        <button onclick="setBinaural(741,7,'741 · Throat — expression &amp; clarity')" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary" style="border-left:3px solid #2db7f2">741 · Throat</button>
+        <button onclick="setBinaural(852,7,'852 · Third Eye — intuition &amp; insight')" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary" style="border-left:3px solid #7a5cf6">852 · 3rd Eye</button>
+        <button onclick="setBinaural(963,7,'963 · Crown — consciousness &amp; unity')" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary" style="border-left:3px solid #cc97ff">963 · Crown</button>
       </div>
       <div class="flex items-center gap-4">
         <button id="bin-toggle" onclick="toggleBinaural()" class="px-6 py-3 bg-primary text-surface font-label font-bold text-xs uppercase tracking-widest rounded">▶ Play</button>
@@ -6416,10 +6427,10 @@ function showMusicModule(mod){
 }
 // Binaural (client-side Web Audio dual-oscillator)
 var _binaural={ctx:null,oscL:null,oscR:null,base:200,beat:10,playing:false};
-function setBinaural(base,beat){
+function setBinaural(base,beat,label){
   _binaural.base=base; _binaural.beat=beat;
   const s=document.getElementById('bin-status');
-  if(s) s.textContent=`base ${base} Hz · beat ${beat} Hz — use headphones`;
+  if(s) s.textContent=(label?label+' · ':'')+`base ${base} Hz · beat ${beat} Hz — use headphones`;
   if(_binaural.playing){ stopBinaural(); startBinaural(); }
 }
 function startBinaural(){
