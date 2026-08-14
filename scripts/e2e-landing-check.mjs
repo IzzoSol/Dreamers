@@ -36,4 +36,4 @@ console.log('canvas:', info.canvas);
 console.log('title:', info.title, '| gallery items:', info.galItems, '| swivel scrolled:', railAfter > info.railBefore, '| reveal blocks:', info.reveals);
 console.log('errors:', errs.length ? errs.slice(0, 5).join(' | ') : 'none');
 await b.close();
-process.exit(info.three && info.galItems === 5 && info.hasGalScroll && errs.length === 0 ? 0 : 1);
+process.exit(info.three && info.galItems >= 10 && info.hasGalScroll && errs.length === 0 ? 0 : 1);

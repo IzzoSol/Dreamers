@@ -210,13 +210,7 @@
         <button class="gal-arrow" onclick="galScroll(1)" aria-label="Next">&rsaquo;</button>
       </div>
     </div>
-    <div id="gallery-rail" class="gallery-rail reveal-up">
-      <a class="gal-item" href="assets/glitch/ocean.png" target="_blank"><img src="assets/glitch/ocean.png" alt="Ocean Double Glitch" style="image-rendering:pixelated"><div class="cap"><div class="t">featured · genesis</div><h3>Ocean Double</h3></div></a>
-      <a class="gal-item" href="assets/glitch/purple.png" target="_blank"><img src="assets/glitch/purple.png" alt="Purple Glitch" style="image-rendering:pixelated"><div class="cap"><div class="t">glitch series</div><h3>Amethyst Signal</h3></div></a>
-      <a class="gal-item" href="assets/glitch/blue.png" target="_blank"><img src="assets/glitch/blue.png" alt="Blue Glitch" style="image-rendering:pixelated"><div class="cap"><div class="t">1 / 1</div><h3>Cyan Drift</h3></div></a>
-      <a class="gal-item" href="assets/glitch/green.png" target="_blank"><img src="assets/glitch/green.png" alt="Green Glitch" style="image-rendering:pixelated"><div class="cap"><div class="t">1 / 1</div><h3>Emerald Static</h3></div></a>
-      <a class="gal-item" href="assets/glitch/glitch-4.png" target="_blank"><img src="assets/glitch/glitch-4.png" alt="Glitch" style="image-rendering:pixelated"><div class="cap"><div class="t">1 / 1</div><h3>Fragment</h3></div></a>
-    </div>
+    <div id="gallery-rail" class="gallery-rail reveal-up"></div>
   </section>
 
   <!-- MUSIC VIDEOS — WIRE YOUR VIDEO HERE -->
@@ -322,6 +316,32 @@
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.15});
 document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));
 
+// gallery — data-driven collection (add a line here to add a piece)
+const GALLERY=[
+  {src:'assets/collection/synthesis-matrix.png', series:'Synthesis · Genesis', name:'Matrix'},
+  {src:'assets/collection/synthesis-01.png', series:'Synthesis', name:'Prism I'},
+  {src:'assets/collection/synthesis-02.png', series:'Synthesis', name:'Prism II'},
+  {src:'assets/collection/synthesis-03.png', series:'Synthesis', name:'Prism III'},
+  {src:'assets/collection/synthesis-04.png', series:'Synthesis', name:'Prism IV'},
+  {src:'assets/collection/synthesis-05.png', series:'Synthesis', name:'Prism V'},
+  {src:'assets/collection/synthesis-06.png', series:'Synthesis', name:'Prism VI'},
+  {src:'assets/collection/synthesis-07.png', series:'Synthesis', name:'Prism VII'},
+  {src:'assets/collection/synthesis-08.png', series:'Synthesis', name:'Prism VIII'},
+  {src:'assets/collection/synthesis-09.png', series:'Synthesis', name:'Prism IX'},
+  {src:'assets/collection/synthesis-10.png', series:'Synthesis', name:'Prism X'},
+  {src:'assets/glitch/ocean.png', series:'Glitch', name:'Ocean Double'},
+  {src:'assets/glitch/purple.png', series:'Glitch', name:'Amethyst Signal'},
+  {src:'assets/glitch/blue.png', series:'Glitch', name:'Cyan Drift'},
+  {src:'assets/glitch/green.png', series:'Glitch', name:'Emerald Static'},
+  {src:'assets/glitch/glitch-4.png', series:'Glitch', name:'Fragment'},
+];
+(function renderGallery(){
+  const rail=document.getElementById('gallery-rail'); if(!rail) return;
+  const n=GALLERY.length;
+  rail.innerHTML=GALLERY.map((p,i)=>`<a class="gal-item" href="${p.src}" target="_blank" rel="noopener">
+    <img src="${p.src}" alt="${p.name}" loading="lazy" style="image-rendering:pixelated">
+    <div class="cap"><div class="t">${p.series} · ${String(i+1).padStart(2,'0')} / ${n}</div><h3>${p.name}</h3></div></a>`).join('');
+})();
 // gallery swivel
 function galScroll(dir){
   const rail=document.getElementById('gallery-rail'); if(!rail) return;
