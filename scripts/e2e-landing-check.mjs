@@ -14,17 +14,26 @@ pg.on('console', m => m.type() === 'error' && errs.push(m.text()));
 await pg.goto(FILE, { waitUntil: 'networkidle2', timeout: 45000 });
 await new Promise(r => setTimeout(r, 2500));
 
-const info = await pg.evaluate(() => ({
-  three: !!window.THREE,
-  canvas: (() => { const c = document.getElementById('dream'); return c ? c.width + 'x' + c.height : 'none'; })(),
-  title: document.querySelector('.title i')?.textContent,
-  cards: document.querySelectorAll('.card').length,
-  reveals: document.querySelectorAll('.reveal-up').length,
-}));
+const info = await pg.evaluate(() => {
+  const rail = document.getElementById('gallery-rail');
+  const before = rail ? rail.scrollLeft : -1;
+  if (typeof galScroll === 'function') galScroll(1);
+  return {
+    three: !!window.THREE,
+    canvas: (() => { const c = document.getElementById('dream'); return c ? c.width + 'x' + c.height : 'none'; })(),
+    title: document.querySelector('.title i')?.textContent,
+    galItems: document.querySelectorAll('.gal-item').length,
+    hasGalScroll: typeof galScroll === 'function',
+    reveals: document.querySelectorAll('.reveal-up').length,
+    railBefore: before,
+  };
+});
+await new Promise(r => setTimeout(r, 600));
+const railAfter = await pg.evaluate(() => { const r = document.getElementById('gallery-rail'); return r ? r.scrollLeft : -1; });
 
 console.log('three loaded:', info.three);
 console.log('canvas:', info.canvas);
-console.log('title:', info.title, '| cards:', info.cards, '| reveal blocks:', info.reveals);
+console.log('title:', info.title, '| gallery items:', info.galItems, '| swivel scrolled:', railAfter > info.railBefore, '| reveal blocks:', info.reveals);
 console.log('errors:', errs.length ? errs.slice(0, 5).join(' | ') : 'none');
 await b.close();
-process.exit(info.three && info.cards > 0 && errs.length === 0 ? 0 : 1);
+process.exit(info.three && info.galItems === 5 && info.hasGalScroll && errs.length === 0 ? 0 : 1);
