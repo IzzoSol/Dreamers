@@ -177,6 +177,20 @@
   @keyframes gh1{0%,88%,100%{clip-path:inset(0 0 100% 0);transform:none}90%{clip-path:inset(0 0 55% 0);transform:translate(-3px,-1px)}94%{clip-path:inset(0 0 72% 0);transform:translate(2px,1px)}}
   @keyframes gh2{0%,88%,100%{clip-path:inset(100% 0 0 0);transform:none}92%{clip-path:inset(55% 0 0 0);transform:translate(3px,1px)}96%{clip-path:inset(70% 0 0 0);transform:translate(-2px,0)}}
 
+  /* featured track player */
+  .track{margin-top:44px;display:flex;align-items:center;gap:20px;padding:20px 22px;border:1px solid var(--line);
+    border-radius:10px;background:linear-gradient(135deg,rgba(183,139,255,.09),rgba(132,244,226,.03));max-width:640px}
+  .track-btn{flex:0 0 auto;width:58px;height:58px;border-radius:50%;background:var(--amethyst);color:var(--void);
+    display:grid;place-items:center;cursor:pointer;border:0;transition:transform .3s,box-shadow .3s}
+  .track-btn:hover{transform:scale(1.06);box-shadow:0 0 32px rgba(138,92,246,.55)}
+  .track-meta{flex:1;min-width:0}
+  .track-meta .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px}
+  .track-name{font-family:var(--display);font-size:21px;font-weight:300}
+  .track-name b{font-weight:500}
+  .track-time{font-family:var(--mono);font-size:11px;color:var(--faint);white-space:nowrap;letter-spacing:.1em}
+  .track-bar{height:6px;background:rgba(255,255,255,.08);border-radius:4px;cursor:pointer;overflow:hidden}
+  .track-fill{height:100%;background:linear-gradient(90deg,var(--amethyst),var(--iris));width:0;transition:width .1s linear}
+
   .videowrap{margin-top:46px;position:relative;aspect-ratio:16/9;border:1px solid var(--line);border-radius:6px;overflow:hidden;
     background:linear-gradient(160deg,rgba(138,92,246,.1),rgba(8,6,15,.6))}
   .videowrap iframe,.videowrap video{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -248,6 +262,16 @@
       <div class="pillar"><div class="n">✦ Studio</div><h4>Web-Audio Beats</h4><p>Six genres, live synthesis, export to WAV — right in the browser.</p></div>
       <div class="pillar"><div class="n">✦ Binaural</div><h4>Soundscapes</h4><p>Focus, meditate, relax, sleep — tuned frequencies for the mind.</p></div>
       <div class="pillar"><div class="n">✦ Council</div><h4>The 7 Agents</h4><p>Lyrics, mood, vibe, and cover art — the council co-creates with you.</p></div>
+    </div>
+    <div class="track reveal-up">
+      <button class="track-btn" id="ltPlay" onclick="ltToggle()" aria-label="Play / pause">
+        <svg id="ltIcon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <div class="track-meta">
+        <div class="row"><div class="track-name"><b>DREAMERS</b> — Final Mix</div><div class="track-time" id="ltTime">0:00 / 0:00</div></div>
+        <div class="track-bar" id="ltBar" onclick="ltSeek(event)"><div class="track-fill" id="ltFill"></div></div>
+      </div>
+      <audio id="ltAudio" src="assets/audio/dreamers-final-mix.mp3" preload="metadata"></audio>
     </div>
   </section>
 
@@ -415,6 +439,12 @@ const GALLERY=[
   rail.addEventListener('mouseleave',()=>rail.querySelectorAll('.gal-item').forEach(el=>el.style.transform=''));
   rail.addEventListener('mouseout',e=>{const it=e.target.closest('.gal-item');if(it&&!it.contains(e.relatedTarget))it.style.transform='';});
 })();
+// featured track player
+const _PLAY_SVG='<path d="M8 5v14l11-7z"/>', _PAUSE_SVG='<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>';
+function ltToggle(){const a=document.getElementById('ltAudio'),ic=document.getElementById('ltIcon');if(!a)return;if(a.paused){a.play();ic.innerHTML=_PAUSE_SVG;}else{a.pause();ic.innerHTML=_PLAY_SVG;}}
+function ltSeek(e){const a=document.getElementById('ltAudio'),bar=document.getElementById('ltBar');if(!a||!a.duration)return;const r=bar.getBoundingClientRect();a.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*a.duration;}
+(function ltInit(){const a=document.getElementById('ltAudio');if(!a)return;const fmt=s=>{s=Math.floor(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};const upd=()=>{const f=document.getElementById('ltFill'),t=document.getElementById('ltTime');if(f)f.style.width=((a.currentTime/(a.duration||1))*100)+'%';if(t)t.textContent=fmt(a.currentTime)+' / '+fmt(a.duration);};a.addEventListener('timeupdate',upd);a.addEventListener('loadedmetadata',upd);a.addEventListener('ended',()=>{document.getElementById('ltIcon').innerHTML=_PLAY_SVG;});})();
+
 // immersive lightbox
 let _lbIndex=0;
 function openLightbox(i){_lbIndex=i;_lbRender();document.getElementById('lightbox').classList.add('on');document.body.style.overflow='hidden';}
