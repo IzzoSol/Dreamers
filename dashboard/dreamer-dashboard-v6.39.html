@@ -1467,14 +1467,14 @@ const HEALING_BUDDIES = [
   <div class="flex gap-2 flex-wrap">
     <button onclick="showCreateSubtab('binary')" class="create-subtab-btn px-4 py-2 bg-primary text-surface font-label font-bold text-xs uppercase">Binary Music</button>
     <button onclick="showCreateSubtab('ascii')" class="create-subtab-btn px-4 py-2 bg-surface-lighter border border-white/10 text-on-surface font-label font-bold text-xs uppercase hover:bg-surface">ASCII Art</button>
-    <button onclick="showCreateSubtab('music-color')" class="create-subtab-btn px-4 py-2 bg-surface-lighter border border-white/10 text-on-surface font-label font-bold text-xs uppercase hover:bg-surface">🎵 Music-Color</button>
+    <button onclick="showCreateSubtab('music-color')" class="create-subtab-btn px-4 py-2 bg-surface-lighter border border-white/10 text-on-surface font-label font-bold text-xs uppercase hover:bg-surface">Music-Color</button>
     <button onclick="showCreateSubtab('visualize')" class="create-subtab-btn px-4 py-2 bg-surface-lighter border border-white/10 text-on-surface font-label font-bold text-xs uppercase hover:bg-surface">Visualize</button>
   </div>
   
   <!-- Binary Music -->
   <div id="create-binary" class="create-subpanel space-y-6">
     <div class="card p-2">
-      <div class="flex items-center justify-between px-3 py-2"><h2 class="font-headline text-lg font-black text-white italic uppercase">🔊 Binary Music Studio</h2><a href="studio/binary-music-studio.html" target="_blank" class="font-label text-[10px] uppercase tracking-widest text-primary hover:underline">Open full ↗</a></div>
+      <div class="flex items-center justify-between px-3 py-2"><h2 class="font-headline text-lg font-black text-white italic uppercase flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">graphic_eq</span>Binary Music Studio</h2><a href="studio/binary-music-studio.html" target="_blank" class="font-label text-[10px] uppercase tracking-widest text-primary hover:underline">Open full ↗</a></div>
       <iframe src="studio/binary-music-studio.html" title="Binary Music Studio" class="w-full rounded border border-white/10" style="height:640px" loading="lazy"></iframe>
     </div>
     <details class="text-on-surface/50"><summary class="cursor-pointer font-label text-[10px] uppercase tracking-widest py-2">Simple binary tools</summary>
@@ -1525,7 +1525,7 @@ const HEALING_BUDDIES = [
   <!-- ASCII Art -->
   <div id="create-ascii" class="create-subpanel hidden space-y-6">
     <div class="card p-2">
-      <div class="flex items-center justify-between px-3 py-2"><h2 class="font-headline text-lg font-black text-white italic uppercase">🎵 ASCII Audio Visualizer</h2><a href="studio/ascii-visualizer.html" target="_blank" class="font-label text-[10px] uppercase tracking-widest text-primary hover:underline">Open full ↗</a></div>
+      <div class="flex items-center justify-between px-3 py-2"><h2 class="font-headline text-lg font-black text-white italic uppercase flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">terminal</span>ASCII Audio Visualizer</h2><a href="studio/ascii-visualizer.html" target="_blank" class="font-label text-[10px] uppercase tracking-widest text-primary hover:underline">Open full ↗</a></div>
       <iframe src="studio/ascii-visualizer.html" title="ASCII Audio Visualizer" class="w-full rounded border border-white/10" style="height:640px" loading="lazy"></iframe>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -1556,7 +1556,7 @@ const HEALING_BUDDIES = [
   <!-- Music-Color Harmonics (Edgar Cayce System) -->
   <div id="create-music-color" class="create-subpanel hidden space-y-6">
     <div class="card p-2">
-      <div class="flex items-center justify-between px-3 py-2"><h2 class="font-headline text-lg font-black text-white italic uppercase">🎛️ Creative Synthesis</h2><a href="studio/creative-synthesis.html" target="_blank" class="font-label text-[10px] uppercase tracking-widest text-primary hover:underline">Open full ↗</a></div>
+      <div class="flex items-center justify-between px-3 py-2"><h2 class="font-headline text-lg font-black text-white italic uppercase flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">tune</span>Creative Synthesis</h2><a href="studio/creative-synthesis.html" target="_blank" class="font-label text-[10px] uppercase tracking-widest text-primary hover:underline">Open full ↗</a></div>
       <iframe src="studio/creative-synthesis.html" title="Creative Synthesis Engine" class="w-full rounded border border-white/10" style="height:640px" loading="lazy"></iframe>
     </div>
     <div class="card p-8 bg-gradient-to-r from-primary/10 via-surface to-secondary/10">
@@ -1684,7 +1684,7 @@ const HEALING_BUDDIES = [
   <!-- Visualize -->
   <div id="create-visualize" class="create-subpanel hidden space-y-6">
     <div class="card p-2">
-      <div class="flex items-center justify-between px-3 py-2"><h2 class="font-headline text-lg font-black text-white italic uppercase">🔮 Advanced Visualization</h2><a href="studio/binary-visualization-advanced.html" target="_blank" class="font-label text-[10px] uppercase tracking-widest text-primary hover:underline">Open full ↗</a></div>
+      <div class="flex items-center justify-between px-3 py-2"><h2 class="font-headline text-lg font-black text-white italic uppercase flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">blur_on</span>Advanced Visualization</h2><a href="studio/binary-visualization-advanced.html" target="_blank" class="font-label text-[10px] uppercase tracking-widest text-primary hover:underline">Open full ↗</a></div>
       <iframe src="studio/binary-visualization-advanced.html" title="Advanced Visualization Engine" class="w-full rounded border border-white/10" style="height:640px" loading="lazy"></iframe>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -1770,7 +1770,7 @@ const HEALING_BUDDIES = [
         <button onclick="setBinaural(963,7,'963 · Crown — consciousness &amp; unity')" class="bin-preset px-3 py-2 bg-surface border border-white/10 text-[11px] text-white hover:border-primary" style="border-left:3px solid #cc97ff">963 · Crown</button>
       </div>
       <div class="flex items-center gap-4">
-        <button id="bin-toggle" onclick="toggleBinaural()" class="px-6 py-3 bg-primary text-surface font-label font-bold text-xs uppercase tracking-widest rounded">▶ Play</button>
+        <button id="bin-toggle" onclick="toggleBinaural()" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-surface font-label font-bold text-xs uppercase tracking-widest rounded"><span class="material-symbols-outlined text-lg ms-fill">play_arrow</span>Play</button>
         <span id="bin-status" class="text-on-surface/60 text-[11px]">Focus · base 200 Hz · beat 10 Hz — use headphones</span>
       </div>
       <p class="text-on-surface/40 text-[10px] mt-4">Binaural beats play locally in your browser (no server). Headphones required for the effect.</p>
@@ -1781,10 +1781,10 @@ const HEALING_BUDDIES = [
       <p class="text-on-surface/50 text-[11px] mb-4">The agents help you make the track — words, look, and mood.</p>
       <input id="council-theme" type="text" class="w-full px-3 py-2 bg-surface border border-white/10 text-white text-sm placeholder:text-on-surface/40 focus:border-primary mb-3" placeholder="What's the song about? e.g. chasing dreams at 3am"/>
       <div class="flex flex-wrap gap-2 mb-5">
-        <button onclick="councilAsk('QUILL')" class="px-4 py-2 bg-primary text-surface font-label font-bold text-[11px] uppercase tracking-widest rounded">✍️ QUILL · Lyrics</button>
-        <button onclick="councilAsk('ORACLE')" class="px-4 py-2 bg-surface border border-primary/50 text-white font-label font-bold text-[11px] uppercase tracking-widest rounded">🔮 ORACLE · Mood</button>
-        <button onclick="councilAsk('TURTLE')" class="px-4 py-2 bg-surface border border-primary/50 text-white font-label font-bold text-[11px] uppercase tracking-widest rounded">🐢 TURTLE · Vibe</button>
-        <button onclick="councilCover()" class="px-4 py-2 bg-surface border border-primary/50 text-white font-label font-bold text-[11px] uppercase tracking-widest rounded">🎨 TURTLE · Cover Art</button>
+        <button onclick="councilAsk('QUILL')" class="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-surface font-label font-bold text-[11px] uppercase tracking-widest rounded"><span class="material-symbols-outlined text-sm">edit_note</span>QUILL · Lyrics</button>
+        <button onclick="councilAsk('ORACLE')" class="inline-flex items-center gap-1.5 px-4 py-2 bg-surface border border-primary/50 text-white font-label font-bold text-[11px] uppercase tracking-widest rounded"><span class="material-symbols-outlined text-sm text-primary">auto_awesome</span>ORACLE · Mood</button>
+        <button onclick="councilAsk('TURTLE')" class="inline-flex items-center gap-1.5 px-4 py-2 bg-surface border border-primary/50 text-white font-label font-bold text-[11px] uppercase tracking-widest rounded"><span class="material-symbols-outlined text-sm text-primary">equalizer</span>TURTLE · Vibe</button>
+        <button onclick="councilCover()" class="inline-flex items-center gap-1.5 px-4 py-2 bg-surface border border-primary/50 text-white font-label font-bold text-[11px] uppercase tracking-widest rounded"><span class="material-symbols-outlined text-sm text-primary">palette</span>TURTLE · Cover Art</button>
       </div>
       <div id="council-out" class="text-white text-sm whitespace-pre-wrap"></div>
       <div id="council-cover" class="mt-4"></div>
@@ -6471,13 +6471,13 @@ function startBinaural(){
     merger.connect(gain).connect(ctx.destination);
     oscL.start(); oscR.start();
     _binaural.ctx=ctx; _binaural.oscL=oscL; _binaural.oscR=oscR; _binaural.playing=true;
-    const t=document.getElementById('bin-toggle'); if(t) t.textContent='⏸ Stop';
+    const t=document.getElementById('bin-toggle'); if(t) t.innerHTML='<span class="material-symbols-outlined text-lg ms-fill">stop</span>Stop';
   }catch(e){ console.warn('binaural start failed',e); }
 }
 function stopBinaural(){
   try{ _binaural.oscL?.stop(); _binaural.oscR?.stop(); _binaural.ctx?.close(); }catch(e){}
   _binaural.playing=false;
-  const t=document.getElementById('bin-toggle'); if(t) t.textContent='▶ Play';
+  const t=document.getElementById('bin-toggle'); if(t) t.innerHTML='<span class="material-symbols-outlined text-lg ms-fill">play_arrow</span>Play';
 }
 function toggleBinaural(){ _binaural.playing?stopBinaural():startBinaural(); }
 // Council: the 7 agents help make the track (via the SHADDAI backend seam)
@@ -6491,7 +6491,7 @@ async function councilAsk(agent){
   const theme=_councilTheme();
   const out=document.getElementById('council-out');
   if(!out) return;
-  if(!theme){ out.textContent='Tell me what the song is about first ☝️'; return; }
+  if(!theme){ out.textContent='Enter a song theme above to begin.'; return; }
   out.textContent=`${agent} is thinking…`;
   try{
     const {reply,tools}=await window.shd.chat({agent, message:_COUNCIL_PROMPTS[agent](theme)});
@@ -6504,9 +6504,9 @@ function councilCover(){
   const theme=_councilTheme();
   const box=document.getElementById('council-cover');
   if(!box) return;
-  if(!theme){ box.innerHTML='<p class="text-accent text-[11px]">Add a theme above first ☝️</p>'; return; }
+  if(!theme){ box.innerHTML='<p class="text-accent text-[11px]">Enter a song theme above to begin.</p>'; return; }
   const prompt=encodeURIComponent(`album cover art, dreamy ethereal, ${theme}, vibrant, high detail`);
-  box.innerHTML=`<p class="text-on-surface/60 text-[11px] mb-2">🎨 TURTLE is painting your cover…</p><img src="https://image.pollinations.ai/prompt/${prompt}?width=512&height=512&nologo=true" alt="cover art" class="rounded border border-white/10 max-w-[320px] w-full" onload="this.previousElementSibling.remove()"/>`;
+  box.innerHTML=`<p class="text-on-surface/60 text-[11px] mb-2">TURTLE is painting your cover…</p><img src="https://image.pollinations.ai/prompt/${prompt}?width=512&height=512&nologo=true" alt="cover art" class="rounded border border-white/10 max-w-[320px] w-full" onload="this.previousElementSibling.remove()"/>`;
 }
 
 // NEWS TAB
