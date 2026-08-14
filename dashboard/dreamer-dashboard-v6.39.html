@@ -1730,6 +1730,20 @@ const HEALING_BUDDIES = [
     <h2 class="font-display text-2xl md:text-3xl text-white mb-1">SHADDAI Music</h2>
     <p class="text-on-surface/60 text-sm">Your artist studio — powered by the SHADDAI council. Make binaural soundscapes, AI tracks, and lyrics.</p>
   </div>
+  <!-- Featured track player -->
+  <div class="rounded-lg border border-primary/30 p-5" style="background:linear-gradient(135deg,rgba(204,151,255,.10),rgba(45,183,242,.05))">
+    <div class="flex items-center gap-4">
+      <button id="ftPlay" onclick="ftToggle()" class="shrink-0 w-14 h-14 rounded-full bg-primary text-surface grid place-items-center hover:shadow-[0_0_22px_#cc97ff88] transition"><span class="material-symbols-outlined text-2xl ms-fill">play_arrow</span></button>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-baseline justify-between gap-3 mb-2">
+          <div class="truncate"><span class="font-label font-bold text-xs uppercase tracking-widest text-white">DREAMERS</span><span class="text-on-surface/50 text-xs"> — Final Mix</span></div>
+          <span id="ftTime" class="shrink-0 font-label text-[11px] text-on-surface/50 tabular-nums">0:00 / 0:00</span>
+        </div>
+        <div id="ftBar" onclick="ftSeek(event)" class="h-2 bg-surface rounded-full cursor-pointer overflow-hidden"><div id="ftFill" class="h-full bg-primary rounded-full" style="width:0%"></div></div>
+      </div>
+    </div>
+    <audio id="ftAudio" src="assets/audio/dreamers-final-mix.mp3" preload="metadata"></audio>
+  </div>
   <!-- Module selector (glow-on-hover per TURTLE direction) -->
   <div class="flex flex-wrap gap-3">
     <button onclick="showMusicModule('studio')" data-mod="studio" class="music-mod group flex items-center gap-2 px-4 py-3 bg-surface border border-primary/40 rounded hover:shadow-[0_0_18px_#cc97ff66] transition">
@@ -6450,6 +6464,15 @@ async function sendTurtleMessage(){
   }
 }
 
+// ─── Featured track player ───
+function _ftFmt(s){ s=Math.floor(s||0); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+function ftToggle(){ const a=document.getElementById('ftAudio'); const i=document.querySelector('#ftPlay .material-symbols-outlined'); if(!a) return; if(a.paused){ a.play(); if(i) i.textContent='pause'; } else { a.pause(); if(i) i.textContent='play_arrow'; } }
+function ftSeek(e){ const a=document.getElementById('ftAudio'); const bar=document.getElementById('ftBar'); if(!a||!bar||!a.duration) return; const r=bar.getBoundingClientRect(); a.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*a.duration; }
+(function ftInit(){ const a=document.getElementById('ftAudio'); if(!a) return;
+  const upd=()=>{ const f=document.getElementById('ftFill'), t=document.getElementById('ftTime'); if(f) f.style.width=((a.currentTime/(a.duration||1))*100)+'%'; if(t) t.textContent=_ftFmt(a.currentTime)+' / '+_ftFmt(a.duration); };
+  a.addEventListener('timeupdate',upd); a.addEventListener('loadedmetadata',upd);
+  a.addEventListener('ended',()=>{ const i=document.querySelector('#ftPlay .material-symbols-outlined'); if(i) i.textContent='play_arrow'; });
+})();
 // ─── SHADDAI MUSIC TAB ───
 function showMusicModule(mod){
   document.querySelectorAll('.music-ws').forEach(w=>w.classList.add('hidden'));
