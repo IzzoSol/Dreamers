@@ -30,10 +30,24 @@ const info = await pg.evaluate(() => {
 });
 await new Promise(r => setTimeout(r, 600));
 const railAfter = await pg.evaluate(() => { const r = document.getElementById('gallery-rail'); return r ? r.scrollLeft : -1; });
+// lightbox test
+const lb = await pg.evaluate(() => {
+  if (typeof openLightbox !== 'function') return { ok: false };
+  openLightbox(2);
+  const on1 = document.getElementById('lightbox').classList.contains('on');
+  const name1 = document.getElementById('lbname').textContent;
+  lbStep(1);
+  const name2 = document.getElementById('lbname').textContent;
+  closeLightbox();
+  const on2 = document.getElementById('lightbox').classList.contains('on');
+  return { ok: true, opened: on1, navigated: name1 !== name2, closed: !on2 };
+});
+console.log('lightbox:', JSON.stringify(lb));
 
 console.log('three loaded:', info.three);
 console.log('canvas:', info.canvas);
 console.log('title:', info.title, '| gallery items:', info.galItems, '| swivel scrolled:', railAfter > info.railBefore, '| reveal blocks:', info.reveals);
 console.log('errors:', errs.length ? errs.slice(0, 5).join(' | ') : 'none');
 await b.close();
-process.exit(info.three && info.galItems >= 10 && info.hasGalScroll && errs.length === 0 ? 0 : 1);
+const lbOk = lb.ok && lb.opened && lb.navigated && lb.closed;
+process.exit(info.three && info.galItems >= 10 && info.hasGalScroll && lbOk && errs.length === 0 ? 0 : 1);
