@@ -1738,6 +1738,8 @@ const HEALING_BUDDIES = [
       <span class="material-symbols-outlined text-primary group-hover:drop-shadow-[0_0_6px_#cc97ff]">spa</span><span class="font-label font-bold text-[11px] uppercase tracking-widest text-white">Binaural</span></button>
     <button onclick="showMusicModule('council')" data-mod="council" class="music-mod group flex items-center gap-2 px-4 py-3 bg-surface border border-primary/40 rounded hover:shadow-[0_0_18px_#cc97ff66] transition">
       <span class="material-symbols-outlined text-primary group-hover:drop-shadow-[0_0_6px_#cc97ff]">groups</span><span class="font-label font-bold text-[11px] uppercase tracking-widest text-white">Council</span></button>
+    <button onclick="showMusicModule('engine')" data-mod="engine" class="music-mod group flex items-center gap-2 px-4 py-3 bg-surface border border-primary/40 rounded hover:shadow-[0_0_18px_#cc97ff66] transition">
+      <span class="material-symbols-outlined text-primary group-hover:drop-shadow-[0_0_6px_#cc97ff]">hub</span><span class="font-label font-bold text-[11px] uppercase tracking-widest text-white">Engine</span></button>
   </div>
   <!-- Workspace -->
   <div class="bg-surface-lighter border border-white/10 rounded-lg p-6 min-h-[280px]">
@@ -1786,6 +1788,11 @@ const HEALING_BUDDIES = [
       </div>
       <div id="council-out" class="text-white text-sm whitespace-pre-wrap"></div>
       <div id="council-cover" class="mt-4"></div>
+    </div>
+    <!-- Engine: 3D SHADDAI Music Engine architecture -->
+    <div id="music-ws-engine" class="music-ws hidden">
+      <div class="flex items-center justify-between mb-4"><h3 class="font-label font-bold text-xs uppercase tracking-widest text-primary">Music Engine — System Architecture</h3><a href="studio/system-architecture.html" target="_blank" class="font-label text-[10px] uppercase tracking-widest text-primary hover:underline">Open full ↗</a></div>
+      <iframe src="studio/system-architecture.html" title="SHADDAI Music Engine Architecture" class="w-full rounded border border-white/10" style="height:600px" loading="lazy"></iframe>
     </div>
   </div>
 </section>
