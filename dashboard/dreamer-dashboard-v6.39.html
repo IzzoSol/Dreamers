@@ -1734,6 +1734,8 @@ const HEALING_BUDDIES = [
   <div class="flex flex-wrap gap-3">
     <button onclick="showMusicModule('studio')" data-mod="studio" class="music-mod group flex items-center gap-2 px-4 py-3 bg-surface border border-primary/40 rounded hover:shadow-[0_0_18px_#cc97ff66] transition">
       <span class="material-symbols-outlined text-primary group-hover:drop-shadow-[0_0_6px_#cc97ff]">piano</span><span class="font-label font-bold text-[11px] uppercase tracking-widest text-white">Studio</span></button>
+    <button onclick="showMusicModule('producer')" data-mod="producer" class="music-mod group flex items-center gap-2 px-4 py-3 bg-surface border border-primary/40 rounded hover:shadow-[0_0_18px_#cc97ff66] transition">
+      <span class="material-symbols-outlined text-primary group-hover:drop-shadow-[0_0_6px_#cc97ff]">graphic_eq</span><span class="font-label font-bold text-[11px] uppercase tracking-widest text-white">Producer</span></button>
     <button onclick="showMusicModule('binaural')" data-mod="binaural" class="music-mod group flex items-center gap-2 px-4 py-3 bg-surface border border-primary/40 rounded hover:shadow-[0_0_18px_#cc97ff66] transition">
       <span class="material-symbols-outlined text-primary group-hover:drop-shadow-[0_0_6px_#cc97ff]">spa</span><span class="font-label font-bold text-[11px] uppercase tracking-widest text-white">Binaural</span></button>
     <button onclick="showMusicModule('council')" data-mod="council" class="music-mod group flex items-center gap-2 px-4 py-3 bg-surface border border-primary/40 rounded hover:shadow-[0_0_18px_#cc97ff66] transition">
@@ -1748,6 +1750,11 @@ const HEALING_BUDDIES = [
       <h3 class="font-label font-bold text-xs uppercase tracking-widest text-primary mb-4">Music Studio</h3>
       <iframe src="turtle-music-bot.html" title="SHADDAI Music Studio" class="w-full rounded border border-white/10" style="height:560px" loading="lazy"></iframe>
       <p class="text-on-surface/40 text-[10px] mt-3">Live Web Audio studio — 6 genres, export to WAV. Runs entirely in your browser.</p>
+    </div>
+    <!-- Producer: full FL-Studio-AI beat maker -->
+    <div id="music-ws-producer" class="music-ws hidden">
+      <div class="flex items-center justify-between mb-4"><h3 class="font-label font-bold text-xs uppercase tracking-widest text-primary">Producer — Beat Maker & Audio Gen</h3><a href="studio/fl-producer.html" target="_blank" class="font-label text-[10px] uppercase tracking-widest text-primary hover:underline">Open full ↗</a></div>
+      <iframe src="studio/fl-producer.html" title="FL Studio AI Producer" class="w-full rounded border border-white/10" style="height:640px" loading="lazy"></iframe>
     </div>
     <!-- Binaural -->
     <div id="music-ws-binaural" class="music-ws hidden">
