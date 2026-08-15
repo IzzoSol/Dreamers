@@ -252,6 +252,12 @@
   footer .meta{margin-top:28px;font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
   .connect a{color:var(--dim);transition:color .3s}
   .connect a:hover{color:var(--ink)}
+  .follow{padding:9px 16px;border:1px solid var(--line);border-radius:999px}
+  .follow:hover{border-color:var(--amethyst);background:rgba(138,92,246,.14)}
+  .themer{position:fixed;left:16px;bottom:16px;z-index:60;display:flex;gap:8px;padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:rgba(8,6,15,.65);backdrop-filter:blur(8px)}
+  .themer button{width:17px;height:17px;border-radius:50%;border:1px solid rgba(255,255,255,.25);cursor:pointer;padding:0;transition:transform .2s}
+  .themer button:hover{transform:scale(1.25)}
+  @media(max-width:600px){.themer{opacity:.75}}
 
   /* sessions / word bank / spaces */
   .sesh-grid{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
@@ -304,6 +310,12 @@
 <div class="aurora a1"></div><div class="aurora a2"></div><div class="aurora a3"></div>
 <div class="vignette"></div>
 <div class="grain"></div>
+<div class="themer" title="Theme">
+  <button onclick="setTheme('amethyst')" style="background:#b78bff" aria-label="Amethyst"></button>
+  <button onclick="setTheme('emerald')" style="background:#3dd07a" aria-label="Emerald"></button>
+  <button onclick="setTheme('cyber')" style="background:#2db7f2" aria-label="Cyber"></button>
+  <button onclick="setTheme('sunset')" style="background:#ff9e5c" aria-label="Sunset"></button>
+</div>
 
 <nav>
   <div class="brand"><span class="dot"></span>DREAMERS</div>
@@ -443,12 +455,11 @@
     <div class="cta" style="justify-content:center;opacity:1;animation:none">
       <a class="btn primary" href="dreamer-dashboard-v6.39.html">Enter Dreamers</a>
     </div>
-    <div class="connect" style="display:flex;justify-content:center;flex-wrap:wrap;gap:22px;margin-top:26px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase">
-      <a href="https://x.com/DreamersOnSol" target="_blank" rel="noopener">X · Dreamers</a>
-      <a href="https://x.com/IzzoSol" target="_blank" rel="noopener">X · Izzo</a>
-      <a href="https://x.com/ShaddaiAI" target="_blank" rel="noopener">X · Shaddai</a>
-      <a href="https://www.youtube.com/@CloudzNCrownz" target="_blank" rel="noopener">YouTube</a>
-      <a href="dreamer-dashboard-v6.39.html">Enter the App</a>
+    <div class="connect" style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:26px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase">
+      <a class="follow" href="https://x.com/intent/follow?screen_name=DreamersOnSol" target="_blank" rel="noopener">＋ Follow @DreamersOnSol</a>
+      <a class="follow" href="https://x.com/intent/follow?screen_name=IzzoSol" target="_blank" rel="noopener">＋ @IzzoSol</a>
+      <a class="follow" href="https://x.com/intent/follow?screen_name=ShaddaiAI" target="_blank" rel="noopener">＋ @ShaddaiAI</a>
+      <a class="follow" href="https://www.youtube.com/@CloudzNCrownz?sub_confirmation=1" target="_blank" rel="noopener">▶ YouTube</a>
     </div>
     <div class="meta">Dreamers® · the platform for the culture of creation · 2026</div>
   </footer>
@@ -554,6 +565,16 @@ const BOOKS=[
 (function renderBooks(){ const rail=document.getElementById('books-rail'); if(!rail)return;
   rail.innerHTML=BOOKS.map(b=>`<div class="book"><div class="bs">${b.s}</div><div class="bt">${b.t}</div><div class="bx">${b.x}</div></div>`).join('');
 })();
+
+// theme switcher (swaps the accent CSS variables; persists)
+const THEMES={
+  amethyst:{'--amethyst':'#b78bff','--amethyst-2':'#8a5cf6','--rose':'#ff9ecf','--gold':'#f2cd8a','--iris':'#84f4e2'},
+  emerald:{'--amethyst':'#4fe0a0','--amethyst-2':'#1fbf7a','--rose':'#b6f5db','--gold':'#f2cd8a','--iris':'#84f4e2'},
+  cyber:{'--amethyst':'#2db7f2','--amethyst-2':'#0a84ff','--rose':'#ff5cf0','--gold':'#ffe08a','--iris':'#9dffea'},
+  sunset:{'--amethyst':'#ff9e5c','--amethyst-2':'#ff5c7a','--rose':'#ffb37a','--gold':'#ffd76a','--iris':'#ff8ac0'},
+};
+function setTheme(t){const v=THEMES[t]||THEMES.amethyst;for(const k in v)document.documentElement.style.setProperty(k,v[k]);localStorage.setItem('d_theme',t);}
+setTheme(localStorage.getItem('d_theme')||'amethyst');
 
 // scroll reveals
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.15});
