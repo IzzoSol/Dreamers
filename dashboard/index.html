@@ -264,8 +264,6 @@
     <a href="#studio">Music</a>
     <a href="#art">Art</a>
     <a href="#threed">3D</a>
-    <a href="#videos">Videos</a>
-    <a href="#izzo">Izzo</a>
     <a href="#world">The Climb</a>
     <a href="dreamer-dashboard-v6.39.html">Enter ↗</a>
   </div>
@@ -295,25 +293,6 @@
       <div class="pillar"><div class="n">✦ Studio</div><h4>Web-Audio Beats</h4><p>Six genres, live synthesis, export to WAV — right in the browser.</p></div>
       <div class="pillar"><div class="n">✦ Binaural</div><h4>Soundscapes</h4><p>Focus, meditate, relax, sleep — tuned frequencies for the mind.</p></div>
       <div class="pillar"><div class="n">✦ Council</div><h4>The 7 Agents</h4><p>Lyrics, mood, vibe, and cover art — the council co-creates with you.</p></div>
-    </div>
-    <div class="album reveal-up">
-      <img class="album-cover" src="assets/album/cover.jpg" alt="The Good Samaritan — Izzo" loading="lazy">
-      <div class="album-body">
-        <div>
-          <div class="kick" style="margin-bottom:8px">the album</div>
-          <div class="album-title">The Good Samaritan</div>
-          <div class="album-by">Izzo · CloudzNCrownz</div>
-        </div>
-        <div class="album-now">
-          <button class="track-btn" id="albPlay" onclick="albToggle()" aria-label="Play / pause"><svg id="albIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
-          <div class="album-meta track-meta">
-            <div class="row"><div class="track-name" id="albNow">—</div><div class="track-time" id="albTime">0:00 / 0:00</div></div>
-            <div class="track-bar" id="albBar" onclick="albSeek(event)"><div class="track-fill" id="albFill"></div></div>
-          </div>
-        </div>
-        <ol class="album-list" id="albList"></ol>
-        <audio id="albAudio" preload="none"></audio>
-      </div>
     </div>
   </section>
 
@@ -347,57 +326,11 @@
     <div id="d3-rail" class="gallery-rail reveal-up"></div>
   </section>
 
-  <!-- MUSIC VIDEOS — WIRE YOUR VIDEO HERE -->
-  <section class="blk" id="videos">
-    <div class="reveal-up" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
-      <div>
-        <div class="kick">04 — the catalog</div>
-        <h2 class="h2">The <em class="glitch" data-text="catalog">catalog</em>.</h2>
-      </div>
-      <div style="display:flex;gap:12px">
-        <button class="gal-arrow" onclick="galScroll(-1,'cat-rail')" aria-label="Previous">&lsaquo;</button>
-        <button class="gal-arrow" onclick="galScroll(1,'cat-rail')" aria-label="Next">&rsaquo;</button>
-      </div>
-    </div>
-    <div id="cat-rail" class="gallery-rail reveal-up"></div>
-  </section>
-
-  <!-- IZZO — artist hub: merch + services (personal, not the platform) -->
-  <section class="blk" id="izzo">
-    <div class="reveal-up">
-      <div class="kick">05 — with izzo</div>
-      <h2 class="h2">Work with <em class="glitch" data-text="Izzo">Izzo</em>.</h2>
-      <p class="lead">Wear the movement and build yours — merch, music rights, and creative services, direct from the artist.</p>
-    </div>
-
-    <div class="reveal-up" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:44px">
-      <h3 style="font-family:var(--display);font-weight:300;font-size:clamp(22px,3vw,34px)">Merch</h3>
-      <div style="display:flex;gap:12px">
-        <button class="gal-arrow" onclick="galScroll(-1,'merch-rail')" aria-label="Previous">&lsaquo;</button>
-        <button class="gal-arrow" onclick="galScroll(1,'merch-rail')" aria-label="Next">&rsaquo;</button>
-      </div>
-    </div>
-    <div id="merch-rail" class="gallery-rail reveal-up"></div>
-    <div class="reveal-up" style="margin-top:18px"><a class="btn primary" href="mailto:cloudzncrownz@gmail.com?subject=Custom%20Merch">Customize yours →</a></div>
-
-    <div class="reveal-up" style="margin-top:66px">
-      <h3 style="font-family:var(--display);font-weight:300;font-size:clamp(22px,3vw,34px)">Services</h3>
-    </div>
-    <div class="pillars reveal-up">
-      <div class="pillar"><div class="n">✦ Web</div><h4>Websites</h4><p>Cinematic, fast, custom sites — like this one.</p></div>
-      <div class="pillar"><div class="n">✦ Growth</div><h4>Marketing &amp; Brand</h4><p>Strategy, content, and brand identity that lands.</p></div>
-      <div class="pillar"><div class="n">✦ Rights</div><h4>Music Rights &amp; Releasing</h4><p>Distribution, splits, and getting your music out right.</p></div>
-      <div class="pillar"><div class="n">✦ Live</div><h4>Digital Spaces</h4><p>Hosted X Spaces, listening parties, online events.</p></div>
-      <div class="pillar"><div class="n">✦ IRL</div><h4>Retreats</h4><p>In-person creative retreats &amp; experiences.</p></div>
-      <div class="pillar"><div class="n">✦ Guide</div><h4>Consulting</h4><p>1:1 creative &amp; career guidance for artists and builders.</p></div>
-    </div>
-    <div class="reveal-up" style="margin-top:22px"><a class="btn ghost" href="mailto:cloudzncrownz@gmail.com?subject=Services%20Inquiry">Inquire →</a></div>
-  </section>
 
   <!-- WORLD / GAME -->
   <section class="blk" id="world">
     <div class="reveal-up">
-      <div class="kick">06 — the world</div>
+      <div class="kick">04 — the world</div>
       <h2 class="h2">Climb the <em>dream-tower</em>.</h2>
       <p class="lead">Dreamers Climb — a pixel-art ascent through living biomes. Play, collect, and earn your place in the world.</p>
       <div class="cta" style="opacity:1;animation:none;margin-top:34px">
@@ -412,7 +345,7 @@
     <div class="cta" style="justify-content:center;opacity:1;animation:none">
       <a class="btn primary" href="dreamer-dashboard-v6.39.html">Enter Dreamers</a>
     </div>
-    <div class="meta">Dreamers® · IzzoSol · powered by the SHADDAI council · 2026</div>
+    <div class="meta">Dreamers® · the platform for the culture of creation · 2026</div>
   </footer>
 </div>
 
@@ -514,31 +447,6 @@ const GALLERY=[
   rail.addEventListener('mouseleave',()=>rail.querySelectorAll('.gal-item').forEach(el=>el.style.transform=''));
   rail.addEventListener('mouseout',e=>{const it=e.target.closest('.gal-item');if(it&&!it.contains(e.relatedTarget))it.style.transform='';});
 })();
-// album player — The Good Samaritan
-const ALBUM=[
-  {src:'assets/album/good-people.mp3',name:'Good People'},
-  {src:'assets/album/possible.mp3',name:'Possible'},
-  {src:'assets/album/gone.mp3',name:'Gone'},
-  {src:'assets/album/murder-season.mp3',name:'Murder Season'},
-  {src:'assets/album/dreamers.mp3',name:'Dreamers'},
-  {src:'assets/album/remedy.mp3',name:'Remedy'},
-  {src:'assets/album/forever.mp3',name:'Forever'},
-  {src:'assets/album/gone-scratches.mp3',name:'Gone (Scratches)'},
-];
-const _APLAY='<path d="M8 5v14l11-7z"/>', _APAUSE='<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>';
-let _albIdx=0;
-function _albFmt(s){s=Math.floor(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
-function albLoad(i,play){const a=document.getElementById('albAudio');if(!a)return;_albIdx=(i+ALBUM.length)%ALBUM.length;a.src=ALBUM[_albIdx].src;const nw=document.getElementById('albNow');if(nw)nw.textContent=(_albIdx+1)+'. '+ALBUM[_albIdx].name;document.querySelectorAll('.album-track').forEach((el,j)=>el.classList.toggle('active',j===_albIdx));if(play){a.play();document.getElementById('albIcon').innerHTML=_APAUSE;}}
-function albToggle(){const a=document.getElementById('albAudio');if(!a)return;if(!a.src){albLoad(0,true);}else if(a.paused){a.play();document.getElementById('albIcon').innerHTML=_APAUSE;}else{a.pause();document.getElementById('albIcon').innerHTML=_APLAY;}}
-function albSeek(e){const a=document.getElementById('albAudio');if(!a||!a.duration)return;const b=document.getElementById('albBar').getBoundingClientRect();a.currentTime=Math.max(0,Math.min(1,(e.clientX-b.left)/b.width))*a.duration;}
-(function albInit(){const a=document.getElementById('albAudio');if(!a)return;
-  const list=document.getElementById('albList');
-  if(list)list.innerHTML=ALBUM.map((t,i)=>`<li class="album-track" onclick="albLoad(${i},true)"><span><span class="num">${String(i+1).padStart(2,'0')}</span>${t.name}</span></li>`).join('');
-  albLoad(0,false);
-  a.addEventListener('timeupdate',()=>{const f=document.getElementById('albFill'),t=document.getElementById('albTime');if(f)f.style.width=((a.currentTime/(a.duration||1))*100)+'%';if(t)t.textContent=_albFmt(a.currentTime)+' / '+_albFmt(a.duration);});
-  a.addEventListener('ended',()=>albLoad(_albIdx+1,true));
-})();
-
 // immersive lightbox
 let _lbIndex=0;
 function openLightbox(i){_lbIndex=i;_lbRender();document.getElementById('lightbox').classList.add('on');document.body.style.overflow='hidden';}
@@ -553,53 +461,6 @@ function galScroll(dir,railId){
   const step=item ? item.getBoundingClientRect().width + 20 : rail.clientWidth*.8;
   rail.scrollBy({left:dir*step,behavior:'smooth'});
 }
-// catalog — Izzo song videos (click to play in modal)
-const CATALOG=[
-  {id:'G-_NR0fUwlU',t:'No Reason',s:'ft. Locco'},
-  {id:'LTimVwcYFtE',t:'Good Person',s:'Prod. AyoTony'},
-  {id:'bq8jnv5h0fE',t:'Remedy',s:'Prod. AyoTony'},
-  {id:'r5hOFpxb5_o',t:'We',s:'Prod. AyoTony'},
-  {id:'2vzLG5mKRMU',t:'False Hope',s:'Izzo'},
-  {id:'Ji9ybgueFNc',t:'Switch',s:'Izzo'},
-  {id:'d_2TP1U03PA',t:'Games',s:'CloudzNCrownz'},
-  {id:'GD3yBlElVXs',t:'Sky',s:'Izzo · Locco'},
-  {id:'eN3efZpRJ_k',t:'Come On Down',s:'Izzo'},
-  {id:'mJCVa0CHL3w',t:'The Truth',s:'Izzo'},
-  {id:'Q19O4Mcmr50',t:'Unconditional',s:'Locco & Izzo'},
-  {id:'wC3mckO9FHM',t:'Wake Up 2',s:'ft. Arizona'},
-  {id:'_jr42D_Hsdg',t:'For Life',s:'Isaac Wright Jr.'},
-  {id:'O6PAmAe5H9Q',t:'Colors',s:'ft. Specctheillest'},
-  {id:'JoJE2sgAOsE',t:'Breathe',s:'Izzo · Locco'},
-  {id:'WQ8Fr1Wd4bw',t:'Real',s:'CloudzNCrownz'},
-  {id:'KFVg2-IxRv8',t:'CCTV: Times Changed',s:'CCTV'},
-];
-(function renderCatalog(){
-  const rail=document.getElementById('cat-rail'); if(!rail) return;
-  rail.innerHTML=CATALOG.map(v=>`<a class="gal-item" href="https://youtu.be/${v.id}" onclick="openVideo('${v.id}');return false;">
-    <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="${v.t}" loading="lazy">
-    <div class="scan"></div>
-    <div class="cap"><div class="t">${v.s}</div><h3 class="sm">${v.t}</h3></div></a>`).join('');
-  rail.addEventListener('mousemove',e=>{const it=e.target.closest('.gal-item');if(!it)return;const r=it.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;it.style.transform=`translateY(-6px) rotateX(${(-py*7).toFixed(2)}deg) rotateY(${(px*7).toFixed(2)}deg)`;});
-  rail.addEventListener('mouseleave',()=>rail.querySelectorAll('.gal-item').forEach(el=>el.style.transform=''));
-})();
-function openVideo(id){const f=document.getElementById('vframe');f.src='https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0';document.getElementById('vmodal').classList.add('on');document.body.style.overflow='hidden';}
-function closeVideo(){document.getElementById('vframe').src='';document.getElementById('vmodal').classList.remove('on');document.body.style.overflow='';}
-addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('vmodal').classList.contains('on'))closeVideo();});
-// merch — Izzo designs
-const MERCH=[
-  {src:'assets/merch/dreamers-retro.jpeg',t:'Dreamers',s:'Retro Graffiti'},
-  {src:'assets/merch/dreamers-cereal.png',t:'Dreamers',s:'Good People Cereal'},
-  {src:'assets/merch/dreamer-ladder-bw.png',t:'Dreamers',s:'Cloud Ladder'},
-  {src:'assets/merch/dreamers-into-image.png',t:"Dreamer's Climb",s:'Pixel Triptych'},
-];
-(function renderMerch(){
-  const rail=document.getElementById('merch-rail'); if(!rail) return;
-  rail.innerHTML=MERCH.map(m=>`<a class="gal-item" href="${m.src}" target="_blank" rel="noopener">
-    <img src="${m.src}" alt="${m.t} — ${m.s}" loading="lazy" style="object-fit:contain;background:#0d0a1a">
-    <div class="cap"><div class="t">${m.s}</div><h3 class="sm">${m.t}</h3></div></a>`).join('');
-  rail.addEventListener('mousemove',e=>{const it=e.target.closest('.gal-item');if(!it)return;const r=it.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;it.style.transform=`translateY(-6px) rotateX(${(-py*7).toFixed(2)}deg) rotateY(${(px*7).toFixed(2)}deg)`;});
-  rail.addEventListener('mouseleave',()=>rail.querySelectorAll('.gal-item').forEach(el=>el.style.transform=''));
-})();
 // 3D gallery — Tripo showcase turntables (looping video tiles)
 const THREED=[
   {src:'assets/3d/piece-01.mp4', series:'3D · Tripo', name:'Artifact I'},
