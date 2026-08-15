@@ -264,6 +264,15 @@
   .space-body .sb-words{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
   .space-body .yt{margin-top:16px;position:relative;aspect-ratio:16/9;border-radius:8px;overflow:hidden;border:1px solid var(--line);max-width:640px}
   .space-body .yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+  /* books / library */
+  .book{flex:0 0 clamp(180px,26vw,220px);aspect-ratio:3/4;border:1px solid var(--line);border-radius:10px;padding:22px;
+    display:flex;flex-direction:column;justify-content:space-between;scroll-snap-align:start;cursor:default;
+    background:linear-gradient(160deg,rgba(183,139,255,.16),rgba(132,244,226,.04),rgba(6,4,12,.55));transition:transform .45s,border-color .45s,box-shadow .45s}
+  .book:hover{transform:translateY(-6px);border-color:var(--amethyst);box-shadow:0 20px 50px rgba(138,92,246,.28)}
+  .book .bs{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--amethyst)}
+  .book .bt{font-family:var(--display);font-size:20px;font-weight:400;line-height:1.14}
+  .book .bx{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
 </style>
 </head>
 <body>
@@ -290,6 +299,7 @@
     <a href="#art">Art</a>
     <a href="#threed">3D</a>
     <a href="#sessions">Sessions</a>
+    <a href="#books">Books</a>
     <a href="#world">The Climb</a>
     <a href="dreamer-dashboard-v6.39.html">Enter ↗</a>
   </div>
@@ -390,10 +400,25 @@
     </div>
   </section>
 
+  <!-- BOOKS / LIBRARY -->
+  <section class="blk" id="books">
+    <div class="reveal-up" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div>
+        <div class="kick">05 — the library</div>
+        <h2 class="h2">The <em class="glitch" data-text="books">books</em>.</h2>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="gal-arrow" onclick="galScroll(-1,'books-rail')" aria-label="Previous">&lsaquo;</button>
+        <button class="gal-arrow" onclick="galScroll(1,'books-rail')" aria-label="Next">&rsaquo;</button>
+      </div>
+    </div>
+    <div id="books-rail" class="gallery-rail reveal-up"></div>
+  </section>
+
   <!-- WORLD / GAME -->
   <section class="blk" id="world">
     <div class="reveal-up">
-      <div class="kick">05 — the world</div>
+      <div class="kick">06 — the world</div>
       <h2 class="h2">Climb the <em>dream-tower</em>.</h2>
       <p class="lead">Dreamers Climb — a pixel-art ascent through living biomes. Play, collect, and earn your place in the world.</p>
       <div class="cta" style="opacity:1;animation:none;margin-top:34px">
@@ -495,6 +520,24 @@ function showSpace(i){ const s=SPACES[i]; document.querySelectorAll('.space-tab'
   document.getElementById('spaceBody').innerHTML=`<div class="kick" style="margin-bottom:6px">${s.date}</div><div style="font-family:var(--display);font-size:24px;font-weight:300">${s.title}</div><div class="sb-words">${s.words.map(w=>`<span class="chip">${w}</span>`).join('')}</div><p style="color:var(--dim);font-size:14px">${s.note||''}</p>${yt}`;
 }
 renderBank(); renderSpaces();
+// books / library
+const BOOKS=[
+  {t:'Awakening Your Inner Alchemy', s:'Transformation', x:'In progress'},
+  {t:'The Power of Breath', s:'Spiritual & Scientific', x:'In progress'},
+  {t:'The Origin & Meaning of Love', s:'Philosophy', x:'In progress'},
+  {t:'The Sacred Art of Intimacy', s:'Ancient Wisdom', x:'In progress'},
+  {t:'The Interconnected World of Religion', s:'Comparative', x:'In progress'},
+  {t:'The Roots of Medicine', s:'Healing Traditions', x:'In progress'},
+  {t:'Exploring Ancient Holistics', s:'Benefits & Myths', x:'In progress'},
+  {t:'Pulling Happiness Out of Thin Air', s:'Self-Motivation', x:'In progress'},
+  {t:'Embracing Momentum', s:'365 Days', x:'In progress'},
+  {t:'Dancing in Shadows', s:'Envy & Jealousy', x:'In progress'},
+  {t:'Behind the Masquerade', s:'Artistic Growth', x:'In progress'},
+  {t:'Fatherless', s:'Healing', x:'In progress'},
+];
+(function renderBooks(){ const rail=document.getElementById('books-rail'); if(!rail)return;
+  rail.innerHTML=BOOKS.map(b=>`<div class="book"><div class="bs">${b.s}</div><div class="bt">${b.t}</div><div class="bx">${b.x}</div></div>`).join('');
+})();
 
 // scroll reveals
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.15});
