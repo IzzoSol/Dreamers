@@ -2823,17 +2823,15 @@ const HEALING_BUDDIES = [
 <!-- ──────────────────── TAB: AI ASSISTANT (TURTLE) ──────────────────── -->
 <section id="tab-turtle" class="tab-panel p-6 md:p-10 space-y-10">
   <div>
-    <div class="inline-block bg-success text-surface px-3 py-1 font-label font-black text-[10px] uppercase tracking-widest mb-3 sticker">🐢 HEALTH • WISDOM • GUIDANCE</div>
-    <h1 class="font-headline text-5xl md:text-6xl font-black text-white italic uppercase leading-[.85] tracking-tighter">TURTLE <span class="text-success neon-text-p">AI ASSISTANT</span></h1>
-    <p class="text-on-surface/50 font-label text-sm tracking-[.2em] uppercase mt-2">Health guidance • Creative writing • Life planning • Wellness coaching</p>
+    <div class="inline-block bg-primary text-surface px-3 py-1 font-label font-black text-[10px] uppercase tracking-widest mb-3">Creative AI</div>
+    <h1 class="font-headline text-5xl md:text-6xl font-black text-white italic uppercase leading-[.85] tracking-tighter">CREATIVE <span class="text-primary neon-text-p">AI</span></h1>
+    <p class="text-on-surface/50 font-label text-sm tracking-[.2em] uppercase mt-2">Write with QUILL · create with TURTLE</p>
   </div>
 
-  <!-- Category Buttons -->
+  <!-- Agent picker -->
   <div class="flex flex-wrap gap-3">
-    <button onclick="setTurtleCategory('health')" class="turtle-cat px-4 py-2 bg-primary text-surface font-label font-bold text-xs uppercase tracking-widest hover:bg-primary-dim transition" data-category="health">🍎 Health & Food</button>
-    <button onclick="setTurtleCategory('writing')" class="turtle-cat px-4 py-2 bg-surface border border-primary/30 text-primary font-label font-bold text-xs uppercase tracking-widest hover:bg-primary/10 transition" data-category="writing">✍️ Creative Writing</button>
-    <button onclick="setTurtleCategory('planning')" class="turtle-cat px-4 py-2 bg-surface border border-secondary/30 text-secondary font-label font-bold text-xs uppercase tracking-widest hover:bg-secondary/10 transition" data-category="planning">📋 Life Planning</button>
-    <button onclick="setTurtleCategory('content')" class="turtle-cat px-4 py-2 bg-surface border border-accent/30 text-accent font-label font-bold text-xs uppercase tracking-widest hover:bg-accent/10 transition" data-category="content">🎬 Content Creation</button>
+    <button onclick="setCreativeAgent('QUILL',this)" class="cre-agent px-4 py-2 bg-primary text-surface font-label font-bold text-xs uppercase tracking-widest inline-flex items-center gap-2" data-agent="QUILL"><span class="material-symbols-outlined text-sm">edit_note</span>QUILL · Write</button>
+    <button onclick="setCreativeAgent('TURTLE',this)" class="cre-agent px-4 py-2 bg-surface border border-primary/30 text-primary font-label font-bold text-xs uppercase tracking-widest inline-flex items-center gap-2" data-agent="TURTLE"><span class="material-symbols-outlined text-sm">palette</span>TURTLE · Visuals & Ideas</button>
   </div>
 
   <!-- Chat Interface -->
@@ -6425,6 +6423,8 @@ function loadAstroInfo(){
 }
 
 // TURTLE AI ASSISTANT
+window._creativeAgent='QUILL';
+function setCreativeAgent(a,btn){ window._creativeAgent=a; document.querySelectorAll('.cre-agent').forEach(b=>{b.classList.remove('bg-primary','text-surface');b.classList.add('bg-surface','text-primary')}); if(btn){btn.classList.add('bg-primary','text-surface');btn.classList.remove('bg-surface','text-primary')} }
 function setTurtleCategory(cat){
   document.querySelectorAll('.turtle-cat').forEach(b=>{b.classList.remove('bg-primary','text-surface');b.classList.add('bg-surface','border','text-on-surface/60')});
   const btn=document.querySelector(`.turtle-cat[data-category="${cat}"]`);
@@ -6442,7 +6442,7 @@ async function sendTurtleMessage(){
   input.value='';
   append(`<div class="flex justify-start" id="turtle-thinking"><div class="bg-primary/20 border-l-2 border-primary p-3 rounded max-w-xs"><p class="text-[11px] text-white/70">Thinking…</p></div></div>`);
   try {
-    const { reply, tools } = await window.shd.chat({ agent: 'TURTLE', message: msg });
+    const { reply, tools } = await window.shd.chat({ agent: (window._creativeAgent||'QUILL'), message: msg });
     document.getElementById('turtle-thinking')?.remove();
     const receipt = tools && tools.length ? `<p class="text-[9px] text-accent mt-1">tools used: ${tools.join(', ')}</p>` : '';
     append(`<div class="flex justify-start"><div class="bg-primary/20 border-l-2 border-primary p-3 rounded max-w-xs"><p class="text-[11px] text-white">${(reply||'(no reply)').replace(/[<]/g,'&lt;')}</p>${receipt}</div></div>`);
