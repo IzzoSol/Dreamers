@@ -507,10 +507,9 @@ function joinList(e){ e.preventDefault(); const em=document.getElementById('join
 function _bank(){ return JSON.parse(localStorage.getItem('d_bank')||'[]'); }
 function renderBank(){ const el=document.getElementById('bankList'); if(!el)return; const b=_bank().slice(-40); el.innerHTML=b.map(w=>`<span class="chip${w.mine?' mine':''}">${w.t}</span>`).join('')||'<span class="chip">be the first to add words</span>'; }
 function submitWords(e){ e.preventDefault(); const ws=[document.getElementById('w1').value,document.getElementById('w2').value,document.getElementById('w3').value].map(x=>x.trim()).filter(Boolean); const link=document.getElementById('instru').value.trim(); if(ws.length<3)return false; _post({type:'wordbank',words:ws.join(', '),instrumental:link}); const b=_bank(); ws.forEach(t=>b.push({t,mine:true})); localStorage.setItem('d_bank',JSON.stringify(b)); renderBank(); document.getElementById('wordMsg').textContent='Added to the bank — thank you.'; e.target.reset(); return false; }
-const SPACES=[
-  {title:'Week 1 — Kickoff', date:'This week', words:['dream','ladder','static'], ytId:'', note:'Drop your 3 words + an instrumental. First live cover this week on X Spaces.'},
-];
+const SPACES=[]; // add completed Spaces here: {title,date,words:['a','b','c'],ytId:'',note:''}
 function renderSpaces(){ const tabs=document.getElementById('spaceTabs'), body=document.getElementById('spaceBody'); if(!tabs||!body)return;
+  if(!SPACES.length){ tabs.innerHTML=''; body.innerHTML='<p style="color:var(--dim);font-size:14px">The first Space drops soon — submit your words above and join the list for the invite.</p>'; return; }
   tabs.innerHTML=SPACES.map((s,i)=>`<button class="space-tab${i===0?' active':''}" onclick="showSpace(${i})">${s.title}</button>`).join('');
   showSpace(0);
 }
