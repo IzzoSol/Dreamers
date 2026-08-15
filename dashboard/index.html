@@ -169,6 +169,19 @@
   .lightbox .lbnav:hover{color:var(--ink);transform:translateY(-50%) scale(1.15)}
   .lightbox .lbprev{left:1.5vw}.lightbox .lbnext{right:1.5vw}
 
+  /* video modal (catalog) */
+  .vmodal{position:fixed;inset:0;z-index:110;background:rgba(4,3,8,.95);backdrop-filter:blur(10px);
+    display:none;align-items:center;justify-content:center;padding:6vh 4vw}
+  .vmodal.on{display:flex;animation:lbin .35s ease}
+  .vmodal .vwrap{width:min(90vw,960px);aspect-ratio:16/9;border:1px solid var(--line);border-radius:8px;overflow:hidden;
+    box-shadow:0 40px 130px rgba(138,92,246,.4);background:#000}
+  .vmodal iframe{width:100%;height:100%;border:0}
+  .vmodal .vclose{position:absolute;top:26px;right:30px;font-family:var(--mono);font-size:11px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--dim);cursor:pointer;transition:color .3s}
+  .vmodal .vclose:hover{color:var(--ink)}
+  /* catalog tile title always visible */
+  .gal-item .cap h3.sm{font-size:19px}
+
   /* glitch heading */
   em.glitch{position:relative;color:var(--gold)}
   em.glitch::before,em.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;overflow:hidden}
@@ -236,6 +249,10 @@
   <div class="lbnav lbnext" onclick="lbStep(1)">&rsaquo;</div>
   <img id="lbimg" src="" alt=""/>
   <div class="lbcap"><div class="t" id="lbtag"></div><h3 id="lbname"></h3></div>
+</div>
+<div class="vmodal" id="vmodal" onclick="if(event.target===this)closeVideo()">
+  <div class="vclose" onclick="closeVideo()">✕ Close</div>
+  <div class="vwrap"><iframe id="vframe" src="" title="video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 </div>
 <div class="aurora a1"></div><div class="aurora a2"></div><div class="aurora a3"></div>
 <div class="vignette"></div>
@@ -331,14 +348,17 @@
 
   <!-- MUSIC VIDEOS — WIRE YOUR VIDEO HERE -->
   <section class="blk" id="videos">
-    <div class="reveal-up">
-      <div class="kick">04 — music videos</div>
-      <h2 class="h2">Films from the <em class="glitch" data-text="dream">dream</em>.</h2>
-      <p class="lead">The CloudzNCrownz · Izzo catalog — 40 videos, in full.</p>
+    <div class="reveal-up" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div>
+        <div class="kick">04 — the catalog</div>
+        <h2 class="h2">The <em class="glitch" data-text="catalog">catalog</em>.</h2>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="gal-arrow" onclick="galScroll(-1,'cat-rail')" aria-label="Previous">&lsaquo;</button>
+        <button class="gal-arrow" onclick="galScroll(1,'cat-rail')" aria-label="Next">&rsaquo;</button>
+      </div>
     </div>
-    <div class="videowrap reveal-up">
-      <iframe src="https://www.youtube.com/embed/videoseries?list=PLndNOiclqwQKdqmso_B0lobIW15LZmDWi&amp;rel=0" title="Izzo · CloudzNCrownz music videos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-    </div>
+    <div id="cat-rail" class="gallery-rail reveal-up"></div>
   </section>
 
   <!-- WORLD / GAME -->
@@ -500,6 +520,38 @@ function galScroll(dir,railId){
   const step=item ? item.getBoundingClientRect().width + 20 : rail.clientWidth*.8;
   rail.scrollBy({left:dir*step,behavior:'smooth'});
 }
+// catalog — Izzo song videos (click to play in modal)
+const CATALOG=[
+  {id:'G-_NR0fUwlU',t:'No Reason',s:'ft. Locco'},
+  {id:'LTimVwcYFtE',t:'Good Person',s:'Prod. AyoTony'},
+  {id:'bq8jnv5h0fE',t:'Remedy',s:'Prod. AyoTony'},
+  {id:'r5hOFpxb5_o',t:'We',s:'Prod. AyoTony'},
+  {id:'2vzLG5mKRMU',t:'False Hope',s:'Izzo'},
+  {id:'Ji9ybgueFNc',t:'Switch',s:'Izzo'},
+  {id:'d_2TP1U03PA',t:'Games',s:'CloudzNCrownz'},
+  {id:'GD3yBlElVXs',t:'Sky',s:'Izzo · Locco'},
+  {id:'eN3efZpRJ_k',t:'Come On Down',s:'Izzo'},
+  {id:'mJCVa0CHL3w',t:'The Truth',s:'Izzo'},
+  {id:'Q19O4Mcmr50',t:'Unconditional',s:'Locco & Izzo'},
+  {id:'wC3mckO9FHM',t:'Wake Up 2',s:'ft. Arizona'},
+  {id:'_jr42D_Hsdg',t:'For Life',s:'Isaac Wright Jr.'},
+  {id:'O6PAmAe5H9Q',t:'Colors',s:'ft. Specctheillest'},
+  {id:'JoJE2sgAOsE',t:'Breathe',s:'Izzo · Locco'},
+  {id:'WQ8Fr1Wd4bw',t:'Real',s:'CloudzNCrownz'},
+  {id:'KFVg2-IxRv8',t:'CCTV: Times Changed',s:'CCTV'},
+];
+(function renderCatalog(){
+  const rail=document.getElementById('cat-rail'); if(!rail) return;
+  rail.innerHTML=CATALOG.map(v=>`<a class="gal-item" href="https://youtu.be/${v.id}" onclick="openVideo('${v.id}');return false;">
+    <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="${v.t}" loading="lazy">
+    <div class="scan"></div>
+    <div class="cap"><div class="t">${v.s}</div><h3 class="sm">${v.t}</h3></div></a>`).join('');
+  rail.addEventListener('mousemove',e=>{const it=e.target.closest('.gal-item');if(!it)return;const r=it.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;it.style.transform=`translateY(-6px) rotateX(${(-py*7).toFixed(2)}deg) rotateY(${(px*7).toFixed(2)}deg)`;});
+  rail.addEventListener('mouseleave',()=>rail.querySelectorAll('.gal-item').forEach(el=>el.style.transform=''));
+})();
+function openVideo(id){const f=document.getElementById('vframe');f.src='https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0';document.getElementById('vmodal').classList.add('on');document.body.style.overflow='hidden';}
+function closeVideo(){document.getElementById('vframe').src='';document.getElementById('vmodal').classList.remove('on');document.body.style.overflow='';}
+addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('vmodal').classList.contains('on'))closeVideo();});
 // 3D gallery — Tripo showcase turntables (looping video tiles)
 const THREED=[
   {src:'assets/3d/piece-01.mp4', series:'3D · Tripo', name:'Artifact I'},
