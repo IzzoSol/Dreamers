@@ -378,12 +378,15 @@ const HEALING_BUDDIES = [
   </div>
 
   <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
-    <!-- MAIN SECTION -->
+    <div class="px-4 py-2 text-[9px] font-label font-bold text-on-surface/40 uppercase tracking-widest">Home</div>
     <button onclick="go('dashboard')" data-tab="dashboard" class="nav-item active w-full text-left px-4 py-3 flex items-center gap-3 font-label font-bold text-xs uppercase tracking-widest"><span class="material-symbols-outlined text-lg">dashboard</span>Dashboard</button>
     <button onclick="go('profile')" data-tab="profile" class="nav-item w-full text-left px-4 py-3 flex items-center gap-3 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60"><span class="material-symbols-outlined text-lg">person</span>Profile</button>
     <button onclick="go('community')" data-tab="community" class="nav-item w-full text-left px-4 py-3 flex items-center gap-3 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60"><span class="material-symbols-outlined text-lg">groups</span>Community</button>
+    <hr class="border-white/10 my-2"/>
+    <div class="px-4 py-2 text-[9px] font-label font-bold text-on-surface/40 uppercase tracking-widest">Create</div>
     <button onclick="go('create')" data-tab="create" class="nav-item w-full text-left px-4 py-3 flex items-center gap-3 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60"><span class="material-symbols-outlined text-lg">palette</span>Create Studio</button>
-    <button onclick="go('shaddai-music')" data-tab="shaddai-music" class="nav-item w-full text-left px-4 py-3 flex items-center gap-3 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60"><span class="material-symbols-outlined text-lg">graphic_eq</span>SHADDAI Music</button>
+    <button onclick="go('shaddai-music')" data-tab="shaddai-music" class="nav-item w-full text-left px-4 py-3 flex items-center gap-3 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60"><span class="material-symbols-outlined text-lg">graphic_eq</span>Music</button>
+    <button onclick="go('turtle')" data-tab="turtle" class="nav-item w-full text-left px-4 py-3 flex items-center gap-3 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60"><span class="material-symbols-outlined text-lg">smart_toy</span>AI Chat</button>
 
     <!-- WELLNESS SECTION -->
     <hr class="border-white/10 my-2"/>
@@ -401,7 +404,6 @@ const HEALING_BUDDIES = [
     <div class="px-4 py-2 text-[9px] font-label font-bold text-on-surface/40 uppercase tracking-widest">MORE</div>
     <button onclick="go('about')" data-tab="about" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">info</span>About Me</button>
     <button onclick="go('astrology')" data-tab="astrology" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">auto_awesome</span>Astrology</button>
-    <button onclick="go('turtle')" data-tab="turtle" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">smart_toy</span>AI Chat</button>
     <button onclick="go('news')" data-tab="news" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">newspaper</span>News</button>
     <button onclick="go('settings')" data-tab="settings" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">settings</span>Settings</button>
   </nav>
@@ -3201,7 +3203,7 @@ const HEALING_BUDDIES = [
    DREAMER ECO v3 — Application Logic + Solana Wallet Integration
    ═══════════════════════════════════════════════════════════════ */
 
-const titles={dashboard:'DASHBOARD',sanctuary:'THE SANCTUARY',credits:'IMPACT CREDITS',market:'MARKET DATA',creator:'CREATOR STUDIO',flywheel:'$DREAM FLYWHEEL',community:'THE COLLECTIVE',create:'CREATE STUDIO',writer:'DREAM WRITER',nft:'NFT CREATE',food:'FOOD SWITCH',marketplace:'MARKETPLACE',about:'ABOUT',astrology:'YOUR COSMIC BLUEPRINT',turtle:'TURTLE AI ASSISTANT',news:'NEWS FEED',settings:'SETTINGS & CONFIGURATION','day-builder':'DAY BUILDER',calendar:'CALENDAR',practices:'VIBRATIONAL PRACTICES',workouts:'WORKOUT LIBRARY','herb-market':'HERB MARKETPLACE',shopping:'SMART SHOPPING LIST','healing-buddy':'HEALING BUDDY MARKETPLACE','shaddai-music':'SHADDAI MUSIC'};
+const titles={dashboard:'DASHBOARD',sanctuary:'THE SANCTUARY',credits:'IMPACT CREDITS',market:'MARKET DATA',creator:'CREATOR STUDIO',flywheel:'$DREAM FLYWHEEL',community:'THE COLLECTIVE',create:'CREATE STUDIO',writer:'DREAM WRITER',nft:'NFT CREATE',food:'FOOD SWITCH',marketplace:'MARKETPLACE',about:'ABOUT',astrology:'YOUR COSMIC BLUEPRINT',turtle:'TURTLE AI ASSISTANT',news:'NEWS FEED',settings:'SETTINGS & CONFIGURATION','day-builder':'DAY BUILDER',calendar:'CALENDAR',practices:'VIBRATIONAL PRACTICES',workouts:'WORKOUT LIBRARY','herb-market':'HERB MARKETPLACE',shopping:'SMART SHOPPING LIST','healing-buddy':'HEALING BUDDY MARKETPLACE','shaddai-music':'MUSIC'};
 
 // ═══════════════════════════════════════════════════════════════
 // STORAGE QUOTA MANAGEMENT
