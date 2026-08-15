@@ -191,6 +191,21 @@
   .track-bar{height:6px;background:rgba(255,255,255,.08);border-radius:4px;cursor:pointer;overflow:hidden}
   .track-fill{height:100%;background:linear-gradient(90deg,var(--amethyst),var(--iris));width:0;transition:width .1s linear}
 
+  /* album showcase */
+  .album{margin-top:44px;display:flex;gap:28px;flex-wrap:wrap;align-items:stretch;max-width:780px;
+    border:1px solid var(--line);border-radius:14px;padding:24px;background:linear-gradient(135deg,rgba(183,139,255,.08),rgba(6,4,12,.45))}
+  .album-cover{width:224px;height:224px;object-fit:cover;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.55);flex:0 0 auto}
+  .album-body{flex:1;min-width:280px;display:flex;flex-direction:column;gap:16px}
+  .album-title{font-family:var(--display);font-size:clamp(28px,4.4vw,42px);font-weight:300;line-height:1}
+  .album-by{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--amethyst);margin-top:8px}
+  .album-now{display:flex;align-items:center;gap:14px}
+  .album-list{list-style:none;max-height:196px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+  .album-track{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;border-radius:6px;cursor:pointer;
+    font-size:14px;color:var(--dim);transition:background .25s,color .25s}
+  .album-track:hover{background:rgba(255,255,255,.04);color:var(--ink)}
+  .album-track.active{color:var(--iris);background:rgba(132,244,226,.07)}
+  .album-track .num{font-family:var(--mono);font-size:11px;color:var(--faint);margin-right:12px}
+
   .videowrap{margin-top:46px;position:relative;aspect-ratio:16/9;border:1px solid var(--line);border-radius:6px;overflow:hidden;
     background:linear-gradient(160deg,rgba(138,92,246,.1),rgba(8,6,15,.6))}
   .videowrap iframe,.videowrap video{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -263,15 +278,24 @@
       <div class="pillar"><div class="n">✦ Binaural</div><h4>Soundscapes</h4><p>Focus, meditate, relax, sleep — tuned frequencies for the mind.</p></div>
       <div class="pillar"><div class="n">✦ Council</div><h4>The 7 Agents</h4><p>Lyrics, mood, vibe, and cover art — the council co-creates with you.</p></div>
     </div>
-    <div class="track reveal-up">
-      <button class="track-btn" id="ltPlay" onclick="ltToggle()" aria-label="Play / pause">
-        <svg id="ltIcon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-      <div class="track-meta">
-        <div class="row"><div class="track-name"><b>DREAMERS</b> — Final Mix</div><div class="track-time" id="ltTime">0:00 / 0:00</div></div>
-        <div class="track-bar" id="ltBar" onclick="ltSeek(event)"><div class="track-fill" id="ltFill"></div></div>
+    <div class="album reveal-up">
+      <img class="album-cover" src="assets/album/cover.jpg" alt="The Good Samaritan — Izzo" loading="lazy">
+      <div class="album-body">
+        <div>
+          <div class="kick" style="margin-bottom:8px">the album</div>
+          <div class="album-title">The Good Samaritan</div>
+          <div class="album-by">Izzo · CloudzNCrownz</div>
+        </div>
+        <div class="album-now">
+          <button class="track-btn" id="albPlay" onclick="albToggle()" aria-label="Play / pause"><svg id="albIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+          <div class="album-meta track-meta">
+            <div class="row"><div class="track-name" id="albNow">—</div><div class="track-time" id="albTime">0:00 / 0:00</div></div>
+            <div class="track-bar" id="albBar" onclick="albSeek(event)"><div class="track-fill" id="albFill"></div></div>
+          </div>
+        </div>
+        <ol class="album-list" id="albList"></ol>
+        <audio id="albAudio" preload="none"></audio>
       </div>
-      <audio id="ltAudio" src="assets/audio/dreamers-final-mix.mp3" preload="metadata"></audio>
     </div>
   </section>
 
@@ -309,13 +333,11 @@
   <section class="blk" id="videos">
     <div class="reveal-up">
       <div class="kick">04 — music videos</div>
-      <h2 class="h2">Films from the <em>dream</em>.</h2>
-      <p class="lead">Wire in your music videos and visual films — YouTube, Vimeo, or self-hosted. Replace the placeholder below with an &lt;iframe&gt; or &lt;video&gt;.</p>
+      <h2 class="h2">Films from the <em class="glitch" data-text="dream">dream</em>.</h2>
+      <p class="lead">The CloudzNCrownz · Izzo catalog — 40 videos, in full.</p>
     </div>
     <div class="videowrap reveal-up">
-      <!-- WIRE: <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
-           or   <video src="videos/film.mp4" controls poster="videos/poster.jpg"></video> -->
-      <div class="ph"><div class="play"></div><div style="font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase">drop your music video here</div></div>
+      <iframe src="https://www.youtube.com/embed/videoseries?list=PLndNOiclqwQKdqmso_B0lobIW15LZmDWi&amp;rel=0" title="Izzo · CloudzNCrownz music videos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
   </section>
 
@@ -439,11 +461,30 @@ const GALLERY=[
   rail.addEventListener('mouseleave',()=>rail.querySelectorAll('.gal-item').forEach(el=>el.style.transform=''));
   rail.addEventListener('mouseout',e=>{const it=e.target.closest('.gal-item');if(it&&!it.contains(e.relatedTarget))it.style.transform='';});
 })();
-// featured track player
-const _PLAY_SVG='<path d="M8 5v14l11-7z"/>', _PAUSE_SVG='<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>';
-function ltToggle(){const a=document.getElementById('ltAudio'),ic=document.getElementById('ltIcon');if(!a)return;if(a.paused){a.play();ic.innerHTML=_PAUSE_SVG;}else{a.pause();ic.innerHTML=_PLAY_SVG;}}
-function ltSeek(e){const a=document.getElementById('ltAudio'),bar=document.getElementById('ltBar');if(!a||!a.duration)return;const r=bar.getBoundingClientRect();a.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*a.duration;}
-(function ltInit(){const a=document.getElementById('ltAudio');if(!a)return;const fmt=s=>{s=Math.floor(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};const upd=()=>{const f=document.getElementById('ltFill'),t=document.getElementById('ltTime');if(f)f.style.width=((a.currentTime/(a.duration||1))*100)+'%';if(t)t.textContent=fmt(a.currentTime)+' / '+fmt(a.duration);};a.addEventListener('timeupdate',upd);a.addEventListener('loadedmetadata',upd);a.addEventListener('ended',()=>{document.getElementById('ltIcon').innerHTML=_PLAY_SVG;});})();
+// album player — The Good Samaritan
+const ALBUM=[
+  {src:'assets/album/good-people.mp3',name:'Good People'},
+  {src:'assets/album/possible.mp3',name:'Possible'},
+  {src:'assets/album/gone.mp3',name:'Gone'},
+  {src:'assets/album/murder-season.mp3',name:'Murder Season'},
+  {src:'assets/album/dreamers.mp3',name:'Dreamers'},
+  {src:'assets/album/remedy.mp3',name:'Remedy'},
+  {src:'assets/album/forever.mp3',name:'Forever'},
+  {src:'assets/album/gone-scratches.mp3',name:'Gone (Scratches)'},
+];
+const _APLAY='<path d="M8 5v14l11-7z"/>', _APAUSE='<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>';
+let _albIdx=0;
+function _albFmt(s){s=Math.floor(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function albLoad(i,play){const a=document.getElementById('albAudio');if(!a)return;_albIdx=(i+ALBUM.length)%ALBUM.length;a.src=ALBUM[_albIdx].src;const nw=document.getElementById('albNow');if(nw)nw.textContent=(_albIdx+1)+'. '+ALBUM[_albIdx].name;document.querySelectorAll('.album-track').forEach((el,j)=>el.classList.toggle('active',j===_albIdx));if(play){a.play();document.getElementById('albIcon').innerHTML=_APAUSE;}}
+function albToggle(){const a=document.getElementById('albAudio');if(!a)return;if(!a.src){albLoad(0,true);}else if(a.paused){a.play();document.getElementById('albIcon').innerHTML=_APAUSE;}else{a.pause();document.getElementById('albIcon').innerHTML=_APLAY;}}
+function albSeek(e){const a=document.getElementById('albAudio');if(!a||!a.duration)return;const b=document.getElementById('albBar').getBoundingClientRect();a.currentTime=Math.max(0,Math.min(1,(e.clientX-b.left)/b.width))*a.duration;}
+(function albInit(){const a=document.getElementById('albAudio');if(!a)return;
+  const list=document.getElementById('albList');
+  if(list)list.innerHTML=ALBUM.map((t,i)=>`<li class="album-track" onclick="albLoad(${i},true)"><span><span class="num">${String(i+1).padStart(2,'0')}</span>${t.name}</span></li>`).join('');
+  albLoad(0,false);
+  a.addEventListener('timeupdate',()=>{const f=document.getElementById('albFill'),t=document.getElementById('albTime');if(f)f.style.width=((a.currentTime/(a.duration||1))*100)+'%';if(t)t.textContent=_albFmt(a.currentTime)+' / '+_albFmt(a.duration);});
+  a.addEventListener('ended',()=>albLoad(_albIdx+1,true));
+})();
 
 // immersive lightbox
 let _lbIndex=0;
