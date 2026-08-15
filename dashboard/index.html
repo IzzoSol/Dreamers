@@ -587,11 +587,10 @@ function closeVideo(){document.getElementById('vframe').src='';document.getEleme
 addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('vmodal').classList.contains('on'))closeVideo();});
 // merch — Izzo designs
 const MERCH=[
-  {src:'assets/merch/good-person-superman.png',t:'Good Person',s:'Superman'},
-  {src:'assets/merch/good-person-tropical.png',t:'Good Person',s:'Tropical'},
-  {src:'assets/merch/good-person-bw.png',t:'Good Person',s:'Black & White'},
-  {src:'assets/merch/dreamer-ladder-bw.png',t:'Dreamer Ladder',s:'Mono'},
-  {src:'assets/merch/dreamers-cereal.png',t:'Dreamers',s:'Cereal'},
+  {src:'assets/merch/dreamers-retro.jpeg',t:'Dreamers',s:'Retro Graffiti'},
+  {src:'assets/merch/dreamers-cereal.png',t:'Dreamers',s:'Good People Cereal'},
+  {src:'assets/merch/dreamer-ladder-bw.png',t:'Dreamers',s:'Cloud Ladder'},
+  {src:'assets/merch/dreamers-into-image.png',t:"Dreamer's Climb",s:'Pixel Triptych'},
 ];
 (function renderMerch(){
   const rail=document.getElementById('merch-rail'); if(!rail) return;
