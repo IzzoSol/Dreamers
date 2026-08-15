@@ -304,6 +304,18 @@
   .shop-item .pr{font-family:var(--mono);color:var(--iris);font-size:15px;margin-top:8px}
   .shop-item .buy{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:8px 14px;border:1px solid var(--line);border-radius:999px;transition:border-color .3s,background .3s}
   .shop-item .buy:hover{border-color:var(--amethyst);background:rgba(138,92,246,.14)}
+
+  /* good person — video framed by merch */
+  .gp{margin-top:44px;display:flex;flex-direction:column;gap:14px;align-items:center}
+  .gp-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .gp-mid{display:flex;gap:14px;align-items:center;width:100%;justify-content:center}
+  .gp-side{display:flex;flex-direction:column;gap:14px}
+  .gp-video{flex:0 1 720px;aspect-ratio:16/9;border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 20px 60px rgba(138,92,246,.32)}
+  .gp-video iframe{width:100%;height:100%;border:0}
+  .gp-thumb{width:118px;height:118px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#0d0a1a;transition:transform .3s,border-color .3s;flex:0 0 auto}
+  .gp-thumb:hover{transform:scale(1.07);border-color:var(--amethyst)}
+  .gp-thumb img{width:100%;height:100%;object-fit:cover}
+  @media(max-width:820px){.gp-side{display:none}.gp-thumb{width:88px;height:88px}}
 </style>
 </head>
 <body>
@@ -434,6 +446,24 @@
       <h3 style="font-family:var(--display);font-weight:300;font-size:clamp(22px,3vw,34px)">Dreamers Spaces</h3>
       <div class="space-tabs" id="spaceTabs"></div>
       <div class="space-body" id="spaceBody"></div>
+    </div>
+  </section>
+
+  <!-- GOOD PERSON — video framed by merch -->
+  <section class="blk" id="goodperson">
+    <div class="reveal-up" style="text-align:center">
+      <div class="kick" style="display:inline-block">good person</div>
+      <h2 class="h2" style="margin:6px auto 0">Wear the <em class="glitch" data-text="video">video</em>.</h2>
+      <p class="lead" style="margin:20px auto 0">The Good Person collection — straight out of the music video.</p>
+    </div>
+    <div class="gp reveal-up">
+      <div class="gp-row" id="gp-top"></div>
+      <div class="gp-mid">
+        <div class="gp-side" id="gp-left"></div>
+        <div class="gp-video"><iframe src="https://www.youtube.com/embed/LTimVwcYFtE?rel=0" title="Good Person" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+        <div class="gp-side" id="gp-right"></div>
+      </div>
+      <div class="gp-row" id="gp-bottom"></div>
     </div>
   </section>
 
@@ -604,10 +634,16 @@ const THEMES={
 function setTheme(t){const v=THEMES[t]||THEMES.amethyst;for(const k in v)document.documentElement.style.setProperty(k,v[k]);localStorage.setItem('d_theme',t);}
 setTheme(localStorage.getItem('d_theme')||'amethyst');
 
-// shop — Printful products (showcase; Order links out)
+// shop + good-person frame — Printful products (showcase; Order links out)
+const _orderHref=(n)=>`mailto:cloudzncrownz@gmail.com?subject=Order:%20${encodeURIComponent(n||'')}`;
 fetch('assets/shop/products.json').then(r=>r.json()).then(items=>{
-  const rail=document.getElementById('shop-rail'); if(!rail||!Array.isArray(items))return;
-  rail.innerHTML=items.map(p=>{const nm=(p.name||'').replace(/"/g,'&quot;');return `<div class="shop-item"><div class="ph">${p.img?`<img src="${p.img}" alt="${nm}" loading="lazy">`:''}</div><div class="info"><div class="nm">${p.name||''}</div>${p.price?`<div class="pr">$${p.price}</div>`:''}<a class="buy" href="mailto:cloudzncrownz@gmail.com?subject=Order:%20${encodeURIComponent(p.name||'')}">Order →</a></div></div>`;}).join('');
+  if(!Array.isArray(items))return;
+  const rail=document.getElementById('shop-rail');
+  if(rail) rail.innerHTML=items.map(p=>{const nm=(p.name||'').replace(/"/g,'&quot;');return `<div class="shop-item"><div class="ph">${p.img?`<img src="${p.img}" alt="${nm}" loading="lazy">`:''}</div><div class="info"><div class="nm">${p.name||''}</div>${p.price?`<div class="pr">$${p.price}</div>`:''}<a class="buy" href="${_orderHref(p.name)}">Order →</a></div></div>`;}).join('');
+  // good person frame
+  const gp=items.filter(p=>/good person/i.test(p.name||'')&&p.img);
+  const cell=(id,arr)=>{const el=document.getElementById(id);if(el)el.innerHTML=arr.map(p=>`<a class="gp-thumb" href="${_orderHref(p.name)}" title="${(p.name||'').replace(/"/g,'&quot;')} — $${p.price}"><img src="${p.img}" loading="lazy" alt=""></a>`).join('');};
+  cell('gp-top',gp.slice(0,4)); cell('gp-left',gp.slice(4,7)); cell('gp-right',gp.slice(7,10)); cell('gp-bottom',gp.slice(10,14));
 }).catch(()=>{});
 
 // scroll reveals
