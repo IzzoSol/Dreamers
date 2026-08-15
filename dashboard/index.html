@@ -376,6 +376,7 @@
         <form onsubmit="return submitWords(event)">
           <div class="words3"><input class="sesh-in" id="w1" placeholder="word" maxlength="24" required><input class="sesh-in" id="w2" placeholder="word" maxlength="24" required><input class="sesh-in" id="w3" placeholder="word" maxlength="24" required></div>
           <input class="sesh-in" id="instru" type="url" placeholder="instrumental YouTube link (optional)">
+          <select class="sesh-in" id="spaceType"><option value="">Which space? (any)</option><option>Dreamers</option><option>SHADDAI</option><option>Tech</option><option>Art / Music</option><option>Crypto Talk</option><option>News / Esoteric</option></select>
           <button class="btn primary" type="submit">Add to the bank →</button>
         </form>
         <div class="sesh-msg" id="wordMsg"></div>
@@ -476,12 +477,12 @@
 
 // sessions / word bank / spaces
 // Set FORM_ENDPOINT to a Formspree URL (formspree.io/f/XXXX) to collect for real; else it stores locally.
-const FORM_ENDPOINT='';
+const FORM_ENDPOINT='https://formspree.io/f/mjybonno';
 function _post(data){ if(FORM_ENDPOINT){ fetch(FORM_ENDPOINT,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify(data)}).catch(()=>{}); } }
 function joinList(e){ e.preventDefault(); const em=document.getElementById('joinEmail').value.trim(); if(!em)return false; _post({type:'signup',email:em}); const s=JSON.parse(localStorage.getItem('d_signups')||'[]'); s.push(em); localStorage.setItem('d_signups',JSON.stringify(s)); document.getElementById('joinMsg').textContent="You're in — see you on the Space."; e.target.reset(); return false; }
 function _bank(){ return JSON.parse(localStorage.getItem('d_bank')||'[]'); }
 function renderBank(){ const el=document.getElementById('bankList'); if(!el)return; const b=_bank().slice(-40); el.innerHTML=b.map(w=>`<span class="chip${w.mine?' mine':''}">${w.t}</span>`).join('')||'<span class="chip">be the first to add words</span>'; }
-function submitWords(e){ e.preventDefault(); const ws=[document.getElementById('w1').value,document.getElementById('w2').value,document.getElementById('w3').value].map(x=>x.trim()).filter(Boolean); const link=document.getElementById('instru').value.trim(); if(ws.length<3)return false; _post({type:'wordbank',words:ws,instrumental:link}); const b=_bank(); ws.forEach(t=>b.push({t,mine:true})); localStorage.setItem('d_bank',JSON.stringify(b)); renderBank(); document.getElementById('wordMsg').textContent='Added to the bank — thank you.'; e.target.reset(); return false; }
+function submitWords(e){ e.preventDefault(); const ws=[document.getElementById('w1').value,document.getElementById('w2').value,document.getElementById('w3').value].map(x=>x.trim()).filter(Boolean); const link=document.getElementById('instru').value.trim(); if(ws.length<3)return false; _post({type:'wordbank',space:document.getElementById('spaceType').value,words:ws.join(', '),instrumental:link}); const b=_bank(); ws.forEach(t=>b.push({t,mine:true})); localStorage.setItem('d_bank',JSON.stringify(b)); renderBank(); document.getElementById('wordMsg').textContent='Added to the bank — thank you.'; e.target.reset(); return false; }
 const SPACES=[
   {title:'Week 1 — Kickoff', date:'This week', words:['dream','ladder','static'], ytId:'', note:'Drop your 3 words + an instrumental. First live cover this week on X Spaces.'},
 ];
