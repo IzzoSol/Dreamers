@@ -292,6 +292,18 @@
   .book .bs{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--amethyst)}
   .book .bt{font-family:var(--display);font-size:20px;font-weight:400;line-height:1.14}
   .book .bx{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+
+  /* shop */
+  .shop-item{scroll-snap-align:start;flex:0 0 clamp(210px,30vw,270px);border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--void2);transition:transform .4s,border-color .4s}
+  .shop-item:hover{transform:translateY(-6px);border-color:var(--amethyst)}
+  .shop-item .ph{aspect-ratio:1/1;background:#0d0a1a;overflow:hidden}
+  .shop-item .ph img{width:100%;height:100%;object-fit:cover;transition:transform 4s ease}
+  .shop-item:hover .ph img{transform:scale(1.06)}
+  .shop-item .info{padding:16px}
+  .shop-item .nm{font-family:var(--body);font-size:13px;color:var(--ink);line-height:1.3;min-height:34px}
+  .shop-item .pr{font-family:var(--mono);color:var(--iris);font-size:15px;margin-top:8px}
+  .shop-item .buy{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:8px 14px;border:1px solid var(--line);border-radius:999px;transition:border-color .3s,background .3s}
+  .shop-item .buy:hover{border-color:var(--amethyst);background:rgba(138,92,246,.14)}
 </style>
 </head>
 <body>
@@ -323,6 +335,7 @@
     <a href="#studio">Music</a>
     <a href="#art">Art</a>
     <a href="#threed">3D</a>
+    <a href="#shop">Shop</a>
     <a href="#sessions">Sessions</a>
     <a href="#books">Books</a>
     <a href="#world">Game</a>
@@ -422,6 +435,21 @@
       <div class="space-tabs" id="spaceTabs"></div>
       <div class="space-body" id="spaceBody"></div>
     </div>
+  </section>
+
+  <!-- SHOP -->
+  <section class="blk" id="shop">
+    <div class="reveal-up" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div>
+        <div class="kick">the shop</div>
+        <h2 class="h2">The <em class="glitch" data-text="shop">shop</em>.</h2>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="gal-arrow" onclick="galScroll(-1,'shop-rail')" aria-label="Previous">&lsaquo;</button>
+        <button class="gal-arrow" onclick="galScroll(1,'shop-rail')" aria-label="Next">&rsaquo;</button>
+      </div>
+    </div>
+    <div id="shop-rail" class="gallery-rail reveal-up"></div>
   </section>
 
   <!-- BOOKS / LIBRARY -->
@@ -575,6 +603,12 @@ const THEMES={
 };
 function setTheme(t){const v=THEMES[t]||THEMES.amethyst;for(const k in v)document.documentElement.style.setProperty(k,v[k]);localStorage.setItem('d_theme',t);}
 setTheme(localStorage.getItem('d_theme')||'amethyst');
+
+// shop — Printful products (showcase; Order links out)
+fetch('assets/shop/products.json').then(r=>r.json()).then(items=>{
+  const rail=document.getElementById('shop-rail'); if(!rail||!Array.isArray(items))return;
+  rail.innerHTML=items.map(p=>{const nm=(p.name||'').replace(/"/g,'&quot;');return `<div class="shop-item"><div class="ph">${p.img?`<img src="${p.img}" alt="${nm}" loading="lazy">`:''}</div><div class="info"><div class="nm">${p.name||''}</div>${p.price?`<div class="pr">$${p.price}</div>`:''}<a class="buy" href="mailto:cloudzncrownz@gmail.com?subject=Order:%20${encodeURIComponent(p.name||'')}">Order →</a></div></div>`;}).join('');
+}).catch(()=>{});
 
 // scroll reveals
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.15});
