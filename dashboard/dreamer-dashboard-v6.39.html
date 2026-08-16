@@ -355,6 +355,7 @@ const HEALING_BUDDIES = [
 </div>
 
 <!-- ═══════════════════════════════════════ SIDEBAR ═══════════════════════════════════════ -->
+<div id="sidebar-backdrop" onclick="toggleSidebar()" class="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden"></div>
 <aside id="sidebar" class="fixed left-0 top-0 w-72 h-screen bg-surface-light border-r-2 border-primary/20 flex-col z-50 hidden lg:flex overflow-y-auto">
   <div class="p-6 border-b border-primary/15">
     <div class="flex items-center gap-3">
@@ -428,7 +429,7 @@ const HEALING_BUDDIES = [
 <!-- ═══════════════════════════════════════ HEADER ═══════════════════════════════════════ -->
 <header class="fixed top-0 right-0 left-0 lg:left-72 h-16 bg-surface/80 backdrop-blur-xl border-b border-primary/15 flex items-center justify-between px-4 md:px-6 z-40">
   <div class="flex items-center gap-3">
-    <button onclick="document.getElementById('sidebar').classList.toggle('hidden');document.getElementById('sidebar').classList.toggle('flex')" class="lg:hidden p-2 text-on-surface/60 hover:text-primary transition"><span class="material-symbols-outlined">menu</span></button>
+    <button onclick="toggleSidebar()" class="lg:hidden p-2 text-on-surface/60 hover:text-primary transition"><span class="material-symbols-outlined">menu</span></button>
     <h2 id="hdr-title" class="font-headline text-lg font-black text-white italic uppercase tracking-tight">DASHBOARD</h2>
     <span id="hdr-badge" class="hidden md:inline font-label text-[9px] bg-primary/15 text-primary px-2 py-0.5 uppercase tracking-widest">Live</span>
   </div>
@@ -3173,9 +3174,9 @@ const HEALING_BUDDIES = [
 <!-- ═══════════════════════════════════════ MOBILE NAV ═══════════════════════════════════════ -->
 <nav class="lg:hidden fixed bottom-0 left-0 w-full bg-surface-light/95 backdrop-blur-xl border-t-2 border-primary/20 flex justify-around items-center py-2 z-50">
   <button onclick="go('dashboard')" class="mob-nav flex flex-col items-center gap-0.5 p-2 text-primary" data-tab="dashboard"><span class="material-symbols-outlined text-lg ms-fill">dashboard</span><span class="font-label text-[8px] uppercase">Home</span></button>
-  <button onclick="go('about')" class="mob-nav flex flex-col items-center gap-0.5 p-2 text-on-surface/40" data-tab="about"><span class="material-symbols-outlined text-lg">info</span><span class="font-label text-[8px] uppercase">About</span></button>
-  <button onclick="go('sanctuary')" class="mob-nav flex flex-col items-center gap-0.5 p-2 text-on-surface/40" data-tab="sanctuary"><span class="material-symbols-outlined text-lg">spa</span><span class="font-label text-[8px] uppercase">Zen</span></button>
-  <button onclick="go('creator')" class="mob-nav flex flex-col items-center gap-0.5 p-2 text-on-surface/40" data-tab="creator"><span class="material-symbols-outlined text-lg">palette</span><span class="font-label text-[8px] uppercase">Create</span></button>
+  <button onclick="go('create')" class="mob-nav flex flex-col items-center gap-0.5 p-2 text-on-surface/40" data-tab="create"><span class="material-symbols-outlined text-lg">palette</span><span class="font-label text-[8px] uppercase">Create</span></button>
+  <button onclick="go('shaddai-music')" class="mob-nav flex flex-col items-center gap-0.5 p-2 text-on-surface/40" data-tab="shaddai-music"><span class="material-symbols-outlined text-lg">graphic_eq</span><span class="font-label text-[8px] uppercase">Music</span></button>
+  <button onclick="go('turtle')" class="mob-nav flex flex-col items-center gap-0.5 p-2 text-on-surface/40" data-tab="turtle"><span class="material-symbols-outlined text-lg">smart_toy</span><span class="font-label text-[8px] uppercase">AI</span></button>
   <button onclick="go('community')" class="mob-nav flex flex-col items-center gap-0.5 p-2 text-on-surface/40" data-tab="community"><span class="material-symbols-outlined text-lg">groups</span><span class="font-label text-[8px] uppercase">Social</span></button>
 </nav>
 
@@ -3207,6 +3208,11 @@ const titles={dashboard:'DASHBOARD',sanctuary:'THE SANCTUARY',credits:'IMPACT CR
 // STORAGE QUOTA MANAGEMENT
 // ═══════════════════════════════════════════════════════════════
 
+function toggleSidebar(){
+  var s=document.getElementById('sidebar'), bd=document.getElementById('sidebar-backdrop');
+  var nowHidden=s.classList.toggle('hidden'); s.classList.toggle('flex');
+  if(bd){ if(nowHidden) bd.classList.add('hidden'); else bd.classList.remove('hidden'); }
+}
 function go(tab){
   try{
     if(!tab){console.warn('go() called with no tab');return;}
@@ -3222,7 +3228,7 @@ function go(tab){
     document.querySelectorAll('.mob-nav').forEach(n=>{n.classList.remove('text-primary');n.classList.add('text-on-surface/40');var icon=n.querySelector('.material-symbols-outlined');if(icon)icon.classList.remove('ms-fill')});
     var mn=document.querySelector(`.mob-nav[data-tab="${tab}"]`);
     if(mn){mn.classList.add('text-primary');mn.classList.remove('text-on-surface/40');var icon=mn.querySelector('.material-symbols-outlined');if(icon)icon.classList.add('ms-fill')}
-    if(window.innerWidth<1024){var s=document.getElementById('sidebar');if(s){s.classList.add('hidden');s.classList.remove('flex')}}
+    if(window.innerWidth<1024){var s=document.getElementById('sidebar');if(s){s.classList.add('hidden');s.classList.remove('flex')}var bd=document.getElementById('sidebar-backdrop');if(bd)bd.classList.add('hidden')}
     window.scrollTo({top:0,behavior:'smooth'});
   }catch(e){
     console.error('go() error for tab',tab,':',e);
