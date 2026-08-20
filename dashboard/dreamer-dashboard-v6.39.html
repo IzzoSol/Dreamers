@@ -260,98 +260,6 @@ const HEALING_BUDDIES = [
 <div id="shd-wake-hint" class="fixed bottom-3 right-3 z-50 text-[10px] px-3 py-1 bg-primary/20 border border-primary text-white rounded">Waking the council…</div>
 <div class="grain"></div>
 
-<!-- ═══════════════════════════════════════ WALLET MODAL ═══════════════════════════════════════ -->
-<div id="wallet-modal" class="fixed inset-0 z-[9998] hidden items-center justify-center bg-black/70 backdrop-blur-sm">
-  <div class="w-full max-w-md mx-4 bg-surface-light border-2 border-primary/30 shadow-2xl animate-slide-up" style="animation-duration:.3s">
-    <div class="p-6 border-b border-white/10 flex justify-between items-center">
-      <div>
-        <h2 class="font-headline text-xl font-black text-white italic uppercase tracking-tight">CONNECT WALLET</h2>
-        <p class="font-label text-[10px] text-primary/70 tracking-widest mt-1">SOLANA NETWORK</p>
-      </div>
-      <button onclick="closeWalletModal()" class="p-2 hover:bg-white/5 transition"><span class="material-symbols-outlined text-on-surface/40">close</span></button>
-    </div>
-    <div class="p-6 space-y-3" id="wallet-options">
-      <button onclick="connectWallet('phantom')" class="w-full p-4 bg-surface hover:bg-surface-lighter border border-white/10 hover:border-primary/40 transition flex items-center gap-4 group">
-        <div class="w-10 h-10 bg-[#ab9ff2] flex items-center justify-center shrink-0">
-          <svg width="20" height="20" viewBox="0 0 128 128" fill="white"><path d="M110.6 49.5C108.4 30.8 93.1 17 73.4 17H54.7C52 17 49.5 18.5 48.4 21l-30 63.4c-2.8 5.9 1.5 12.6 8 12.6h15.8l-4.4 14.3c-2 6.5 3.2 12.7 9.9 12.7h.3c3.8 0 7.3-2.2 9-5.6l23.8-47.8h13.5c14.1 0 25.8-10.4 27.2-24.3z"/></svg>
-        </div>
-        <div class="flex-1 text-left">
-          <p class="font-label text-sm font-bold text-white group-hover:text-primary transition">Phantom</p>
-          <p class="text-[10px] text-on-surface/40" id="phantom-status">Recommended</p>
-        </div>
-        <span class="material-symbols-outlined text-on-surface/20 group-hover:text-primary transition">chevron_right</span>
-      </button>
-      <button onclick="connectWallet('solflare')" class="w-full p-4 bg-surface hover:bg-surface-lighter border border-white/10 hover:border-secondary/40 transition flex items-center gap-4 group">
-        <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-yellow-400 flex items-center justify-center shrink-0">
-          <span class="material-symbols-outlined text-white ms-fill">wb_sunny</span>
-        </div>
-        <div class="flex-1 text-left">
-          <p class="font-label text-sm font-bold text-white group-hover:text-secondary transition">Solflare</p>
-          <p class="text-[10px] text-on-surface/40" id="solflare-status">Mobile & Desktop</p>
-        </div>
-        <span class="material-symbols-outlined text-on-surface/20 group-hover:text-secondary transition">chevron_right</span>
-      </button>
-      <button onclick="connectWallet('backpack')" class="w-full p-4 bg-surface hover:bg-surface-lighter border border-white/10 hover:border-accent/40 transition flex items-center gap-4 group">
-        <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center shrink-0">
-          <span class="material-symbols-outlined text-white ms-fill">backpack</span>
-        </div>
-        <div class="flex-1 text-left">
-          <p class="font-label text-sm font-bold text-white group-hover:text-accent transition">Backpack</p>
-          <p class="text-[10px] text-on-surface/40" id="backpack-status">xNFT Wallet</p>
-        </div>
-        <span class="material-symbols-outlined text-on-surface/20 group-hover:text-accent transition">chevron_right</span>
-      </button>
-    </div>
-    <div class="p-6 pt-0 hidden" id="wallet-connecting">
-      <div class="text-center py-8">
-        <div class="w-16 h-16 border-4 border-primary/20 border-t-primary mx-auto mb-4" style="animation:spin 1s linear infinite;border-radius:50%"></div>
-        <p class="font-label text-sm text-white font-bold uppercase tracking-widest" id="connect-status-text">Connecting...</p>
-        <p class="text-[10px] text-on-surface/40 mt-2">Approve the connection in your wallet</p>
-      </div>
-    </div>
-    <div class="px-6 pb-6">
-      <div class="bg-surface p-3 border border-white/5">
-        <p class="text-[10px] text-on-surface/40 text-center"><span class="material-symbols-outlined text-[12px] align-middle text-success">verified</span> Solana Mainnet • $0.001 fees • Instant settlement</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════ WALLET CONNECTED PANEL ═══════════════════════════════════════ -->
-<div id="wallet-panel" class="fixed top-16 right-4 w-80 bg-surface-light border-2 border-primary/30 shadow-2xl z-50 hidden">
-  <div class="p-4 border-b border-white/10">
-    <div class="flex justify-between items-center mb-3">
-      <span class="font-label text-[10px] text-success uppercase tracking-widest font-bold flex items-center gap-1"><span class="w-2 h-2 bg-success rounded-full inline-block animate-pulse"></span> Connected</span>
-      <button onclick="document.getElementById('wallet-panel').classList.add('hidden')" class="text-on-surface/40 hover:text-white transition"><span class="material-symbols-outlined text-sm">close</span></button>
-    </div>
-    <div class="flex items-center gap-3 p-3 bg-surface">
-      <div class="w-10 h-10 bg-gradient-to-br from-primary to-accent flex items-center justify-center"><span class="material-symbols-outlined ms-fill text-surface text-lg">account_balance_wallet</span></div>
-      <div class="flex-1 min-w-0">
-        <p class="font-label text-xs font-bold text-white truncate" id="wallet-addr-display">Not connected</p>
-        <p class="font-label text-[9px] text-on-surface/40 flex items-center gap-1 cursor-pointer hover:text-primary transition" onclick="copyWalletAddr()"><span class="material-symbols-outlined text-[10px]">content_copy</span> Copy Address</p>
-      </div>
-    </div>
-  </div>
-  <div class="p-4 space-y-3">
-    <div class="grid grid-cols-2 gap-3">
-      <div class="bg-surface p-3"><p class="font-label text-[9px] text-on-surface/40 uppercase tracking-widest">SOL Balance</p><p class="text-lg font-black text-white stat-num" id="sol-balance">0.00</p></div>
-      <div class="bg-surface p-3"><p class="font-label text-[9px] text-on-surface/40 uppercase tracking-widest">$DREAM</p><p class="text-lg font-black text-primary stat-num" id="dream-balance">0</p></div>
-    </div>
-    <div class="bg-surface p-3 border-l-2 border-accent">
-      <p class="font-label text-[9px] text-on-surface/40 uppercase tracking-widest">Impact Credits (On-Chain)</p>
-      <p class="text-xl font-black text-accent stat-num neon-text-a" id="onchain-credits">0</p>
-    </div>
-    <div class="space-y-2">
-      <button onclick="mintCredits()" class="w-full py-2.5 bg-primary text-surface font-label font-black text-[10px] uppercase tracking-widest hover:bg-primary-dim transition flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">token</span>Mint Credits to Chain</button>
-      <button onclick="stakeTokens()" class="w-full py-2.5 bg-surface border border-secondary/30 text-secondary font-label font-bold text-[10px] uppercase tracking-widest hover:bg-secondary/10 transition flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">savings</span>Stake $DREAM</button>
-      <button onclick="disconnectWallet()" class="w-full py-2.5 bg-surface border border-error/30 text-error font-label font-bold text-[10px] uppercase tracking-widest hover:bg-error/10 transition flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">link_off</span>Disconnect</button>
-    </div>
-  </div>
-  <div class="px-4 pb-4">
-    <a href="#" onclick="go('flywheel');document.getElementById('wallet-panel').classList.add('hidden')" class="block text-center text-[10px] text-primary hover:underline font-label uppercase tracking-widest">View $DREAM Flywheel Details →</a>
-  </div>
-</div>
-
 <!-- ═══════════════════════════════════════ TX TOAST ═══════════════════════════════════════ -->
 <div id="tx-toast" class="fixed bottom-20 lg:bottom-4 right-4 z-[9997] hidden">
   <div class="bg-surface-light border-2 border-success/40 p-4 shadow-2xl max-w-sm animate-slide-up" style="animation-duration:.3s">
@@ -421,20 +329,11 @@ const HEALING_BUDDIES = [
     <button onclick="go('settings')" data-tab="settings" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">settings</span>Settings</button>
   </nav>
 
-  <div class="p-4 border-t border-primary/15 space-y-3">
-    <div class="bg-surface p-4 neon-p">
-      <div class="flex justify-between items-start mb-1">
-        <p class="font-label text-[10px] text-on-surface/50 uppercase tracking-widest">Your Credits</p>
-        <span class="font-label text-[9px] text-success bg-success/15 px-2 py-0.5">+18%</span>
-      </div>
-      <p class="text-3xl font-black text-primary stat-num neon-text-p" id="sidebar-credits">2,450</p>
-      <div class="flex justify-between items-center mt-2">
-        <p class="text-[10px] text-accent">≈ $24.5K (2026) → $245K (2030)</p>
-      </div>
-    </div>
-    <button id="wallet-btn" onclick="handleWalletBtn()" class="w-full py-3 bg-primary text-surface font-label font-black text-xs uppercase tracking-widest hover:bg-primary-dim transition-colors flex items-center justify-center gap-2">
-      <span class="material-symbols-outlined text-sm">account_balance_wallet</span><span id="wallet-btn-text">CONNECT WALLET</span>
+  <div class="p-4 border-t border-primary/15">
+    <button onclick="openRegisterModal()" class="w-full py-3 bg-primary text-surface font-label font-black text-xs uppercase tracking-widest hover:bg-primary-dim transition-colors flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-sm">rocket_launch</span>Get Started
     </button>
+    <p class="text-center text-[9px] text-on-surface/30 font-label uppercase tracking-widest mt-3">Dreamers · the culture of creation</p>
   </div>
 </aside>
 
@@ -450,11 +349,6 @@ const HEALING_BUDDIES = [
       <span class="material-symbols-outlined text-outline text-sm">search</span>
       <input type="text" placeholder="Search ecosystem..." class="bg-transparent border-none focus:ring-0 text-xs font-label placeholder:text-outline/60 w-36 text-on-surface"/>
     </div>
-    <button id="hdr-wallet-btn" onclick="handleWalletBtn()" class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-surface-lighter border border-primary/20 hover:border-primary/40 transition cursor-pointer" title="Wallet">
-      <span class="material-symbols-outlined text-primary text-sm">account_balance_wallet</span>
-      <span class="font-label text-[10px] text-on-surface/60 uppercase tracking-widest" id="hdr-wallet-label">Connect</span>
-      <span class="w-2 h-2 bg-success rounded-full hidden" id="hdr-wallet-dot"></span>
-    </button>
     <button class="relative p-2 hover:bg-white/5 transition" id="notif-btn" onclick="document.getElementById('notif-panel').classList.toggle('hidden')">
       <span class="material-symbols-outlined text-secondary">notifications</span>
       <span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full animate-pulse"></span>
@@ -512,49 +406,30 @@ const HEALING_BUDDIES = [
     </div>
   </div>
 
-  <!-- Community Stats -->
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-    <div class="card p-5 border-l-4 border-primary group hover:neon-p"><p class="font-label text-[10px] text-on-surface/50 uppercase tracking-widest mb-2">Creators Active</p><h3 class="text-3xl font-black text-primary stat-num neon-text-p">2,481</h3><p class="text-[10px] text-success mt-2 flex items-center gap-1"><span class="material-symbols-outlined text-xs">arrow_upward</span>+340 this month</p></div>
-    <div class="card p-5 border-l-4 border-secondary group hover:neon-s"><p class="font-label text-[10px] text-on-surface/50 uppercase tracking-widest mb-2">Collaborations</p><h3 class="text-3xl font-black text-secondary stat-num neon-text-s">847</h3><p class="text-[10px] text-accent mt-2">Active projects</p></div>
-    <div class="card p-5 border-l-4 border-accent group hover:neon-a"><p class="font-label text-[10px] text-on-surface/50 uppercase tracking-widest mb-2">Skills Shared</p><h3 class="text-3xl font-black text-accent stat-num neon-text-a">15K+</h3><p class="text-[10px] text-on-surface/40 mt-2">Learning resources</p></div>
-    <div class="card p-5 border-l-4 border-success group"><p class="font-label text-[10px] text-on-surface/50 uppercase tracking-widest mb-2">Lives Impacted</p><h3 class="text-3xl font-black text-success stat-num">348K</h3><p class="text-[10px] text-on-surface/40 mt-2">Through creations</p></div>
-  </div>
-
-  <!-- Community Impact + Growth -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <div class="lg:col-span-2 card p-6">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="font-headline text-xl font-black text-white italic uppercase tracking-tight">COLLECTIVE IMPACT GROWTH</h2>
-        <span class="font-label text-[10px] text-success bg-success/10 px-3 py-1 uppercase tracking-widest">100K+ Creators by 2030</span>
-      </div>
-      <div class="flex items-end gap-3 h-48">
-        <div class="flex-1 flex flex-col items-center"><div class="chart-bar w-full bg-gradient-to-t from-primary to-primary/30 rounded-t-sm flex items-end justify-center pb-2 origin-bottom" style="height:15%;animation:barGrow 1s ease-out .1s both"><span class="font-black text-[10px] text-white">$50B</span></div><span class="text-[10px] mt-2 text-on-surface/40 font-label">2026</span></div>
-        <div class="flex-1 flex flex-col items-center"><div class="chart-bar w-full bg-gradient-to-t from-primary to-primary/30 rounded-t-sm flex items-end justify-center pb-2 origin-bottom" style="height:35%;animation:barGrow 1s ease-out .3s both"><span class="font-black text-[10px] text-white">$150B</span></div><span class="text-[10px] mt-2 text-on-surface/40 font-label">2027</span></div>
-        <div class="flex-1 flex flex-col items-center"><div class="chart-bar w-full bg-gradient-to-t from-secondary to-secondary/30 rounded-t-sm flex items-end justify-center pb-2 origin-bottom" style="height:62%;animation:barGrow 1s ease-out .5s both"><span class="font-black text-[10px] text-white">$300B</span></div><span class="text-[10px] mt-2 text-on-surface/40 font-label">2028</span></div>
-        <div class="flex-1 flex flex-col items-center"><div class="chart-bar w-full bg-gradient-to-t from-accent to-accent/30 rounded-t-sm flex items-end justify-center pb-2 origin-bottom" style="height:85%;animation:barGrow 1s ease-out .7s both"><span class="font-black text-[10px] text-white">$425B</span></div><span class="text-[10px] mt-2 text-on-surface/40 font-label">2029</span></div>
-        <div class="flex-1 flex flex-col items-center"><div class="chart-bar w-full bg-gradient-to-t from-accent via-accent/60 to-accent/20 rounded-t-sm flex items-end justify-center pb-2 origin-bottom neon-a" style="height:100%;animation:barGrow 1s ease-out .9s both"><span class="font-black text-xs text-surface">$500B+</span></div><span class="text-[10px] mt-2 text-accent font-label font-bold">2030</span></div>
-      </div>
-    </div>
-
-    <div class="card p-6">
-      <h3 class="font-headline text-sm font-black text-white italic uppercase tracking-tight mb-4">COMMUNITY STORIES</h3>
-      <div class="space-y-3 max-h-64 overflow-y-auto">
-        <div class="flex gap-3 items-start p-2 bg-surface/40"><div class="w-1 h-full bg-success shrink-0"></div><div><p class="text-[11px] text-on-surface/80"><span class="text-success font-bold">💡 Luna H.</span> shared climate documentary tutorial with 240+ creators</p><p class="text-[9px] text-on-surface/30 mt-0.5">2h ago</p></div></div>
-        <div class="flex gap-3 items-start p-2 bg-surface/40"><div class="w-1 h-full bg-primary shrink-0"></div><div><p class="text-[11px] text-on-surface/80"><span class="text-primary font-bold">🤝 Marcus + Amara</span> started collaboration on biodiversity podcast</p><p class="text-[9px] text-on-surface/30 mt-0.5">4h ago</p></div></div>
-        <div class="flex gap-3 items-start p-2 bg-surface/40"><div class="w-1 h-full bg-accent shrink-0"></div><div><p class="text-[11px] text-on-surface/80"><span class="text-accent font-bold">🎓 New learning path:</span> "Creative Entrepreneurship" launched by community</p><p class="text-[9px] text-on-surface/30 mt-0.5">1d ago</p></div></div>
-        <div class="flex gap-3 items-start p-2 bg-surface/40"><div class="w-1 h-full bg-secondary shrink-0"></div><div><p class="text-[11px] text-on-surface/80"><span class="text-secondary font-bold">🌍 Global Collective:</span> 15K+ creators connected in mentorship networks</p><p class="text-[9px] text-on-surface/30 mt-0.5">1d ago</p></div></div>
-        <div class="flex gap-3 items-start p-2 bg-surface/40"><div class="w-1 h-full bg-success shrink-0"></div><div><p class="text-[11px] text-on-surface/80"><span class="text-success font-bold">✨ Your impact:</span> 348K lives touched through creative community</p><p class="text-[9px] text-on-surface/30 mt-0.5">2d ago</p></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Recent Creations -->
+  <!-- Jump in: real tools -->
   <div>
-    <h2 class="font-headline text-xl font-black text-white italic uppercase tracking-tight mb-6">WHAT YOU'RE CREATING & SHARING</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="card overflow-hidden group cursor-pointer hover:border-primary/60"><div class="h-28 bg-gradient-to-br from-primary/30 via-secondary/20 to-primary/10 relative flex items-center justify-center"><span class="text-5xl group-hover:scale-110 transition-transform">🎵</span><span class="absolute top-3 right-3 bg-success text-surface text-[9px] font-label font-black px-2 py-0.5 uppercase">Live</span></div><div class="p-4"><h4 class="font-headline font-bold text-sm text-white uppercase">Ocean Cleanup Song</h4><p class="text-[10px] text-on-surface/50 mt-1">Music • Shared with 240+ creators</p><div class="space-y-2 mt-3"><p class="text-[10px] text-on-surface/40">📊 12.4K plays • 67 remixes • 23 collabs</p><p class="text-[10px] text-success font-bold">→ 10K people inspired to action</p></div></div></div>
-      <div class="card overflow-hidden group cursor-pointer hover:border-success/60"><div class="h-28 bg-gradient-to-br from-success/30 via-primary/20 to-success/10 relative flex items-center justify-center"><span class="text-5xl group-hover:scale-110 transition-transform">🌳</span><span class="absolute top-3 right-3 bg-primary/20 text-primary text-[9px] font-label font-black px-2 py-0.5 uppercase">Active</span></div><div class="p-4"><h4 class="font-headline font-bold text-sm text-white uppercase">Forest Mural Project</h4><p class="text-[10px] text-on-surface/50 mt-1">Visual Art • 4 active collaborators</p><div class="space-y-2 mt-3"><p class="text-[10px] text-on-surface/40">🤝 Co-creating with Luna, Marcus, Amara</p><p class="text-[10px] text-success font-bold">→ Real trees planted with proceeds</p></div></div></div>
-      <div class="card overflow-hidden group cursor-pointer hover:border-accent/60"><div class="h-28 bg-gradient-to-br from-accent/30 via-secondary/20 to-accent/10 relative flex items-center justify-center"><span class="text-5xl group-hover:scale-110 transition-transform">🎭</span><span class="absolute top-3 right-3 bg-accent/20 text-accent text-[9px] font-label font-black px-2 py-0.5 uppercase">Featured</span></div><div class="p-4"><h4 class="font-headline font-bold text-sm text-white uppercase">Climate Poetry Slam</h4><p class="text-[10px] text-on-surface/50 mt-1">Performance • Trending #3</p><div class="space-y-2 mt-3"><p class="text-[10px] text-on-surface/40">🎬 Teaching 200+ aspiring poets</p><p class="text-[10px] text-success font-bold">→ Free mentorship • Open source</p></div></div></div>
+    <h2 class="font-headline text-lg font-black text-white italic uppercase tracking-tight mb-4">Jump In</h2>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <button onclick="go('create')" class="card p-5 border-l-4 border-primary text-left group hover:neon-p"><span class="material-symbols-outlined text-primary text-2xl mb-3">palette</span><h3 class="font-headline font-black text-sm text-white uppercase">Create Studio</h3><p class="text-[10px] text-on-surface/50 mt-1">Generate art & visuals</p><p class="text-[10px] text-primary font-bold mt-3 flex items-center gap-1 group-hover:gap-2 transition-all">Open <span class="material-symbols-outlined text-xs">arrow_forward</span></p></button>
+      <button onclick="go('shaddai-music')" class="card p-5 border-l-4 border-secondary text-left group hover:neon-s"><span class="material-symbols-outlined text-secondary text-2xl mb-3">graphic_eq</span><h3 class="font-headline font-black text-sm text-white uppercase">Music Studio</h3><p class="text-[10px] text-on-surface/50 mt-1">Make tracks in-browser</p><p class="text-[10px] text-secondary font-bold mt-3 flex items-center gap-1 group-hover:gap-2 transition-all">Open <span class="material-symbols-outlined text-xs">arrow_forward</span></p></button>
+      <button onclick="go('turtle')" class="card p-5 border-l-4 border-accent text-left group hover:neon-a"><span class="material-symbols-outlined text-accent text-2xl mb-3">auto_awesome</span><h3 class="font-headline font-black text-sm text-white uppercase">Creative AI</h3><p class="text-[10px] text-on-surface/50 mt-1">Write with QUILL & TURTLE</p><p class="text-[10px] text-accent font-bold mt-3 flex items-center gap-1 group-hover:gap-2 transition-all">Open <span class="material-symbols-outlined text-xs">arrow_forward</span></p></button>
+      <button onclick="go('community')" class="card p-5 border-l-4 border-success text-left group"><span class="material-symbols-outlined text-success text-2xl mb-3">groups</span><h3 class="font-headline font-black text-sm text-white uppercase">Community</h3><p class="text-[10px] text-on-surface/50 mt-1">Connect with creators</p><p class="text-[10px] text-success font-bold mt-3 flex items-center gap-1 group-hover:gap-2 transition-all">Open <span class="material-symbols-outlined text-xs">arrow_forward</span></p></button>
+    </div>
+  </div>
+
+  <!-- Your creations: honest empty state -->
+  <div>
+    <h2 class="font-headline text-lg font-black text-white italic uppercase tracking-tight mb-4">Your Creations</h2>
+    <div class="card p-10 md:p-14 flex flex-col items-center text-center">
+      <div class="w-16 h-16 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center mb-5">
+        <span class="material-symbols-outlined text-primary text-3xl">stars</span>
+      </div>
+      <h3 class="font-headline text-xl font-black text-white uppercase tracking-tight">Nothing here yet</h3>
+      <p class="text-sm text-on-surface/50 mt-2 max-w-md">This is your space. Anything you make with the tools above — music, art, writing — will show up right here.</p>
+      <div class="flex flex-wrap gap-3 justify-center mt-6">
+        <button onclick="go('create')" class="px-5 py-3 bg-primary text-surface font-label font-black text-xs uppercase tracking-widest hover:bg-primary-dim transition flex items-center gap-2"><span class="material-symbols-outlined text-sm">add</span>Make Something</button>
+        <button onclick="go('shaddai-music')" class="px-5 py-3 bg-surface-lighter border border-secondary/30 text-secondary font-label font-bold text-xs uppercase tracking-widest hover:bg-secondary/10 transition flex items-center gap-2"><span class="material-symbols-outlined text-sm">music_note</span>Start a Track</button>
+      </div>
     </div>
   </div>
 </section>
@@ -4157,6 +4032,8 @@ async function fetchBalances() {
 
 // Update all wallet UI elements
 function updateWalletUI() {
+  // Wallet UI removed — Dreamers uses sign-in, not wallet connect. No-op guard.
+  if (!document.getElementById('wallet-btn-text')) return;
   const connected = walletState.connected;
   const addr = walletState.publicKey?.toString() || '';
 
