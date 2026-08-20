@@ -535,19 +535,28 @@ const HEALING_BUDDIES = [
     </div>
 
     <div class="flex items-center justify-center mb-8">
-      <div class="relative w-40 h-40">
-        <svg class="w-full h-full" viewBox="0 0 200 200">
-          <circle cx="100" cy="100" r="90" fill="none" stroke="#ffffff08" stroke-width="2"/>
-          <circle id="breathe-circle" cx="100" cy="100" r="50" fill="none" stroke="url(#grad)" stroke-width="3" style="animation: breatheAnim 8s ease-in-out infinite"/>
+      <div class="relative w-64 h-64 md:w-72 md:h-72">
+        <!-- ambient halo (always gently breathing) -->
+        <div class="absolute inset-6 rounded-full animate-breathe" style="background:radial-gradient(circle at 50% 45%,rgba(204,151,255,.35),rgba(45,183,242,.12) 55%,transparent 72%);filter:blur(6px)"></div>
+        <svg class="relative w-full h-full" viewBox="0 0 200 200">
           <defs>
-            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#cc97ff;stop-opacity:1" />
-              <stop offset="100%" style="stop-color:#2db7f2;stop-opacity:1" />
-            </linearGradient>
+            <radialGradient id="orbFill" cx="42%" cy="38%" r="75%">
+              <stop offset="0%" stop-color="#ead9ff"/>
+              <stop offset="42%" stop-color="#cc97ff"/>
+              <stop offset="100%" stop-color="#2db7f2"/>
+            </radialGradient>
+            <filter id="orbGlow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
           </defs>
+          <!-- static guide rings -->
+          <circle cx="100" cy="100" r="92" fill="none" stroke="#ffffff10" stroke-width="1"/>
+          <circle cx="100" cy="100" r="80" fill="none" stroke="#cc97ff20" stroke-width="1" stroke-dasharray="2 6"/>
+          <!-- JS-driven breathing orb (r 30..80) -->
+          <circle id="breathe-circle" cx="100" cy="100" r="50" fill="url(#orbFill)" opacity="0.92" filter="url(#orbGlow)" style="transition:r .12s linear"/>
         </svg>
-        <div class="absolute inset-0 flex items-center justify-center">
-          <span id="breathe-text" class="text-2xl font-headline font-black text-primary">Breathe...</span>
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <span id="breathe-text" class="text-xl font-headline font-black text-white uppercase tracking-widest" style="text-shadow:0 0 18px rgba(8,6,16,.9)">Breathe...</span>
         </div>
       </div>
     </div>
@@ -572,48 +581,58 @@ const HEALING_BUDDIES = [
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <!-- Chakra Visualization -->
       <div class="flex flex-col items-center justify-center">
-        <svg class="w-full max-w-sm" viewBox="0 0 200 500" style="filter: drop-shadow(0 0 20px rgba(204,151,255,0.2))">
-          <!-- Head -->
-          <circle cx="100" cy="60" r="30" fill="#ffffff20" stroke="#ffd700" stroke-width="2"/>
-          <!-- Neck/Shoulders -->
-          <rect x="70" y="90" width="60" height="40" fill="#ffffff10" stroke="#ffffff20" stroke-width="1" rx="5"/>
-
-          <!-- Crown (Violet) -->
-          <circle cx="100" cy="70" r="12" fill="#a855f7" opacity="0.8" class="chakra-ring" onclick="activateChakra('crown')"/>
-          <text x="100" y="75" text-anchor="middle" fill="#ffffff" font-size="20">👑</text>
-
-          <!-- Third Eye (Indigo) -->
-          <circle cx="100" cy="120" r="12" fill="#6366f1" opacity="0.8" class="chakra-ring" onclick="activateChakra('third-eye')"/>
-          <text x="100" y="125" text-anchor="middle" fill="#ffffff" font-size="20">👁</text>
-
-          <!-- Throat (Blue) -->
-          <circle cx="100" cy="170" r="12" fill="#0ea5e9" opacity="0.8" class="chakra-ring" onclick="activateChakra('throat')"/>
-          <text x="100" y="175" text-anchor="middle" fill="#ffffff" font-size="20">🎤</text>
-
-          <!-- Heart (Green) -->
-          <circle cx="100" cy="220" r="12" fill="#10b981" opacity="0.8" class="chakra-ring" onclick="activateChakra('heart')"/>
-          <text x="100" y="225" text-anchor="middle" fill="#ffffff" font-size="20">❤️</text>
-
-          <!-- Solar Plexus (Yellow) -->
-          <circle cx="100" cy="270" r="12" fill="#fbbf24" opacity="0.8" class="chakra-ring" onclick="activateChakra('solar')"/>
-          <text x="100" y="275" text-anchor="middle" fill="#ffffff" font-size="20">☀️</text>
-
-          <!-- Sacral (Orange) -->
-          <circle cx="100" cy="320" r="12" fill="#f97316" opacity="0.8" class="chakra-ring" onclick="activateChakra('sacral')"/>
-          <text x="100" y="325" text-anchor="middle" fill="#ffffff" font-size="20">🌊</text>
-
-          <!-- Root (Red) -->
-          <circle cx="100" cy="370" r="12" fill="#ef4444" opacity="0.8" class="chakra-ring" onclick="activateChakra('root')"/>
-          <text x="100" y="375" text-anchor="middle" fill="#ffffff" font-size="20">🌍</text>
-
-          <!-- Connection lines -->
-          <line x1="100" y1="70" x2="100" y2="120" stroke="#ffffff10" stroke-width="1"/>
-          <line x1="100" y1="120" x2="100" y2="170" stroke="#ffffff10" stroke-width="1"/>
-          <line x1="100" y1="170" x2="100" y2="220" stroke="#ffffff10" stroke-width="1"/>
-          <line x1="100" y1="220" x2="100" y2="270" stroke="#ffffff10" stroke-width="1"/>
-          <line x1="100" y1="270" x2="100" y2="320" stroke="#ffffff10" stroke-width="1"/>
-          <line x1="100" y1="320" x2="100" y2="370" stroke="#ffffff10" stroke-width="1"/>
+        <svg class="w-full max-w-[260px]" viewBox="0 0 200 490">
+          <defs>
+            <filter id="chGlow" x="-80%" y="-80%" width="260%" height="260%">
+              <feGaussianBlur stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <linearGradient id="sushumna" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#a855f7"/><stop offset="50%" stop-color="#10b981"/><stop offset="100%" stop-color="#ef4444"/>
+            </linearGradient>
+            <radialGradient id="coreShine" cx="40%" cy="35%" r="70%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity=".9"/><stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <!-- luminous central channel (sushumna) -->
+          <line x1="100" y1="46" x2="100" y2="444" stroke="url(#sushumna)" stroke-width="2.5" opacity=".45" filter="url(#chGlow)"/>
+          <!-- chakras: id, cy, color -->
+          <g class="chakra-ring" onclick="activateChakra('crown')" style="cursor:pointer;transform-box:fill-box;transform-origin:center">
+            <circle cx="100" cy="46" r="30" fill="#a855f7" opacity=".10"/>
+            <circle cx="100" cy="46" r="21" fill="none" stroke="#a855f7" stroke-width="7" stroke-dasharray="2.6 5" opacity=".95" filter="url(#chGlow)"/>
+            <circle cx="100" cy="46" r="10" fill="#a855f7" filter="url(#chGlow)"/><circle cx="100" cy="46" r="10" fill="url(#coreShine)"/>
+          </g>
+          <g class="chakra-ring" onclick="activateChakra('third-eye')" style="cursor:pointer;transform-box:fill-box;transform-origin:center">
+            <circle cx="100" cy="112" r="28" fill="#6366f1" opacity=".10"/>
+            <circle cx="100" cy="112" r="20" fill="none" stroke="#6366f1" stroke-width="7" stroke-dasharray="2.6 5" opacity=".95" filter="url(#chGlow)"/>
+            <circle cx="100" cy="112" r="10" fill="#6366f1" filter="url(#chGlow)"/><circle cx="100" cy="112" r="10" fill="url(#coreShine)"/>
+          </g>
+          <g class="chakra-ring" onclick="activateChakra('throat')" style="cursor:pointer;transform-box:fill-box;transform-origin:center">
+            <circle cx="100" cy="178" r="28" fill="#0ea5e9" opacity=".10"/>
+            <circle cx="100" cy="178" r="20" fill="none" stroke="#0ea5e9" stroke-width="7" stroke-dasharray="2.6 5" opacity=".95" filter="url(#chGlow)"/>
+            <circle cx="100" cy="178" r="10" fill="#0ea5e9" filter="url(#chGlow)"/><circle cx="100" cy="178" r="10" fill="url(#coreShine)"/>
+          </g>
+          <g class="chakra-ring" onclick="activateChakra('heart')" style="cursor:pointer;transform-box:fill-box;transform-origin:center">
+            <circle cx="100" cy="245" r="30" fill="#10b981" opacity=".10"/>
+            <circle cx="100" cy="245" r="21" fill="none" stroke="#10b981" stroke-width="7" stroke-dasharray="2.6 5" opacity=".95" filter="url(#chGlow)"/>
+            <circle cx="100" cy="245" r="10" fill="#10b981" filter="url(#chGlow)"/><circle cx="100" cy="245" r="10" fill="url(#coreShine)"/>
+          </g>
+          <g class="chakra-ring" onclick="activateChakra('solar')" style="cursor:pointer;transform-box:fill-box;transform-origin:center">
+            <circle cx="100" cy="312" r="28" fill="#fbbf24" opacity=".10"/>
+            <circle cx="100" cy="312" r="20" fill="none" stroke="#fbbf24" stroke-width="7" stroke-dasharray="2.6 5" opacity=".95" filter="url(#chGlow)"/>
+            <circle cx="100" cy="312" r="10" fill="#fbbf24" filter="url(#chGlow)"/><circle cx="100" cy="312" r="10" fill="url(#coreShine)"/>
+          </g>
+          <g class="chakra-ring" onclick="activateChakra('sacral')" style="cursor:pointer;transform-box:fill-box;transform-origin:center">
+            <circle cx="100" cy="378" r="28" fill="#f97316" opacity=".10"/>
+            <circle cx="100" cy="378" r="20" fill="none" stroke="#f97316" stroke-width="7" stroke-dasharray="2.6 5" opacity=".95" filter="url(#chGlow)"/>
+            <circle cx="100" cy="378" r="10" fill="#f97316" filter="url(#chGlow)"/><circle cx="100" cy="378" r="10" fill="url(#coreShine)"/>
+          </g>
+          <g class="chakra-ring" onclick="activateChakra('root')" style="cursor:pointer;transform-box:fill-box;transform-origin:center">
+            <circle cx="100" cy="444" r="30" fill="#ef4444" opacity=".10"/>
+            <circle cx="100" cy="444" r="21" fill="none" stroke="#ef4444" stroke-width="7" stroke-dasharray="2.6 5" opacity=".95" filter="url(#chGlow)"/>
+            <circle cx="100" cy="444" r="10" fill="#ef4444" filter="url(#chGlow)"/><circle cx="100" cy="444" r="10" fill="url(#coreShine)"/>
+          </g>
         </svg>
+        <p class="text-[10px] text-on-surface/40 font-label uppercase tracking-widest mt-4">Tap a chakra to explore it</p>
       </div>
 
       <!-- Chakra Details -->
