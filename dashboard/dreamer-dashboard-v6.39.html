@@ -870,7 +870,7 @@ const HEALING_BUDDIES = [
 <section id="tab-market" class="tab-panel p-6 md:p-10 space-y-10">
   <div>
     <h1 class="font-headline text-5xl md:text-6xl font-black text-secondary italic uppercase leading-[.85] tracking-tighter neon-text-s">MARKET <span class="text-white">DATA</span></h1>
-    <p class="text-on-surface/50 font-label text-sm tracking-[.2em] uppercase mt-3">$500B+ opportunity by 2030 — who's buying?</p>
+    <p class="text-on-surface/50 font-label text-sm tracking-[.2em] uppercase mt-3">The market we're building toward</p>
   </div>
 
   <!-- Buyer Cards -->
@@ -882,26 +882,24 @@ const HEALING_BUDDIES = [
     <div class="card p-6 border-t-4 border-pink-500"><p class="text-3xl mb-3">🎪</p><h3 class="font-headline font-bold text-pink-400 text-lg">Festivals & Brands</h3><p class="text-xs text-on-surface/60 mb-1">Coachella, Nike, Adidas</p><p class="text-3xl font-black text-white mt-3">$50B</p><p class="text-[10px] text-on-surface/40">Sustainability certs + creative sponsorships</p></div>
   </div>
 
-  <!-- Calculator -->
+  <!-- How creators earn (honest) -->
   <div class="card p-6">
-    <h2 class="font-headline text-lg font-black text-white italic uppercase mb-4">CREDITS → CASH CALCULATOR</h2>
-    <div class="space-y-4">
-      <div><label class="font-label text-xs text-on-surface/50 uppercase tracking-widest block mb-2">Your Credits</label><input id="calc-input" type="range" min="100" max="10000" step="100" value="2450" oninput="updateCalc(this.value)" class="w-full accent-primary bg-surface-lighter h-2 cursor-pointer"/><p class="text-right font-label text-sm text-primary font-bold mt-1" id="calc-credits">2,450 Credits</p></div>
-      <div class="grid grid-cols-2 gap-4">
-        <div class="bg-surface p-4 border-l-4 border-primary"><p class="font-label text-[10px] text-on-surface/40 uppercase mb-1">Value Today (2026)</p><p class="text-2xl font-black text-primary" id="calc-today">$24,500</p></div>
-        <div class="bg-surface p-4 border-l-4 border-accent neon-a"><p class="font-label text-[10px] text-on-surface/40 uppercase mb-1">Value 2030</p><p class="text-2xl font-black text-accent neon-text-a" id="calc-2030">$245,000</p></div>
-      </div>
+    <h2 class="font-headline text-lg font-black text-white italic uppercase mb-4">HOW CREATORS EARN</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-surface p-4 border-l-4 border-primary"><span class="material-symbols-outlined text-primary mb-2">brush</span><p class="text-xs text-white font-bold">1 · Create</p><p class="text-[10px] text-on-surface/50 mt-1">Make music, art or writing with the built-in tools.</p></div>
+      <div class="bg-surface p-4 border-l-4 border-secondary"><span class="material-symbols-outlined text-secondary mb-2">verified</span><p class="text-xs text-white font-bold">2 · Attach impact</p><p class="text-[10px] text-on-surface/50 mt-1">Tie your work to a cause; the impact is logged and verifiable.</p></div>
+      <div class="bg-surface p-4 border-l-4 border-accent"><span class="material-symbols-outlined text-accent mb-2">payments</span><p class="text-xs text-white font-bold">3 · Get paid</p><p class="text-[10px] text-on-surface/50 mt-1">Supporters and sponsors back your work — you keep the earnings.</p></div>
     </div>
+    <p class="text-[10px] text-on-surface/40 mt-4">Credit pricing is set at launch. We won't show projected dollar values we can't stand behind.</p>
   </div>
 
-  <!-- Live Purchases -->
+  <!-- Recent Purchases (honest empty state) -->
   <div class="card p-6">
     <h2 class="font-headline text-lg font-black text-white italic uppercase mb-4">RECENT PURCHASES</h2>
-    <div class="space-y-3">
-      <div class="flex items-center justify-between p-3 bg-surface border-l-2 border-secondary"><div><p class="text-xs font-bold text-white">Delta Airlines</p><p class="text-[10px] text-on-surface/40">5,000 credits • CORSIA Offset</p></div><p class="text-sm font-black text-secondary">$50,000</p></div>
-      <div class="flex items-center justify-between p-3 bg-surface border-l-2 border-primary"><div><p class="text-xs font-bold text-white">Google ESG Fund</p><p class="text-[10px] text-on-surface/40">12,000 credits • Social Impact</p></div><p class="text-sm font-black text-primary">$120,000</p></div>
-      <div class="flex items-center justify-between p-3 bg-surface border-l-2 border-accent"><div><p class="text-xs font-bold text-white">UNESCO Heritage</p><p class="text-[10px] text-on-surface/40">3,200 credits • Cultural Preservation</p></div><p class="text-sm font-black text-accent">$32,000</p></div>
-      <div class="flex items-center justify-between p-3 bg-surface border-l-2 border-success"><div><p class="text-xs font-bold text-white">Nike Sustainability</p><p class="text-[10px] text-on-surface/40">1,500 credits • Creative Sponsorship</p></div><p class="text-sm font-black text-success">$15,000</p></div>
+    <div class="flex flex-col items-center text-center py-8">
+      <span class="material-symbols-outlined text-on-surface/25 text-4xl mb-3">receipt_long</span>
+      <p class="text-sm text-white font-bold">No purchases yet</p>
+      <p class="text-[11px] text-on-surface/40 mt-1 max-w-sm">When impact credits start selling, real transactions will appear here — no placeholders, no fake buyers.</p>
     </div>
   </div>
 
@@ -1006,35 +1004,29 @@ const HEALING_BUDDIES = [
         </div>
       </div>
       <div>
-        <h3 class="font-headline text-sm font-black text-white italic uppercase mb-4 flex items-center gap-2"><span class="text-secondary">●</span>IMPACT METRICS</h3>
-        <div class="space-y-4">
-          <div><div class="flex justify-between text-xs mb-1"><span class="text-on-surface/60">People Inspired</span><span class="text-primary font-bold">2.4M+</span></div><div class="h-2 bg-surface-lighter"><div class="h-full bg-primary" style="width:92%"></div></div></div>
-          <div><div class="flex justify-between text-xs mb-1"><span class="text-on-surface/60">CO2 Prevented (tons)</span><span class="text-secondary font-bold">180K+</span></div><div class="h-2 bg-surface-lighter"><div class="h-full bg-secondary" style="width:78%"></div></div></div>
-          <div><div class="flex justify-between text-xs mb-1"><span class="text-on-surface/60">Plastic Reduced (tons)</span><span class="text-success font-bold">45K+</span></div><div class="h-2 bg-surface-lighter"><div class="h-full bg-success" style="width:65%"></div></div></div>
-          <div><div class="flex justify-between text-xs mb-1"><span class="text-on-surface/60">Biodiversity Stories</span><span class="text-accent font-bold">8,200+</span></div><div class="h-2 bg-surface-lighter"><div class="h-full bg-accent" style="width:55%"></div></div></div>
-          <div><div class="flex justify-between text-xs mb-1"><span class="text-on-surface/60">Creators Paid</span><span class="text-pink-400 font-bold">$4.2M+</span></div><div class="h-2 bg-surface-lighter"><div class="h-full bg-pink-400" style="width:88%"></div></div></div>
+        <h3 class="font-headline text-sm font-black text-white italic uppercase mb-4 flex items-center gap-2"><span class="text-secondary">●</span>WHAT WE MEASURE</h3>
+        <p class="text-[10px] text-on-surface/40 mb-4">Every creation on Dreamers can carry verifiable impact. These are the dimensions we track — totals grow as the community creates.</p>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 p-3 bg-surface border-l-2 border-primary"><span class="material-symbols-outlined text-primary text-lg">groups</span><div><p class="text-xs text-white font-bold">People Reached</p><p class="text-[9px] text-on-surface/40">Streams, views & attendance per creation</p></div></div>
+          <div class="flex items-center gap-3 p-3 bg-surface border-l-2 border-secondary"><span class="material-symbols-outlined text-secondary text-lg">eco</span><div><p class="text-xs text-white font-bold">Environmental Impact</p><p class="text-[9px] text-on-surface/40">CO₂ & waste avoided, verifiably logged</p></div></div>
+          <div class="flex items-center gap-3 p-3 bg-surface border-l-2 border-accent"><span class="material-symbols-outlined text-accent text-lg">volunteer_activism</span><div><p class="text-xs text-white font-bold">Causes Supported</p><p class="text-[9px] text-on-surface/40">Biodiversity, cleanups & community projects</p></div></div>
+          <div class="flex items-center gap-3 p-3 bg-surface border-l-2 border-pink-400"><span class="material-symbols-outlined text-pink-400 text-lg">payments</span><div><p class="text-xs text-white font-bold">Creator Earnings</p><p class="text-[9px] text-on-surface/40">Paid out to artists, tracked on-chain</p></div></div>
         </div>
         <div class="mt-6 p-4 bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20">
-          <p class="text-center font-headline font-black text-white">$500B MARKET BY 2030</p>
-          <p class="text-[10px] text-on-surface/50 text-center mt-1">We're building the infrastructure for the largest creative economy shift in history</p>
+          <p class="text-center font-headline font-black text-white">THE VISION</p>
+          <p class="text-[10px] text-on-surface/50 text-center mt-1">Building infrastructure so creativity generates real, measurable impact — and creators get paid for it.</p>
         </div>
       </div>
       <div>
-        <h3 class="font-headline text-sm font-black text-white italic uppercase mb-4 flex items-center gap-2"><span class="text-accent">●</span>COMMUNITY POWER</h3>
-        <div class="bg-surface p-4 mb-4">
-          <div class="grid grid-cols-3 gap-2 text-center">
-            <div><p class="text-2xl font-black text-primary">12K+</p><p class="text-[9px] text-on-surface/40">Creators</p></div>
-            <div><p class="text-2xl font-black text-secondary">450+</p><p class="text-[9px] text-on-surface/40">Venues</p></div>
-            <div><p class="text-2xl font-black text-accent">85</p><p class="text-[9px] text-on-surface/40">Countries</p></div>
-          </div>
-        </div>
+        <h3 class="font-headline text-sm font-black text-white italic uppercase mb-4 flex items-center gap-2"><span class="text-accent">●</span>THE COLLECTIVES</h3>
+        <p class="text-[10px] text-on-surface/40 mb-4">Creators band together around a cause. These are the first crews forming — pick your lane, or start your own.</p>
         <div class="space-y-3">
-          <div class="flex items-center gap-3 p-3 bg-surface border border-white/5"><span class="text-xl">🌱</span><div><p class="text-xs text-white font-bold">Seedling Collective</p><p class="text-[9px] text-on-surface/40">2,400 new artists this month</p></div></div>
-          <div class="flex items-center gap-3 p-3 bg-surface border border-white/5"><span class="text-xl">🌳</span><div><p class="text-xs text-white font-bold">Forest Guardians</p><p class="text-[9px] text-on-surface/40">1,800 active biodiversity projects</p></div></div>
-          <div class="flex items-center gap-3 p-3 bg-surface border border-white/5"><span class="text-xl">🌊</span><div><p class="text-xs text-white font-bold">Ocean Warriors</p><p class="text-[9px] text-on-surface/40">420 beach clean collaborations</p></div></div>
-          <div class="flex items-center gap-3 p-3 bg-surface border border-white/5"><span class="text-xl">🎵</span><div><p class="text-xs text-white font-bold">Sound Architects</p><p class="text-[9px] text-on-surface/40">6,200 climate songs released</p></div></div>
+          <div class="flex items-center gap-3 p-3 bg-surface border border-white/5"><span class="text-xl">🌱</span><div><p class="text-xs text-white font-bold">Seedling Collective</p><p class="text-[9px] text-on-surface/40">New & emerging artists</p></div></div>
+          <div class="flex items-center gap-3 p-3 bg-surface border border-white/5"><span class="text-xl">🌳</span><div><p class="text-xs text-white font-bold">Forest Guardians</p><p class="text-[9px] text-on-surface/40">Biodiversity & land projects</p></div></div>
+          <div class="flex items-center gap-3 p-3 bg-surface border border-white/5"><span class="text-xl">🌊</span><div><p class="text-xs text-white font-bold">Ocean Warriors</p><p class="text-[9px] text-on-surface/40">Water & cleanup collaborations</p></div></div>
+          <div class="flex items-center gap-3 p-3 bg-surface border border-white/5"><span class="text-xl">🎵</span><div><p class="text-xs text-white font-bold">Sound Architects</p><p class="text-[9px] text-on-surface/40">Music with a message</p></div></div>
         </div>
-        <button class="mt-4 w-full py-3 bg-success text-surface font-label font-black text-xs uppercase tracking-widest hover:bg-success/80 transition flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">group_add</span>JOIN THE MOVEMENT</button>
+        <button onclick="go('community')" class="mt-4 w-full py-3 bg-success text-surface font-label font-black text-xs uppercase tracking-widest hover:bg-success/80 transition flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">group_add</span>JOIN THE MOVEMENT</button>
       </div>
     </div>
   </div>
@@ -1060,10 +1052,10 @@ const HEALING_BUDDIES = [
     <div class="card p-6">
       <h2 class="font-headline text-lg font-black text-white italic uppercase mb-4">THE ORIGIN STORY</h2>
       <div class="space-y-4 text-[11px] text-on-surface/60 leading-relaxed">
-        <p><span class="text-primary font-bold">2024:</span> A small group of musicians, visual artists, and environmental scientists came together in a converted warehouse in Oakland, California. They asked a simple question: <span class="text-white">"What if art could save the world AND pay the rent?"</span></p>
-        <p><span class="text-secondary font-bold">Early 2025:</span> The first prototype "Impact Credit" was minted — a climate-conscious song about ocean cleanup that earned its creator $2,400 in its first month through voluntary corporate purchases.</p>
-        <p><span class="text-accent font-bold">Late 2025:</span> We built the smart contract infrastructure on Solana, enabling creators worldwide to mint verified impact credits from their work.</p>
-        <p><span class="text-success font-bold">2026:</span> Today, 12,000+ creators across 85 countries have generated over $4M in impact credit revenue. The market is projected to reach $500B by 2030.</p>
+        <p><span class="text-primary font-bold">The question:</span> Dreamers started with one idea — <span class="text-white">"What if art could move the world AND pay the artist?"</span> Most creative work changes people but never pays the person who made it.</p>
+        <p><span class="text-secondary font-bold">The approach:</span> Give creators real tools to make music, art, and writing — and a way to attach measurable impact to what they make, so the value is visible.</p>
+        <p><span class="text-accent font-bold">The rails:</span> Built on Solana so creations and earnings can be owned, traded, and tracked transparently — no middleman deciding who gets paid.</p>
+        <p><span class="text-success font-bold">Now:</span> We're early. The platform is live, the tools work, and we're building the community from the ground up. This is the beginning.</p>
       </div>
     </div>
 
