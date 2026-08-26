@@ -430,6 +430,43 @@
   .vinyl-overlay{position:absolute;inset:0;border-radius:12px;pointer-events:none;opacity:0;transition:opacity .5s;
     background:repeating-radial-gradient(circle at 50% 50%,transparent 0 3px,rgba(0,0,0,.08) 3px 4px)}
   .album-art-wrap.playing .vinyl-overlay{opacity:.4}
+
+  /* ── LANDING MOBILE ── */
+  @media(max-width:900px){
+    .hero .title{font-size:clamp(36px,10vw,60px)!important}
+    .hero .sub{font-size:13px}
+    .grid{grid-template-columns:repeat(2,1fr)!important}
+    .blk{padding:40px clamp(16px,4vw,40px)}
+    footer{padding:40px 16px 30px}
+    footer .big{font-size:clamp(28px,8vw,60px)}
+    nav .navlinks{gap:12px}
+  }
+  @media(max-width:640px){
+    nav{flex-wrap:wrap}
+    nav .navlinks{
+      position:fixed;top:0;right:0;bottom:0;width:280px;max-width:80vw;
+      background:var(--void2);border-left:1px solid var(--line);
+      flex-direction:column;padding:80px 24px 24px;gap:0;
+      transform:translateX(100%);transition:transform .3s ease;z-index:200;
+    }
+    nav .navlinks.open{transform:translateX(0)}
+    .nav-toggle{display:flex!important}
+    .hero .title{font-size:clamp(32px,12vw,50px)!important}
+    .hero .sub{font-size:12px}
+    .hero .cta{flex-direction:column;align-items:stretch}
+    .hero .cta .btn{text-align:center;justify-content:center}
+    .grid{grid-template-columns:1fr!important}
+    .blk{padding:32px 16px}
+    .h2{font-size:clamp(28px,6vw,48px)!important}
+    footer .big{font-size:clamp(24px,10vw,48px)}
+    footer .connect{flex-direction:column;align-items:center}
+    .gal-arrow{width:36px;height:36px;font-size:18px}
+    .kick{font-size:10px}
+    .lead{font-size:13px}
+  }
+  .nav-toggle{display:none;position:fixed;top:16px;right:16px;z-index:210;width:44px;height:44px;border-radius:10px;background:var(--void2);border:1px solid var(--line);color:var(--ink);align-items:center;justify-content:center;cursor:pointer;font-size:20px}
+  .nav-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}
+  .nav-backdrop.show{display:block}
 </style>
 </head>
 <body>
@@ -473,6 +510,8 @@
     <a href="dreampaper.html">Dreampaper</a>
     <a href="dreamer-dashboard-v7.0.html">Enter ↗</a>
   </div>
+  <button class="nav-toggle" onclick="document.querySelector('.navlinks').classList.toggle('open');document.querySelector('.nav-backdrop').classList.toggle('show')">☰</button>
+  <div class="nav-backdrop" onclick="document.querySelector('.navlinks').classList.remove('open');this.classList.remove('show')"></div>
 </nav>
 
 <div class="wrap">
@@ -1307,6 +1346,14 @@ document.getElementById('pbBar').addEventListener('click',e=>{
   if(!_audio||!_audio.duration) return;
   const r=e.currentTarget.getBoundingClientRect();
   _audio.currentTime=((e.clientX-r.left)/r.width)*_audio.duration;
+});
+
+document.querySelectorAll('.navlinks a').forEach(a=>{
+  a.addEventListener('click',()=>{
+    document.querySelector('.navlinks').classList.remove('open');
+    const bd=document.querySelector('.nav-backdrop');
+    if(bd)bd.classList.remove('show');
+  });
 });
 </script>
 </body>
