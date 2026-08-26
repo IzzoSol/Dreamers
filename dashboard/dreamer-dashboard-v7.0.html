@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DREAMERS v7.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;700;900&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080610;--surface:#0e0b1a;--card:#13102a;--card-h:#1a1535;
+  --border:#ffffff0d;--border-h:#cc97ff25;
+  --text:#e0dcf5;--text-dim:#8a84a8;--text-faint:#5a5478;
+  --pri:#cc97ff;--pri-dim:#9c48ea;--sec:#2db7f2;--acc:#ffd700;
+  --green:#10b981;--red:#ff6e84;--orange:#f59e0b;
+  --radius:12px;--radius-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;overflow:hidden;height:100vh}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--pri);border-radius:4px}
+
+/* ── grain ── */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ── layout ── */
+.app{display:flex;height:100vh}
+.sidebar{width:260px;min-width:260px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:50;transition:transform .3s}
+.main{flex:1;overflow-y:auto;overflow-x:hidden;position:relative}
+
+/* ── sidebar ── */
+.sb-header{padding:20px;border-bottom:1px solid var(--border)}
+.sb-logo{font-family:'Epilogue',sans-serif;font-weight:900;font-size:22px;color:#fff;font-style:italic;letter-spacing:-1px}
+.sb-logo span{color:var(--pri)}
+.sb-version{font-size:10px;color:var(--text-faint);letter-spacing:3px;text-transform:uppercase;margin-top:2px}
+
+.sb-nav{flex:1;overflow-y:auto;padding:12px 8px}
+.sb-section{margin-bottom:16px}
+.sb-label{font-size:9px;font-weight:700;color:var(--text-faint);letter-spacing:3px;text-transform:uppercase;padding:8px 12px 4px}
+
+.sb-tab{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:none;background:none;color:var(--text-dim);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;text-align:left;border-left:3px solid transparent}
+.sb-tab:hover{background:var(--card);color:var(--text);transform:translateX(4px)}
+.sb-tab.active{background:var(--card);color:var(--pri);border-left-color:var(--pri);box-shadow:0 0 20px #cc97ff08}
+.sb-tab .icon{font-size:18px;opacity:.7}
+.sb-tab.active .icon{opacity:1}
+
+.sb-footer{padding:16px;border-top:1px solid var(--border)}
+.sb-footer-btn{width:100%;padding:10px;background:var(--pri);color:var(--bg);border:none;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .2s}
+.sb-footer-btn:hover{background:var(--pri-dim);transform:translateY(-1px)}
+
+/* ── header ── */
+.hdr{position:sticky;top:0;z-index:40;background:rgba(8,6,16,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.hdr-title{font-family:'Epilogue',sans-serif;font-weight:900;font-size:16px;color:#fff;font-style:italic;letter-spacing:-0.5px}
+.hdr-actions{display:flex;gap:8px}
+.hdr-btn{padding:6px 14px;border:1px solid var(--border);background:none;color:var(--text-dim);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;font-family:'Space Grotesk',sans-serif}
+.hdr-btn:hover{border-color:var(--pri);color:var(--pri)}
+.hdr-btn.active{background:var(--pri);color:var(--bg);border-color:var(--pri)}
+
+/* ── panels ── */
+.panel{display:none;padding:24px;animation:fadeUp .35s ease-out}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── cards ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:all .2s}
+.card:hover{border-color:var(--border-h);transform:translateY(-2px);box-shadow:0 8px 32px #00000060}
+.card-sm{padding:14px}
+
+/* ── grid ── */
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:900px){.grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+
+/* ── sub-tabs (pill bar) ── */
+.pill-bar{display:flex;gap:4px;padding:4px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:20px;overflow-x:auto}
+.pill{padding:8px 16px;border:none;background:none;color:var(--text-dim);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;white-space:nowrap}
+.pill:hover{color:var(--text);background:var(--card)}
+.pill.active{background:var(--pri);color:var(--bg)}
+
+/* ── buttons ── */
+.btn{padding:10px 20px;border:none;border-radius:var(--radius-sm);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-pri{background:var(--pri);color:var(--bg)}
+.btn-pri:hover{background:var(--pri-dim);transform:translateY(-1px)}
+.btn-sec{background:var(--sec);color:var(--bg)}
+.btn-sec:hover{background:#05a9e3;transform:translateY(-1px)}
+.btn-acc{background:var(--acc);color:var(--bg)}
+.btn-acc:hover{background:#b8860b;transform:translateY(-1px)}
+.btn-outline{background:none;border:1px solid var(--border);color:var(--text-dim)}
+.btn-outline:hover{border-color:var(--pri);color:var(--pri)}
+.btn-green{background:var(--green);color:var(--bg)}
+
+/* ── inputs ── */
+.inp{width:100%;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:13px;outline:none;transition:border-color .15s}
+.inp:focus{border-color:var(--pri)}
+.inp::placeholder{color:var(--text-faint)}
+textarea.inp{resize:vertical;min-height:80px}
+select.inp{cursor:pointer}
+
+/* ── badge ── */
+.badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.badge-pri{background:var(--pri);color:var(--bg)}
+.badge-sec{background:var(--sec);color:var(--bg)}
+.badge-acc{background:var(--acc);color:var(--bg)}
+.badge-green{background:var(--green);color:var(--bg)}
+
+/* ── workflow steps ── */
+.workflow{display:flex;gap:2px;align-items:stretch}
+.workflow-step{flex:1;padding:16px;background:var(--card);border:1px solid var(--border);position:relative;text-align:center}
+.workflow-step:first-child{border-radius:var(--radius) 0 0 var(--radius)}
+.workflow-step:last-child{border-radius:0 var(--radius) var(--radius) 0}
+.workflow-step .step-num{font-size:10px;font-weight:700;color:var(--pri);letter-spacing:2px;margin-bottom:6px}
+.workflow-step .step-title{font-size:12px;font-weight:700;color:#fff;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.workflow-step .step-desc{font-size:10px;color:var(--text-dim)}
+.workflow-arrow{display:flex;align-items:center;color:var(--pri);font-size:18px;padding:0 2px}
+
+/* ── zodiac wheel ── */
+.zodiac-wheel{position:relative;width:320px;height:320px;margin:0 auto}
+.zodiac-wheel svg{width:100%;height:100%}
+.zodiac-sign{cursor:pointer;transition:all .2s}
+.zodiac-sign:hover{filter:brightness(1.4);transform:scale(1.08)}
+.zodiac-sign.active{filter:brightness(1.6) drop-shadow(0 0 8px var(--pri))}
+
+/* ── player ── */
+.player-bar{position:fixed;bottom:0;left:260px;right:0;height:60px;background:rgba(14,11,26,.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 24px;z-index:45;gap:16px}
+.player-info{display:flex;align-items:center;gap:12px;min-width:200px}
+.player-art{width:40px;height:40px;border-radius:var(--radius-sm);background:var(--card);overflow:hidden;flex-shrink:0}
+.player-art img{width:100%;height:100%;object-fit:cover}
+.player-text .name{font-size:12px;font-weight:700;color:#fff}
+.player-text .artist{font-size:10px;color:var(--text-dim)}
+.player-controls{display:flex;align-items:center;gap:12px}
+.player-controls button{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:20px;transition:color .15s}
+.player-controls button:hover{color:var(--pri)}
+.player-controls .play-btn{width:36px;height:36px;border-radius:50%;background:var(--pri);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:18px}
+.player-progress{flex:1;display:flex;align-items:center;gap:10px}
+.progress-bar{flex:1;height:4px;background:var(--card);border-radius:2px;cursor:pointer;position:relative}
+.progress-fill{height:100%;background:var(--pri);border-radius:2px;width:0%;transition:width .1s}
+.progress-time{font-size:10px;color:var(--text-faint);min-width:36px;font-variant-numeric:tabular-nums}
+
+/* ── chakra SVG ── */
+.chakra-dot{cursor:pointer;transition:all .3s}
+.chakra-dot:hover{filter:brightness(1.5);transform:scale(1.15)}
+
+/* ── toast ── */
+.toast{position:fixed;top:20px;right:20px;padding:14px 20px;background:var(--card);border:1px solid var(--green);border-radius:var(--radius-sm);color:var(--green);font-size:12px;font-weight:600;z-index:999;animation:fadeUp .3s ease-out;display:none}
+.toast.show{display:block}
+
+/* ── responsive ── */
+@media(max-width:768px){
+  .sidebar{position:fixed;left:0;top:0;transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .player-bar{left:0}
+  .workflow{flex-direction:column}
+  .workflow-arrow{transform:rotate(90deg);justify-content:center}
+}
+
+/* ── breathing orb ── */
+.breathe-orb{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#ead9ff,var(--pri) 60%,var(--sec));filter:blur(1px);animation:breathe 8s ease-in-out infinite;margin:0 auto}
+@keyframes breathe{0%,100%{transform:scale(.7);opacity:.6}50%{transform:scale(1.1);opacity:1}}
+
+/* ── meteors ── */
+.meteor-box{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.meteor{position:absolute;width:2px;height:2px;background:var(--acc);border-radius:50%;box-shadow:0 0 4px 2px rgba(255,215,0,.5);animation:meteorFall linear infinite,meteorGlow linear infinite}
+@keyframes meteorFall{0%{transform:translateY(-10vh) translateX(100px) rotate(315deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(110vh) translateX(-100px) rotate(315deg);opacity:0}}
+@keyframes meteorGlow{0%,100%{opacity:.7}50%{opacity:.3}}
+
+/* ── stat card ── */
+.stat{text-align:center;padding:20px}
+.stat-num{font-family:'Epilogue',sans-serif;font-size:32px;font-weight:900;color:#fff}
+.stat-label{font-size:10px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+
+/* ── agent card ── */
+.agent-card{padding:20px;text-align:center;cursor:pointer}
+.agent-card .avatar{width:56px;height:56px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.agent-card .name{font-family:'Epilogue',sans-serif;font-weight:700;font-size:14px;color:#fff}
+.agent-card .role{font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+
+/* ── chat ── */
+.chat-box{display:flex;flex-direction:column;height:calc(100vh - 200px)}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.chat-msg{max-width:80%;padding:12px 16px;border-radius:var(--radius);font-size:13px;line-height:1.5}
+.chat-msg.user{align-self:flex-end;background:var(--pri);color:var(--bg);border-bottom-right-radius:4px}
+.chat-msg.agent{align-self:flex-start;background:var(--card);border:1px solid var(--border);border-bottom-left-radius:4px}
+.chat-input-bar{display:flex;gap:8px;padding:16px}
+.chat-input-bar .inp{flex:1}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<div class="app">
+<!-- ═══════ SIDEBAR ═══════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-header">
+    <div class="sb-logo">DREAMERS<span>.</span></div>
+    <div class="sb-version">v7.0 — Impact Layer</div>
+  </div>
+  <nav class="sb-nav" id="sbNav">
+    <div class="sb-section">
+      <div class="sb-label">Home</div>
+      <button class="sb-tab active" data-tab="home" onclick="go('home')"><span class="material-symbols-outlined icon">cottage</span>Home</button>
+      <button class="sb-tab" data-tab="profile" onclick="go('profile')"><span class="material-symbols-outlined icon">person</span>Profile</button>
+      <button class="sb-tab" data-tab="community" onclick="go('community')"><span class="material-symbols-outlined icon">groups</span>Community</button>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Create</div>
+      <button class="sb-tab" data-tab="music" onclick="go('music')"><span class="material-symbols-outlined icon">graphic_eq</span>Music</button>
+      <button class="sb-tab" data-tab="create" onclick="go('create')"><span class="material-symbols-outlined icon">palette</span>Studio</button>
+      <button class="sb-tab" data-tab="astrology" onclick="go('astrology')"><span class="material-symbols-outlined icon">auto_awesome</span>Astrology</button>
+      <button class="sb-tab" data-tab="game" onclick="go('game')"><span class="material-symbols-outlined icon">sports_esports</span>Game</button>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">AI Agents</div>
+      <button class="sb-tab" data-tab="oracle" onclick="go('oracle')"><span class="material-symbols-outlined icon">psychology</span>Oracle</button>
+      <button class="sb-tab" data-tab="turtle" onclick="go('turtle')"><span class="material-symbols-outlined icon">palette</span>Turtle</button>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Wellness</div>
+      <button class="sb-tab" data-tab="sanctuary" onclick="go('sanctuary')"><span class="material-symbols-outlined icon">spa</span>Sanctuary</button>
+      <button class="sb-tab" data-tab="journal" onclick="go('journal')"><span class="material-symbols-outlined icon">edit_note</span>Journal</button>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">System</div>
+      <button class="sb-tab" data-tab="settings" onclick="go('settings')"><span class="material-symbols-outlined icon">settings</span>Settings</button>
+    </div>
+  </nav>
+  <div class="sb-footer">
+    <button class="sb-footer-btn" onclick="go('home')">DREAMERS ECO</button>
+  </div>
+</aside>
+
+<!-- ═══════ MAIN ═══════ -->
+<div class="main" id="mainArea">
+
+<!-- ══════ HOME ══════ -->
+<section class="panel active" id="panel-home">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:32px">
+    <div>
+      <span class="badge badge-pri" style="margin-bottom:12px;display:inline-block">CREATOR COLLECTIVE</span>
+      <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:clamp(32px,5vw,52px);color:#fff;font-style:italic;line-height:.9;letter-spacing:-2px">CREATE.<br>CONNECT.<br><span style="color:var(--pri)">GROW.</span></h1>
+      <p style="color:var(--text-dim);font-size:13px;margin-top:12px;letter-spacing:2px;text-transform:uppercase">Join a global movement of artists & creators</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-pri" onclick="go('music')"><span class="material-symbols-outlined" style="font-size:16px">music_note</span>Make Music</button>
+      <button class="btn btn-sec" onclick="go('create')"><span class="material-symbols-outlined" style="font-size:16px">brush</span>Create Art</button>
+      <button class="btn btn-acc" onclick="go('astrology')"><span class="material-symbols-outlined" style="font-size:16px">auto_awesome</span>Cosmic Map</button>
+    </div>
+  </div>
+
+  <!-- Quick Access Grid -->
+  <div class="grid-4" style="margin-bottom:32px">
+    <div class="card card-sm" style="cursor:pointer" onclick="go('music')">
+      <span class="material-symbols-outlined" style="color:var(--pri);font-size:28px">graphic_eq</span>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Music Studio</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Beats · Binaural · AI</p>
+    </div>
+    <div class="card card-sm" style="cursor:pointer" onclick="go('create')">
+      <span class="material-symbols-outlined" style="color:var(--sec);font-size:28px">palette</span>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Create Studio</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Image↔Music · Binary</p>
+    </div>
+    <div class="card card-sm" style="cursor:pointer" onclick="go('astrology')">
+      <span class="material-symbols-outlined" style="color:var(--acc);font-size:28px">auto_awesome</span>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Astrology</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Birth Chart · Zodiac</p>
+    </div>
+    <div class="card card-sm" style="cursor:pointer" onclick="go('game')">
+      <span class="material-symbols-outlined" style="color:var(--green);font-size:28px">sports_esports</span>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Game</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Dreamers Climb</p>
+    </div>
+  </div>
+
+  <!-- Workflows -->
+  <h2 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:18px;color:#fff;font-style:italic;margin-bottom:16px">Quick Workflows</h2>
+  <div class="grid-2" style="margin-bottom:32px">
+    <div class="card" style="cursor:pointer" onclick="go('create');setTimeout(()=>setCreateTab('img2music'),100)">
+      <div class="workflow" style="margin:0">
+        <div class="workflow-step"><div class="step-num">01</div><div class="step-title">Upload Art</div><div class="step-desc">Drop an image</div></div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step"><div class="step-num">02</div><div class="step-title">Analyze</div><div class="step-desc">AI reads mood & color</div></div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step"><div class="step-num">03</div><div class="step-title">Generate</div><div class="step-desc">Get your beat</div></div>
+      </div>
+      <p style="font-size:11px;font-weight:700;color:var(--pri);margin-top:12px;letter-spacing:1px;text-transform:uppercase">Image → Music</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="go('create');setTimeout(()=>setCreateTab('music2img'),100)">
+      <div class="workflow" style="margin:0">
+        <div class="workflow-step"><div class="step-num">01</div><div class="step-title">Upload Audio</div><div class="step-desc">Drop a track</div></div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step"><div class="step-num">02</div><div class="step-title">FFT Analysis</div><div class="step-desc">Read frequencies</div></div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step"><div class="step-num">03</div><div class="step-title">Create Art</div><div class="step-desc">Get visual</div></div>
+      </div>
+      <p style="font-size:11px;font-weight:700;color:var(--sec);margin-top:12px;letter-spacing:1px;text-transform:uppercase">Music → Image</p>
+    </div>
+  </div>
+
+  <!-- Agent Grid -->
+  <h2 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:18px;color:#fff;font-style:italic;margin-bottom:16px">The Council</h2>
+  <div class="grid-4" id="agentGrid"></div>
+</section>
+
+<!-- ══════ MUSIC ══════ -->
+<section class="panel" id="panel-music">
+  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">MUSIC</h1>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Make · Heal · Create with AI</p>
+
+  <div class="pill-bar" id="musicPills">
+    <button class="pill active" onclick="setMusicTab('make')">Make Beats</button>
+    <button class="pill" onclick="setMusicTab('heal')">Heal · Chakra</button>
+    <button class="pill" onclick="setMusicTab('binaural')">Binaural</button>
+    <button class="pill" onclick="setMusicTab('aimusic')">AI Music</button>
+  </div>
+
+  <!-- MAKE BEATS -->
+  <div class="music-tab active" id="mt-make">
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card">
+        <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">BEAT GENERATOR</h3>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <select class="inp" id="beatGenre" style="width:auto">
+            <option value="trap">Trap</option><option value="hiphop">Hip Hop</option><option value="house">House</option>
+            <option value="techno">Techno</option><option value="dnb">Drum & Bass</option><option value="lofi">Lo-Fi</option>
+            <option value="dubstep">Dubstep</option><option value="drill">Drill</option><option value="afrobeats">Afrobeats</option>
+            <option value="phonk">Phonk</option><option value="synthwave">Synthwave</option><option value="trance">Trance</option>
+          </select>
+          <input class="inp" id="beatBpm" type="number" value="140" min="60" max="200" style="width:80px" placeholder="BPM">
+          <select class="inp" id="beatBars" style="width:auto">
+            <option value="4">4 Bars</option><option value="8" selected>8 Bars</option><option value="16">16 Bars</option>
+          </select>
+        </div>
+        <button class="btn btn-pri" onclick="generateBeat()" style="width:100%;justify-content:center">
+          <span class="material-symbols-outlined" style="font-size:16px">play_arrow</span>Generate Beat
+        </button>
+        <div id="beatOutput" style="margin-top:12px"></div>
+      </div>
+      <div class="card">
+        <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">SYNTH</h3>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <select class="inp" id="synthWave" style="width:auto">
+            <option value="sine">Sine</option><option value="sawtooth">Saw</option><option value="square">Square</option><option value="triangle">Triangle</option>
+          </select>
+          <input class="inp" id="synthFreq" type="number" value="440" min="20" max="2000" style="width:90px" placeholder="Hz">
+        </div>
+        <button class="btn btn-sec" onclick="playSynth()" style="width:100%;justify-content:center">
+          <span class="material-symbols-outlined" style="font-size:16px">piano</span>Play Synth
+        </button>
+        <button class="btn btn-outline" onclick="stopSynth()" style="width:100%;justify-content:center;margin-top:8px">
+          <span class="material-symbols-outlined" style="font-size:16px">stop</span>Stop
+        </button>
+        <div style="margin-top:16px">
+          <h4 style="font-size:11px;font-weight:700;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Piano</h4>
+          <div id="pianoKeys" style="display:flex;gap:2px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEAL / CHAKRA -->
+  <div class="music-tab" id="mt-heal" style="display:none">
+    <div class="grid-2">
+      <div class="card" style="text-align:center">
+        <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:16px">CHAKRA FREQUENCIES</h3>
+        <div id="chakraList"></div>
+      </div>
+      <div class="card">
+        <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:16px">SOLFEGGIO TONES</h3>
+        <div id="solfeggioList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BINAURAL -->
+  <div class="music-tab" id="mt-binaural" style="display:none">
+    <div class="grid-3">
+      <div class="card card-sm" style="text-align:center;cursor:pointer" onclick="playBinaural(10,'Alpha')">
+        <div style="font-size:28px;font-weight:900;color:var(--pri)">10 Hz</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:4px">ALPHA · Focus</div>
+      </div>
+      <div class="card card-sm" style="text-align:center;cursor:pointer" onclick="playBinaural(7.83,'Schumann')">
+        <div style="font-size:28px;font-weight:900;color:var(--sec)">7.83 Hz</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:4px">SCHUMAN · Resonance</div>
+      </div>
+      <div class="card card-sm" style="text-align:center;cursor:pointer" onclick="playBinaural(6,'Theta')">
+        <div style="font-size:28px;font-weight:900;color:var(--green)">6 Hz</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:4px">THETA · Meditate</div>
+      </div>
+      <div class="card card-sm" style="text-align:center;cursor:pointer" onclick="playBinaural(4,'Delta')">
+        <div style="font-size:28px;font-weight:900;color:var(--acc)">4 Hz</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:4px">DELTA · Sleep</div>
+      </div>
+      <div class="card card-sm" style="text-align:center;cursor:pointer" onclick="playBinaural(40,'Gamma')">
+        <div style="font-size:28px;font-weight:900;color:var(--red)">40 Hz</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:4px">GAMMA · Peak</div>
+      </div>
+      <div class="card card-sm" style="text-align:center;cursor:pointer" onclick="stopBinaural()">
+        <div style="font-size:28px;font-weight:900;color:var(--text-faint)">STOP</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:4px">Silence</div>
+      </div>
+    </div>
+    <p style="font-size:10px;color:var(--text-faint);text-align:center;margin-top:16px;letter-spacing:1px">Use headphones for binaural beats to work</p>
+  </div>
+
+  <!-- AI MUSIC -->
+  <div class="music-tab" id="mt-aimusic" style="display:none">
+    <div class="card">
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">AI MUSIC GENERATOR</h3>
+      <p style="font-size:11px;color:var(--text-dim);margin-bottom:16px">Describe a song and let AI generate it</p>
+      <textarea class="inp" id="aiMusicPrompt" rows="3" placeholder="A dreamy lo-fi hip hop beat with soft piano, rain sounds, and vinyl crackle..."></textarea>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-pri" onclick="generateAIMusic()" id="aiMusicBtn">
+          <span class="material-symbols-outlined" style="font-size:16px">auto_awesome</span>Generate
+        </button>
+      </div>
+      <div id="aiMusicOutput" style="margin-top:16px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CREATE STUDIO ══════ -->
+<section class="panel" id="panel-create">
+  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">STUDIO</h1>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Transform · Generate · Export</p>
+
+  <div class="pill-bar" id="createPills">
+    <button class="pill active" onclick="setCreateTab('img2music')">Image → Music</button>
+    <button class="pill" onclick="setCreateTab('music2img')">Music → Image</button>
+    <button class="pill" onclick="setCreateTab('binary')">Binary Music</button>
+    <button class="pill" onclick="setCreateTab('ascii')">ASCII Art</button>
+  </div>
+
+  <!-- IMAGE → MUSIC -->
+  <div class="create-tab active" id="ct-img2music">
+    <div class="card" style="margin-bottom:16px">
+      <div class="workflow" style="margin:0">
+        <div class="workflow-step"><div class="step-num">01</div><div class="step-title">Upload</div><div class="step-desc">Drop an image</div></div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step"><div class="step-num">02</div><div class="step-title">Analyze</div><div class="step-desc">Read colors & mood</div></div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step"><div class="step-num">03</div><div class="step-title">Compose</div><div class="step-desc">Map to notes & beats</div></div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step"><div class="step-num">04</div><div class="step-title">Export</div><div class="step-desc">Download MP3/WAV</div></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div id="imgDrop" style="border:2px dashed var(--border);border-radius:var(--radius);padding:40px;text-align:center;cursor:pointer;transition:border-color .2s" onclick="document.getElementById('imgUpload').click()" ondragover="event.preventDefault();this.style.borderColor='var(--pri)'" ondragleave="this.style.borderColor='var(--border)'" ondrop="handleImgDrop(event)">
+          <span class="material-symbols-outlined" style="font-size:48px;color:var(--text-faint)">cloud_upload</span>
+          <p style="font-size:12px;color:var(--text-dim);margin-top:8px">Click or drag image here</p>
+          <input type="file" id="imgUpload" accept="image/*" style="display:none" onchange="handleImgUpload(this)">
+        </div>
+        <canvas id="imgCanvas" style="display:none;margin-top:12px;width:100%;border-radius:var(--radius-sm)"></canvas>
+        <div id="imgColors" style="display:none;margin-top:12px"></div>
+      </div>
+      <div class="card">
+        <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">GENERATED MUSIC</h3>
+        <div id="img2musicOutput" style="min-height:120px;display:flex;align-items:center;justify-content:center">
+          <p style="font-size:11px;color:var(--text-faint)">Upload an image to generate music</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MUSIC → IMAGE -->
+  <div class="create-tab" id="ct-music2img" style="display:none">
+    <div class="card" style="margin-bottom:16px">
+      <div class="workflow" style="margin:0">
+        <div class="workflow-step"><div class="step-num">01</div><div class="step-title">Upload</div><div class="step-desc">Drop audio file</div></div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step"><div class="step-num">02</div><div class="step-title">FFT</div><div class="step-desc">Analyze frequencies</div></div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step"><div class="step-num">03</div><div class="step-title">Map</div><div class="step-desc">Freq → color & shape</div></div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step"><div class="step-num">04</div><div class="step-title">Render</div><div class="step-desc">Download PNG</div></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div style="border:2px dashed var(--border);border-radius:var(--radius);padding:40px;text-align:center;cursor:pointer" onclick="document.getElementById('audioUpload').click()">
+          <span class="material-symbols-outlined" style="font-size:48px;color:var(--text-faudacious)">audio_file</span>
+          <p style="font-size:12px;color:var(--text-dim);margin-top:8px">Click or drop audio file</p>
+          <input type="file" id="audioUpload" accept="audio/*" style="display:none" onchange="handleAudioUpload(this)">
+        </div>
+        <audio id="audioPlayer" style="display:none;margin-top:12px;width:100%"></audio>
+      </div>
+      <div class="card">
+        <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">VISUALIZATION</h3>
+        <canvas id="fftCanvas" width="400" height="300" style="width:100%;border-radius:var(--radius-sm);background:var(--surface)"></canvas>
+        <button class="btn btn-sec" onclick="downloadArt()" style="width:100%;justify-content:center;margin-top:12px">
+          <span class="material-symbols-outlined" style="font-size:16px">download</span>Download Art
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BINARY MUSIC -->
+  <div class="create-tab" id="ct-binary" style="display:none">
+    <div class="grid-2">
+      <div class="card">
+        <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">BINARY SONIFICATION</h3>
+        <p style="font-size:11px;color:var(--text-dim);margin-bottom:12px">Upload any file and hear it as music</p>
+        <input type="file" id="binaryUpload" class="inp" onchange="handleBinaryUpload(this)" style="margin-bottom:12px">
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <select class="inp" id="binaryScale" style="width:auto">
+            <option value="chromatic">Chromatic</option><option value="pentatonic">Pentatonic</option>
+            <option value="major">Major</option><option value="minor">Minor</option>
+          </select>
+          <input class="inp" id="binarySpeed" type="number" value="100" min="10" max="500" style="width:80px" placeholder="ms">
+        </div>
+        <button class="btn btn-pri" onclick="playBinary()" style="width:100%;justify-content:center">
+          <span class="material-symbols-outlined" style="font-size:16px">play_arrow</span>Play Binary
+        </button>
+        <button class="btn btn-outline" onclick="stopBinary()" style="width:100%;justify-content:center;margin-top:8px">Stop</button>
+        <div id="binaryInfo" style="margin-top:12px;font-size:10px;color:var(--text-dim)"></div>
+      </div>
+      <div class="card">
+        <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">HEX VIEW</h3>
+        <div id="hexView" style="font-family:monospace;font-size:10px;color:var(--green);background:var(--surface);padding:12px;border-radius:var(--radius-sm);max-height:300px;overflow:auto;white-space:pre"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASCII ART -->
+  <div class="create-tab" id="ct-ascii" style="display:none">
+    <div class="grid-2">
+      <div class="card">
+        <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">IMAGE → ASCII</h3>
+        <input type="file" id="asciiUpload" accept="image/*" class="inp" onchange="handleAsciiUpload(this)" style="margin-bottom:12px">
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <select class="inp" id="asciiWidth" style="width:auto">
+            <option value="80">80 cols</option><option value="100" selected>100 cols</option><option value="120">120 cols</option><option value="160">160 cols</option>
+          </select>
+          <select class="inp" id="asciiChars" style="width:auto">
+            <option value=" .:-=+*#%@">Standard</option><option value=" ░▒▓█">Blocks</option><option value=" .,:;i1tfLCG08@">Detailed</option>
+          </select>
+        </div>
+        <button class="btn btn-pri" onclick="convertAscii()" style="width:100%;justify-content:center">
+          <span class="material-symbols-outlined" style="font-size:16px">text_fields</span>Convert
+        </button>
+      </div>
+      <div class="card">
+        <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">OUTPUT</h3>
+        <pre id="asciiOutput" style="font-family:monospace;font-size:6px;line-height:6px;color:var(--green);background:var(--surface);padding:12px;border-radius:var(--radius-sm);overflow:auto;max-height:400px;white-space:pre"></pre>
+        <button class="btn btn-outline" onclick="downloadAscii()" style="width:100%;justify-content:center;margin-top:12px">Download .txt</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ ASTROLOGY ══════ -->
+<section class="panel" id="panel-astrology">
+  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">COSMIC BLUEPRINT</h1>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Your birth chart · Zodiac · Daily horoscope</p>
+
+  <!-- Birth Info -->
+  <div class="card" style="margin-bottom:20px">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:end">
+      <div style="flex:1;min-width:150px">
+        <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Name</label>
+        <input class="inp" id="astroName" placeholder="Your name">
+      </div>
+      <div style="flex:1;min-width:150px">
+        <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Birth Date</label>
+        <input class="inp" id="astroDate" type="date">
+      </div>
+      <div style="flex:1;min-width:150px">
+        <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Birth Time</label>
+        <input class="inp" id="astroTime" type="time">
+      </div>
+      <button class="btn btn-acc" onclick="calculateChart()">Calculate Chart</button>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Zodiac Wheel -->
+    <div class="card" style="text-align:center">
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:16px">ZODIAC WHEEL</h3>
+      <div class="zodiac-wheel">
+        <svg viewBox="0 0 320 320" id="zodiacSvg"></svg>
+      </div>
+    </div>
+
+    <!-- Chart Results -->
+    <div class="card">
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:16px">YOUR CHART</h3>
+      <div id="chartResults">
+        <p style="font-size:11px;color:var(--text-faint)">Enter your birth info and click Calculate</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Daily Horoscope -->
+  <div class="card" style="margin-top:20px">
+    <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">DAILY HOROSCOPE</h3>
+    <div id="horoscopeText" style="font-size:13px;color:var(--text-dim);line-height:1.6">
+      <p>Select your sign above to see today's reading</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ GAME ══════ -->
+<section class="panel" id="panel-game">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+    <div>
+      <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">DREAMERS CLIMB</h1>
+      <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase">Tower climbing adventure</p>
+    </div>
+    <a href="game/dreamers-climb-v31.0.html" target="_blank" class="btn btn-outline">
+      <span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>Full Screen
+    </a>
+  </div>
+  <div style="border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);background:#000">
+    <iframe src="game/dreamers-climb-v31.0.html" style="width:100%;height:calc(100vh - 180px);border:none" allow="autoplay"></iframe>
+  </div>
+</section>
+
+<!-- ══════ ORACLE ══════ -->
+<section class="panel" id="panel-oracle">
+  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">ORACLE</h1>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Research · Intelligence · Trend Analysis</p>
+
+  <div class="card" style="margin-bottom:16px">
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px">
+      <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:24px">🔮</div>
+      <div>
+        <h3 style="font-weight:700;font-size:14px;color:#fff">ORACLE Agent</h3>
+        <p style="font-size:10px;color:var(--text-dim)">Research · Market Analysis · Trend Spotting</p>
+      </div>
+    </div>
+    <div class="chat-box" id="oracleChat">
+      <div class="chat-messages" id="oracleMessages">
+        <div class="chat-msg agent">I am ORACLE — your research and intelligence agent. Ask me about market trends, tech analysis, competitive research, or creative insights. I connect dots others miss.</div>
+      </div>
+      <div class="chat-input-bar">
+        <input class="inp" id="oracleInput" placeholder="Ask Oracle anything..." onkeydown="if(event.key==='Enter')sendOracle()">
+        <button class="btn btn-pri" onclick="sendOracle()">Send</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ TURTLE ══════ -->
+<section class="panel" id="panel-turtle">
+  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">TURTLE</h1>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Design · UI/UX · Creative Direction</p>
+
+  <div class="card" style="margin-bottom:16px">
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px">
+      <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:24px">🐢</div>
+      <div>
+        <h3 style="font-weight:700;font-size:14px;color:#fff">TURTLE Agent</h3>
+        <p style="font-size:10px;color:var(--text-dim)">Design · Visuals · Creative Direction</p>
+      </div>
+    </div>
+    <div class="chat-box" id="turtleChat">
+      <div class="chat-messages" id="turtleMessages">
+        <div class="chat-msg agent">I am TURTLE — your design and creative agent. Ask me to design layouts, review visuals, suggest color palettes, create UI components, or direct creative projects. Aesthetic is everything.</div>
+      </div>
+      <div class="chat-input-bar">
+        <input class="inp" id="turtleInput" placeholder="Ask Turtle anything..." onkeydown="if(event.key==='Enter')sendTurtle()">
+        <button class="btn btn-green" onclick="sendTurtle()">Send</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ SANCTUARY ══════ -->
+<section class="panel" id="panel-sanctuary">
+  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">SANCTUARY</h1>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Breathe · Align · Heal</p>
+
+  <!-- Breathing -->
+  <div class="card" style="text-align:center;margin-bottom:20px">
+    <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:16px">BREATHING EXERCISE</h3>
+    <div class="breathe-orb" id="breatheOrb"></div>
+    <div id="breatheText" style="font-size:18px;font-weight:900;color:#fff;margin-top:20px;letter-spacing:2px">TAP TO START</div>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:16px">
+      <button class="btn btn-pri" onclick="startBreathing()">Start</button>
+      <button class="btn btn-outline" onclick="stopBreathing()">Stop</button>
+    </div>
+  </div>
+
+  <!-- Chakra Alignment -->
+  <div class="card">
+    <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:16px">CHAKRA ALIGNMENT</h3>
+    <div class="grid-2">
+      <div style="text-align:center">
+        <svg viewBox="0 0 200 480" style="max-width:240px" id="chakraSvg"></svg>
+      </div>
+      <div id="chakraDetail">
+        <p style="font-size:11px;color:var(--text-faint)">Tap a chakra to explore it</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ JOURNAL ══════ -->
+<section class="panel" id="panel-journal">
+  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">JOURNAL</h1>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Reflect · Write · Grow</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">NEW ENTRY</h3>
+      <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap">
+        <button class="pill active" onclick="setJournalType(this,'mood')">Mood</button>
+        <button class="pill" onclick="setJournalType(this,'daily')">Daily</button>
+        <button class="pill" onclick="setJournalType(this,'shadow')">Shadow Work</button>
+        <button class="pill" onclick="setJournalType(this,'goals')">Goals</button>
+      </div>
+      <textarea class="inp" id="journalEntry" rows="8" placeholder="Write your thoughts..."></textarea>
+      <button class="btn btn-pri" onclick="saveJournal()" style="width:100%;justify-content:center;margin-top:12px">Save Entry</button>
+    </div>
+    <div class="card">
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">PAST ENTRIES</h3>
+      <div id="journalList" style="max-height:400px;overflow-y:auto">
+        <p style="font-size:11px;color:var(--text-faint);text-align:center;padding:20px">No entries yet</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ PROFILE ══════ -->
+<section class="panel" id="panel-profile">
+  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:20px">PROFILE</h1>
+  <div class="card" style="max-width:500px">
+    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--sec));display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;color:var(--bg);margin-bottom:16px" id="profileAvatar">?</div>
+    <input class="inp" id="profileName" placeholder="Display Name" style="margin-bottom:12px">
+    <input class="inp" id="profileEmail" placeholder="Email" style="margin-bottom:12px">
+    <button class="btn btn-pri" onclick="saveProfile()" style="width:100%;justify-content:center">Save Profile</button>
+  </div>
+</section>
+
+<!-- ══════ COMMUNITY ══════ -->
+<section class="panel" id="panel-community">
+  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:20px">COMMUNITY</h1>
+  <div class="card" style="text-align:center;padding:60px">
+    <span class="material-symbols-outlined" style="font-size:48px;color:var(--text-faint)">groups</span>
+    <h3 style="font-weight:700;font-size:16px;color:#fff;margin-top:12px">Coming Soon</h3>
+    <p style="font-size:11px;color:var(--text-dim);margin-top:8px">Connect with other creators in the Dreamers collective</p>
+  </div>
+</section>
+
+<!-- ══════ SETTINGS ══════ -->
+<section class="panel" id="panel-settings">
+  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:20px">SETTINGS</h1>
+  <div class="card" style="max-width:600px">
+    <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:16px">API KEYS</h3>
+    <div style="margin-bottom:12px">
+      <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">OpenRouter Key</label>
+      <input class="inp" id="keyOpenRouter" type="password" placeholder="sk-or-v1-...">
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">HuggingFace Token</label>
+      <input class="inp" id="keyHF" type="password" placeholder="hf_...">
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Fal.ai Key</label>
+      <input class="inp" id="keyFal" type="password" placeholder="...">
+    </div>
+    <button class="btn btn-pri" onclick="saveKeys()" style="width:100%;justify-content:center">Save Keys</button>
+  </div>
+</section>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- JS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<script>
+// ── NAV ──
+const titles={home:'HOME',music:'MUSIC',create:'STUDIO',astrology:'ASTROLOGY',game:'GAME',oracle:'ORACLE',turtle:'TURTLE',sanctuary:'SANCTUARY',journal:'JOURNAL',profile:'PROFILE',community:'COMMUNITY',settings:'SETTINGS'};
+function go(tab){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tab)?.classList.add('active');
+  document.querySelectorAll('.sb-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  document.getElementById('mainArea').scrollTop=0;
+}
+
+// ── MUSIC SUB-TABS ──
+function setMusicTab(id){
+  document.querySelectorAll('.music-tab').forEach(t=>t.style.display='none');
+  document.getElementById('mt-'+id).style.display='block';
+  document.querySelectorAll('#musicPills .pill').forEach((p,i)=>{
+    p.classList.toggle('active',p.textContent.toLowerCase().includes(id==='make'?'beat':id==='heal'?'heal':id==='binaural'?'binaural':'ai'));
+  });
+  const pills=document.querySelectorAll('#musicPills .pill');
+  pills.forEach(p=>p.classList.remove('active'));
+  pills[{make:0,heal:1,binaural:2,aimusic:3}[id]]?.classList.add('active');
+}
+
+// ── CREATE SUB-TABS ──
+function setCreateTab(id){
+  document.querySelectorAll('.create-tab').forEach(t=>t.style.display='none');
+  document.getElementById('ct-'+id).style.display='block';
+  const pills=document.querySelectorAll('#createPills .pill');
+  pills.forEach(p=>p.classList.remove('active'));
+  pills[{img2music:0,music2img:1,binary:2,ascii:3}[id]]?.classList.add('active');
+}
+
+// ── AUDIO ENGINE ──
+let _actx=null;
+function actx(){if(!_actx)_actx=new(window.AudioContext||window.webkitAudioContext)();return _actx}
+
+// Beat generator
+const BEAT_PATTERNS={
+  trap:{kick:[1,0,0,0,1,0,0,0,1,0,0,0,1,0,1,0],snare:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],hat:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]},
+  hiphop:{kick:[1,0,0,1,0,0,1,0,0,0,1,0,1,0,0,0],snare:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],hat:[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]},
+  house:{kick:[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],snare:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],hat:[0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0]},
+  techno:{kick:[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],snare:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1],hat:[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]},
+  dnb:{kick:[1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0],snare:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],hat:[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]},
+  lofi:{kick:[1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0],snare:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],hat:[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1]},
+  dubstep:{kick:[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],snare:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],hat:[1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0]},
+  drill:{kick:[1,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0],snare:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0],hat:[1,0,1,1,0,1,0,1,1,0,1,0,0,1,0,1]},
+  afrobeats:{kick:[1,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0],snare:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],hat:[0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0]},
+  phonk:{kick:[1,0,0,0,1,0,0,1,1,0,0,0,1,0,0,0],snare:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],hat:[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]},
+  synthwave:{kick:[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],snare:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],hat:[0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0]},
+  trance:{kick:[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],snare:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],hat:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]}
+};
+
+let _beatTimer=null;
+function generateBeat(){
+  stopBeat();
+  const ctx=actx();const genre=document.getElementById('beatGenre').value;
+  const bpm=parseInt(document.getElementById('beatBpm').value)||140;
+  const bars=parseInt(document.getElementById('beatBars').value)||8;
+  const pat=BEAT_PATTERNS[genre]||BEAT_PATTERNS.trap;
+  const stepDur=60/bpm/4;const totalSteps=16*bars;let step=0;
+  document.getElementById('beatOutput').innerHTML='<span class="badge badge-green">Playing '+genre.toUpperCase()+' @ '+bpm+' BPM</span>';
+
+  function tick(){
+    if(step>=totalSteps){stopBeat();return}
+    const i=step%16;
+    if(pat.kick[i])playDrum(ctx,'kick');
+    if(pat.snare[i])playDrum(ctx,'snare');
+    if(pat.hat[i])playDrum(ctx,'hat');
+    step++;_beatTimer=setTimeout(tick,stepDur*1000);
+  }
+  tick();
+}
+function stopBeat(){clearTimeout(_beatTimer);_beatTimer=null;const o=document.getElementById('beatOutput');if(o)o.innerHTML='';}
+
+function playDrum(ctx,type){
+  const t=ctx.currentTime;
+  if(type==='kick'){
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='sine';o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(30,t+.12);
+    g.gain.setValueAtTime(1,t);g.gain.exponentialRampToValueAtTime(.001,t+.2);
+    o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+.2);
+  }else if(type==='snare'){
+    const buf=ctx.createBuffer(1,ctx.sampleRate*.1,ctx.sampleRate);const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);
+    const s=ctx.createBufferSource(),g=ctx.createGain();s.buffer=buf;g.gain.setValueAtTime(.6,t);g.gain.exponentialRampToValueAtTime(.001,t+.1);
+    s.connect(g);g.connect(ctx.destination);s.start(t);
+    const o=ctx.createOscillator(),g2=ctx.createGain();o.type='triangle';o.frequency.setValueAtTime(200,t);o.frequency.exponentialRampToValueAtTime(80,t+.05);
+    g2.gain.setValueAtTime(.5,t);g2.gain.exponentialRampToValueAtTime(.001,t+.08);o.connect(g2);g2.connect(ctx.destination);o.start(t);o.stop(t+.08);
+  }else{
+    const buf=ctx.createBuffer(1,ctx.sampleRate*.05,ctx.sampleRate);const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,8);
+    const s=ctx.createBufferSource(),g=ctx.createGain();s.buffer=buf;g.gain.setValueAtTime(.3,t);g.gain.exponentialRampToValueAtTime(.001,t+.05);
+    s.connect(g);g.connect(ctx.destination);s.start(t);
+  }
+}
+
+// Synth
+let _synthOsc=null,_synthGain=null;
+function playSynth(){
+  stopSynth();const ctx=actx();
+  _synthOsc=ctx.createOscillator();_synthGain=ctx.createGain();
+  _synthOsc.type=document.getElementById('synthWave').value;
+  _synthOsc.frequency.setValueAtTime(parseInt(document.getElementById('synthFreq').value)||440,ctx.currentTime);
+  _synthGain.gain.setValueAtTime(.3,ctx.currentTime);
+  _synthOsc.connect(_synthGain);_synthGain.connect(ctx.destination);_synthOsc.start();
+}
+function stopSynth(){if(_synthOsc){_synthOsc.stop();_synthOsc=null}}
+
+// Piano
+const NOTES=[{n:'C4',f:261.63,w:true},{n:'D4',f:293.66,w:true},{n:'E4',f:329.63,w:true},{n:'F4',f:349.23,w:true},{n:'G4',f:392,w:true},{n:'A4',f:440,w:true},{n:'B4',f:493.88,w:true},{n:'C5',f:523.25,w:true}];
+function initPiano(){
+  const el=document.getElementById('pianoKeys');if(!el)return;
+  el.innerHTML=NOTES.map((n,i)=>`<div onmousedown="playNote(${n.f})" onmouseup="stopNote()" onmouseleave="stopNote()" style="flex:1;height:80px;background:${n.w?'#fff':'#333'};border:1px solid #555;border-radius:0 0 4px 4px;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px"><span style="font-size:8px;color:#666">${n.n}</span></div>`).join('');
+}
+let _noteOsc=null;
+function playNote(f){stopNote();const ctx=actx();_noteOsc=ctx.createOscillator();const g=ctx.createGain();_noteOsc.type='sine';_noteOsc.frequency.setValueAtTime(f,ctx.currentTime);g.gain.setValueAtTime(.3,ctx.currentTime);_noteOsc.connect(g);g.connect(ctx.destination);_noteOsc.start()}
+function stopNote(){if(_noteOsc){_noteOsc.stop();_noteOsc=null}}
+
+// Binaural
+let _binOscL=null,_binOscR=null,_binMerger=null;
+function playBinaural(freq,name){
+  stopBinaural();const ctx=actx();
+  const base=200;
+  _binOscL=ctx.createOscillator();_binOscR=ctx.createOscillator();
+  _binOscL.type='sine';_binOscR.type='sine';
+  _binOscL.frequency.setValueAtTime(base,ctx.currentTime);
+  _binOscR.frequency.setValueAtTime(base+freq,ctx.currentTime);
+  _binMerger=ctx.createChannelMerger(2);
+  const g=ctx.createGain();g.gain.setValueAtTime(.15,ctx.currentTime);
+  _binOscL.connect(_binMerger,0,0);_binOscR.connect(_binMerger,0,1);
+  _binMerger.connect(g);g.connect(ctx.destination);
+  _binOscL.start();_binOscR.start();
+  document.querySelectorAll('#mt-binaural .card').forEach(c=>c.style.borderColor='var(--border)');
+}
+function stopBinaural(){[_binOscL,_binOscR].forEach(o=>{try{o?.stop()}catch(e){}});_binOscL=_binOscR=null;}
+
+// Chakra frequencies
+const CHAKRAS=[
+  {name:'Root (Muladhara)',freq:396,color:'#ef4444',desc:'Grounding · Stability · Security'},
+  {name:'Sacral (Svadhisthana)',freq:417,color:'#f97316',desc:'Creativity · Passion · Pleasure'},
+  {name:'Solar (Manipura)',freq:528,color:'#fbbf24',desc:'Power · Confidence · Willpower'},
+  {name:'Heart (Anahata)',freq:639,color:'#10b981',desc:'Love · Compassion · Healing'},
+  {name:'Throat (Vishuddha)',freq:741,color:'#0ea5e9',desc:'Truth · Expression · Communication'},
+  {name:'Third Eye (Ajna)',freq:852,color:'#6366f1',desc:'Intuition · Insight · Wisdom'},
+  {name:'Crown (Sahasrara)',freq:963,color:'#a855f7',desc:'Consciousness · Enlightenment'}
+];
+const SOLFEGGIO=[
+  {name:'UT – Liberation',freq:396,color:'#ef4444'},{name:'RE – Change',freq:417,color:'#f97316'},
+  {name:'MI – Miracle',freq:528,color:'#fbbf24'},{name:'FA – Connection',freq:639,color:'#10b981'},
+  {name:'SOL – Purpose',freq:741,color:'#0ea5e9'},{name:'LA – Awakening',freq:852,color:'#6366f1'},
+  {name:'TI – Oneness',freq:963,color:'#a855f7'}
+];
+
+let _chakraOsc=null;
+function initChakraList(){
+  const el=document.getElementById('chakraList');if(!el)return;
+  el.innerHTML=CHAKRAS.map(c=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:10px;border-left:3px solid ${c.color};margin-bottom:8px;background:var(--surface);border-radius:0 var(--radius-sm) var(--radius-sm) 0;cursor:pointer" onclick="playChakraTone(${c.freq})">
+      <div style="width:32px;height:32px;border-radius:50%;background:${c.color};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;flex-shrink:0">${c.freq}</div>
+      <div><div style="font-size:11px;font-weight:700;color:#fff">${c.name}</div><div style="font-size:9px;color:var(--text-dim)">${c.desc}</div></div>
+    </div>`).join('');
+
+  const el2=document.getElementById('solfeggioList');if(!el2)return;
+  el2.innerHTML=SOLFEGGIO.map(s=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:10px;border-left:3px solid ${s.color};margin-bottom:8px;background:var(--surface);border-radius:0 var(--radius-sm) var(--radius-sm) 0;cursor:pointer" onclick="playChakraTone(${s.freq})">
+      <div style="font-size:12px;font-weight:900;color:${s.color};min-width:48px">${s.freq}Hz</div>
+      <div style="font-size:11px;font-weight:700;color:#fff">${s.name}</div>
+    </div>`).join('');
+}
+function playChakraTone(freq){
+  if(_chakraOsc){try{_chakraOsc.stop()}catch(e){}}
+  const ctx=actx();_chakraOsc=ctx.createOscillator();const g=ctx.createGain();
+  _chakraOsc.type='sine';_chakraOsc.frequency.setValueAtTime(freq,ctx.currentTime);
+  g.gain.setValueAtTime(.25,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+2);
+  _chakraOsc.connect(g);g.connect(ctx.destination);_chakraOsc.start();_chakraOsc.stop(ctx.currentTime+2);
+}
+
+// AI Music
+async function generateAIMusic(){
+  const prompt=document.getElementById('aiMusicPrompt').value.trim();
+  if(!prompt)return;
+  const btn=document.getElementById('aiMusicBtn');
+  btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined" style="font-size:16px;animation:spin 1s linear infinite">refresh</span>Generating...';
+  try{
+    const res=await fetch('https://shaddai-g81x.onrender.com/api/media-gen/music',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
+    const data=await res.json();
+    document.getElementById('aiMusicOutput').innerHTML=data.url?`<audio controls src="${data.url}" style="width:100%"></audio>`:`<p style="color:var(--red);font-size:11px">Generation complete. Check output.</p>`;
+  }catch(e){document.getElementById('aiMusicOutput').innerHTML=`<p style="color:var(--red);font-size:11px">Error: ${e.message}</p>`}
+  btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined" style="font-size:16px">auto_awesome</span>Generate';
+}
+
+// ── IMAGE → MUSIC ──
+let _uploadedImg=null;
+function handleImgUpload(input){if(input.files[0])processImage(input.files[0])}
+function handleImgDrop(e){e.preventDefault();if(e.dataTransfer.files[0])processImage(e.dataTransfer.files[0])}
+function processImage(file){
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      _uploadedImg=img;
+      const canvas=document.getElementById('imgCanvas');
+      canvas.style.display='block';canvas.width=200;canvas.height=150;
+      const ctx2=canvas.getContext('2d');ctx2.drawImage(img,0,0,200,150);
+      const data=ctx2.getImageData(0,0,200,150).data;
+      const colors=[];const freq=new Map();
+      for(let i=0;i<data.length;i+=16){
+        const r=Math.round(data[i]/32)*32,g=Math.round(data[i+1]/32)*32,b=Math.round(data[i+2]/32)*32;
+        const key=r+','+g+','+b;freq.set(key,(freq.get(key)||0)+1);
+      }
+      const sorted=[...freq.entries()].sort((a,b)=>b[1]-a[1]).slice(0,6);
+      const colorDiv=document.getElementById('imgColors');
+      colorDiv.style.display='flex';colorDiv.style.gap='4px';colorDiv.style.flexWrap='wrap';
+      colorDiv.innerHTML=sorted.map(([c])=>`<div style="width:28px;height:28px;border-radius:4px;background:rgb(${c})"></div>`).join('');
+      generateMusicFromImage(sorted.map(([c])=>c.split(',').map(Number)));
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function generateMusicFromImage(colors){
+  const ctx=actx();
+  const notes=[261.63,293.66,329.63,349.23,392,440,493.88,523.25,587.33,659.25];
+  const out=document.getElementById('img2musicOutput');
+  let html='<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px">';
+  colors.forEach(([r,g,b],i)=>{
+    const hue=Math.round((r*0.299+g*0.587+b*0.114)/255*notes.length)%notes.length;
+    const f=notes[hue];
+    html+=`<div style="width:40px;height:40px;border-radius:8px;background:rgb(${r},${g},${b});display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:700;cursor:pointer" onclick="playNote(${f});setTimeout(stopNote,500)">${Math.round(f)}Hz</div>`;
+  });
+  html+='</div><button class="btn btn-pri btn-sm" onclick="playImageSequence()" style="width:100%;justify-content:center">▶ Play Sequence</button>';
+  out.innerHTML=html;
+  window._imgNotes=colors.map(([r,g,b])=>{const hue=Math.round((r*0.299+g*0.587+b*0.114)/255*notes.length)%notes.length;return notes[hue]});
+}
+function playImageSequence(){
+  if(!window._imgNotes)return;
+  const ctx=actx();let t=ctx.currentTime;
+  window._imgNotes.forEach(f=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(f,t);
+    g.gain.setValueAtTime(.2,t);g.gain.exponentialRampToValueAtTime(.001,t+.4);
+    o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+.4);t+=.45;
+  });
+}
+
+// ── MUSIC → IMAGE ──
+let _audioCtx2=null,_analyser=null,_audioSource=null;
+function handleAudioUpload(input){
+  if(!input.files[0])return;
+  const url=URL.createObjectURL(input.files[0]);
+  const audio=document.getElementById('audioPlayer');audio.src=url;audio.style.display='block';
+  audio.onplay=function(){
+    if(!_audioCtx2)_audioCtx2=new(window.AudioContext||window.webkitAudioContext)();
+    if(!_analyser){_analyser=_audioCtx2.createAnalyser();_analyser.fftSize=2048;
+      _audioSource=_audioCtx2.createMediaElementSource(audio);_audioSource.connect(_analyser);_analyser.connect(_audioCtx2.destination);}
+    drawFFT();
+  };
+}
+function drawFFT(){
+  if(!_analyser)return;
+  const canvas=document.getElementById('fftCanvas');const ctx2=canvas.getContext('2d');
+  const bufLen=_analyser.frequencyBinCount;const data=new Uint8Array(bufLen);
+  function draw(){
+    requestAnimationFrame(draw);_analyser.getByteFrequencyData(data);
+    ctx2.fillStyle='var(--surface)';ctx2.fillRect(0,0,canvas.width,canvas.height);
+    const barW=canvas.width/bufLen*2.5;let x=0;
+    for(let i=0;i<bufLen;i++){
+      const barH=data[i]/255*canvas.height;
+      const hue=i/bufLen*360;
+      ctx2.fillStyle=`hsl(${hue},80%,60%)`;ctx2.fillRect(x,canvas.height-barH,barW,barH);
+      x+=barW+1;if(x>canvas.width)break;
+    }
+  }
+  draw();
+}
+function downloadArt(){
+  const canvas=document.getElementById('fftCanvas');
+  const link=document.createElement('a');link.download='dreamers-visual.png';link.href=canvas.toDataURL();link.click();
+}
+
+// ── BINARY MUSIC ──
+let _binaryData=null,_binaryTimer=null;
+function handleBinaryUpload(input){
+  if(!input.files[0])return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    _binaryData=new Uint8Array(e.target.result);
+    document.getElementById('binaryInfo').textContent=`${input.files[0].name} — ${_binaryData.length} bytes`;
+    let hex='';for(let i=0;i<Math.min(256,_binaryData.length);i++)hex+=_binaryData[i].toString(16).padStart(2,'0')+' ';
+    document.getElementById('hexView').textContent=hex+'...';
+  };
+  reader.readAsArrayBuffer(input.files[0]);
+}
+function playBinary(){
+  if(!_binaryData)return;stopBinary();
+  const ctx=actx();const scale=document.getElementById('binaryScale').value;
+  const speed=parseInt(document.getElementById('binarySpeed').value)||100;
+  const scales={chromatic:[0,1,2,3,4,5,6,7,8,9,10,11],pentatonic:[0,2,4,7,9],major:[0,2,4,5,7,9,11],minor:[0,2,3,5,7,8,10]};
+  const s=scales[scale]||scales.chromatic;let idx=0;
+  function tick(){
+    if(idx>=_binaryData.length){stopBinary();return}
+    const note=_binaryData[idx]%s.length;const octave=Math.floor(_binaryData[idx]/s.length)%3+4;
+    const freq=440*Math.pow(2,(s[note]-9+12*(octave-4))/12);
+    const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(freq,ctx.currentTime);
+    g.gain.setValueAtTime(.15,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+speed/1000*.8);
+    o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+speed/1000);
+    idx++;_binaryTimer=setTimeout(tick,speed);
+  }
+  tick();
+}
+function stopBinary(){clearTimeout(_binaryTimer);_binaryTimer=null;}
+
+// ── ASCII ART ──
+let _asciiImg=null;
+function handleAsciiUpload(input){
+  if(!input.files[0])return;
+  const reader=new FileReader();reader.onload=function(e){
+    const img=new Image();img.onload=function(){_asciiImg=img};img.src=e.target.result;
+  };reader.readAsDataURL(input.files[0]);
+}
+function convertAscii(){
+  if(!_asciiImg)return;
+  const w=parseInt(document.getElementById('asciiWidth').value)||100;
+  const chars=document.getElementById('asciiChars').value;
+  const canvas=document.createElement('canvas');const h=Math.round(w*(_asciiImg.height/_asciiImg.width)*.45);
+  canvas.width=w;canvas.height=h;const ctx2=canvas.getContext('2d');
+  ctx2.drawImage(_asciiImg,0,0,w,h);const data=ctx2.getImageData(0,0,w,h).data;
+  let ascii='';
+  for(let y=0;y<h;y++){for(let x=0;x<w;x++){
+    const i=(y*w+x)*4;const brightness=(data[i]+data[i+1]+data[i+2])/3;
+    ascii+=chars[Math.floor(brightness/255*(chars.length-1))];
+  }ascii+='\n'}
+  document.getElementById('asciiOutput').textContent=ascii;
+}
+function downloadAscii(){
+  const text=document.getElementById('asciiOutput').textContent;
+  const blob=new Blob([text],{type:'text/plain'});const link=document.createElement('a');
+  link.download='dreamers-ascii.txt';link.href=URL.createObjectURL(blob);link.click();
+}
+
+// ── BREATHING ──
+let _breathTimer=null,_breathing=false;
+function startBreathing(){
+  _breathing=true;const phases=[{t:'BREATHE IN',d:4},{t:'HOLD',d:4},{t:'BREATHE OUT',d:4},{t:'HOLD',d:4}];
+  let pi=0;const orb=document.getElementById('breatheOrb');const txt=document.getElementById('breatheText');
+  function cycle(){
+    if(!_breathing)return;
+    const p=phases[pi%4];txt.textContent=p.t;
+    orb.style.animationDuration=p.d+'s';
+    pi++;_breathTimer=setTimeout(cycle,p.d*1000);
+  }
+  cycle();
+}
+function stopBreathing(){_breathing=false;clearTimeout(_breathTimer);document.getElementById('breatheText').textContent='TAP TO START';}
+
+// ── CHAKRA SVG ──
+function initChakraSvg(){
+  const el=document.getElementById('chakraSvg');if(!el)return;
+  const chakras=[
+    {y:40,color:'#a855f7',name:'Crown',freq:963},
+    {y:105,color:'#6366f1',name:'Third Eye',freq:852},
+    {y:170,color:'#0ea5e9',name:'Throat',freq:741},
+    {y:240,color:'#10b981',name:'Heart',freq:639},
+    {y:305,color:'#fbbf24',name:'Solar',freq:528},
+    {y:370,color:'#f97316',name:'Sacral',freq:417},
+    {y:440,color:'#ef4444',name:'Root',freq:396}
+  ];
+  el.innerHTML=`<line x1="100" y1="40" x2="100" y2="440" stroke="url(#sushGrad)" stroke-width="2" opacity=".3"/>
+    <defs><linearGradient id="sushGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a855f7"/><stop offset="50%" stop-color="#10b981"/><stop offset="100%" stop-color="#ef4444"/></linearGradient></defs>`+
+    chakras.map(c=>`<circle class="chakra-dot" cx="100" cy="${c.y}" r="18" fill="${c.color}" opacity=".2" onclick="showChakraDetail('${c.name}',${c.freq},'${c.color}')" style="cursor:pointer"/>
+      <circle cx="100" cy="${c.y}" r="12" fill="none" stroke="${c.color}" stroke-width="4" stroke-dasharray="2 4" opacity=".8" style="pointer-events:none"/>
+      <circle cx="100" cy="${c.y}" r="6" fill="${c.color}" style="pointer-events:none"/>`).join('');
+}
+function showChakraDetail(name,freq,color){
+  document.getElementById('chakraDetail').innerHTML=`
+    <div style="border-left:3px solid ${color};padding:12px;background:var(--surface);border-radius:0 var(--radius-sm) var(--radius-sm) 0">
+      <h3 style="font-weight:700;font-size:14px;color:${color}">${name} Chakra</h3>
+      <p style="font-size:20px;font-weight:900;color:#fff;margin:8px 0">${freq} Hz</p>
+      <button class="btn btn-pri" onclick="playChakraTone(${freq})" style="font-size:10px">
+        <span class="material-symbols-outlined" style="font-size:14px">play_arrow</span>Play Tone
+      </button>
+    </div>`;
+}
+
+// ── ZODIAC ──
+const ZODIAC=[
+  {name:'Aries',symbol:'♈',dates:'Mar 21 – Apr 19',element:'Fire'},
+  {name:'Taurus',symbol:'♉',dates:'Apr 20 – May 20',element:'Earth'},
+  {name:'Gemini',symbol:'♊',dates:'May 21 – Jun 20',element:'Air'},
+  {name:'Cancer',symbol:'♋',dates:'Jun 21 – Jul 22',element:'Water'},
+  {name:'Leo',symbol:'♌',dates:'Jul 23 – Aug 22',element:'Fire'},
+  {name:'Virgo',symbol:'♍',dates:'Aug 23 – Sep 22',element:'Earth'},
+  {name:'Libra',symbol:'♎',dates:'Sep 23 – Oct 22',element:'Air'},
+  {name:'Scorpio',symbol:'♏',dates:'Oct 23 – Nov 21',element:'Water'},
+  {name:'Sagittarius',symbol:'♐',dates:'Nov 22 – Dec 21',element:'Fire'},
+  {name:'Capricorn',symbol:'♑',dates:'Dec 22 – Jan 19',element:'Earth'},
+  {name:'Aquarius',symbol:'♒',dates:'Jan 20 – Feb 18',element:'Air'},
+  {name:'Pisces',symbol:'♓',dates:'Feb 19 – Mar 20',element:'Water'}
+];
+const HOROSCOPES={
+  Aries:"Today brings a burst of creative energy. Trust your instincts and take that bold step you've been considering.",
+  Taurus:"Financial opportunities are aligning. Stay grounded and let your natural patience guide important decisions.",
+  Gemini:"Communication flows effortlessly today. An unexpected conversation could spark your next big idea.",
+  Cancer:"Your intuition is heightened. Pay attention to dreams and emotional signals — they carry important messages.",
+  Leo:"The spotlight finds you naturally today. Use your magnetic energy to inspire someone who needs it.",
+  Virgo:"Details matter today more than ever. Your analytical skills help solve a problem others overlooked.",
+  Libra:"Balance comes through compromise. A partnership deepens when you lead with vulnerability.",
+  Scorpio:"Transformation is your theme. Let go of what no longer serves — something powerful is emerging.",
+  Sagittarius:"Adventure calls. Say yes to the unexpected — your growth lives outside your comfort zone.",
+  Capricorn:"Your hard work is about to pay off. Stay the course and trust the long game you've been playing.",
+  Aquarius:"Your unique perspective is exactly what's needed. Don't dilute your vision to fit in.",
+  Pisces:"Creative flow is strong. Channel your emotions into art, music, or writing for powerful expression."
+};
+
+function initZodiacWheel(){
+  const svg=document.getElementById('zodiacSvg');if(!svg)return;
+  const cx=160,cy=160,r=130;let html=`<circle cx="${cx}" cy="${cy}" r="${r+20}" fill="none" stroke="var(--border)" stroke-width="1"/>
+    <circle cx="${cx}" cy="${cy}" r="30" fill="var(--card)" stroke="var(--pri)" stroke-width="1" opacity=".5"/>
+    <text x="${cx}" y="${cy+4}" text-anchor="middle" fill="var(--pri)" font-size="10" font-weight="700">★</text>`;
+  ZODIAC.forEach((z,i)=>{
+    const angle=(i*30-90)*Math.PI/180;const x=cx+r*Math.cos(angle);const y=cy+r*Math.sin(angle);
+    const elColors={Fire:'#ef4444',Earth:'#10b981',Air:'#60a5fa',Water:'#818cf8'};
+    html+=`<g class="zodiac-sign" onclick="selectZodiac(${i})" style="cursor:pointer">
+      <circle cx="${x}" cy="${y}" r="22" fill="var(--card)" stroke="${elColors[z.element]}" stroke-width="1.5" opacity=".6"/>
+      <text x="${x}" y="${y+1}" text-anchor="middle" dominant-baseline="middle" fill="${elColors[z.element]}" font-size="16">${z.symbol}</text>
+      <text x="${x}" y="${y+36}" text-anchor="middle" fill="var(--text-dim)" font-size="7" font-weight="600">${z.name}</text></g>`;
+  });
+  svg.innerHTML=html;
+}
+
+let _selectedSign=null;
+function selectZodiac(i){
+  _selectedSign=ZODIAC[i];
+  document.querySelectorAll('.zodiac-sign').forEach((g,j)=>g.style.opacity=j===i?'1':'.4');
+  document.getElementById('horoscopeText').innerHTML=`<p style="font-size:20px;margin-bottom:8px">${ZODIAC[i].symbol} <strong style="color:#fff">${ZODIAC[i].name}</strong></p>
+    <p style="font-size:11px;color:var(--text-dim);margin-bottom:12px">${ZODIAC[i].dates} · ${ZODIAC[i].element}</p>
+    <p style="font-size:13px;color:var(--text);line-height:1.6">${HOROSCOPES[ZODIAC[i].name]}</p>`;
+}
+
+function calculateChart(){
+  const date=document.getElementById('astroDate').value;if(!date)return;
+  const d=new Date(date);const month=d.getMonth()+1;const day=d.getDate();
+  const signIdx=month===1?(day<20?9:10):month===2?(day<19?10:11):month===3?(day<21?11:0):month===4?(day<20?0:1):month===5?(day<21?1:2):month===6?(day<21?2:3):month===7?(day<23?3:4):month===8?(day<23?4:5):month===9?(day<23?5:6):month===10?(day<23?6:7):month===11?(day<22?7:8):8;
+  const sign=ZODIAC[signIdx];
+  const name=document.getElementById('astroName').value||'Dreamer';
+  const time=document.getElementById('astroTime').value;
+  selectZodiac(signIdx);
+
+  const elColors={Fire:'#ef4444',Earth:'#10b981',Air:'#60a5fa',Water:'#818cf8'};
+  document.getElementById('chartResults').innerHTML=`
+    <div style="padding:16px;background:var(--surface);border-radius:var(--radius-sm);margin-bottom:12px;border-left:3px solid ${elColors[sign.element]}">
+      <div style="font-size:32px;margin-bottom:4px">${sign.symbol}</div>
+      <h3 style="font-weight:900;font-size:18px;color:#fff">${name}</h3>
+      <p style="font-size:12px;color:${elColors[sign.element]};font-weight:700">${sign.name} · ${sign.element}</p>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">${sign.dates}</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="padding:10px;background:var(--surface);border-radius:var(--radius-sm)">
+        <div style="font-size:9px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase">Sun Sign</div>
+        <div style="font-size:13px;font-weight:700;color:#fff">${sign.symbol} ${sign.name}</div>
+      </div>
+      <div style="padding:10px;background:var(--surface);border-radius:var(--radius-sm)">
+        <div style="font-size:9px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase">Element</div>
+        <div style="font-size:13px;font-weight:700;color:${elColors[sign.element]}">${sign.element}</div>
+      </div>
+      ${time?`<div style="padding:10px;background:var(--surface);border-radius:var(--radius-sm)">
+        <div style="font-size:9px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase">Birth Time</div>
+        <div style="font-size:13px;font-weight:700;color:#fff">${time}</div>
+      </div>`:''}
+      <div style="padding:10px;background:var(--surface);border-radius:var(--radius-sm)">
+        <div style="font-size:9px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase">Ruling Planet</div>
+        <div style="font-size:13px;font-weight:700;color:#fff">${['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Pluto','Jupiter','Saturn','Uranus','Neptune'][signIdx]}</div>
+      </div>
+    </div>`;
+}
+
+// ── AGENTS ──
+const AGENTS=[
+  {name:'SHADDAI',role:'Orchestrator',color:'#cc97ff',emoji:'👑'},
+  {name:'NEXUS',role:'Architect',color:'#2db7f2',emoji:'⚡'},
+  {name:'ORACLE',role:'Research',color:'#6366f1',emoji:'🔮'},
+  {name:'TURTLE',role:'Design',color:'#10b981',emoji:'🐢'},
+  {name:'QUILL',role:'Writing',color:'#f59e0b',emoji:'✒️'},
+  {name:'ZEROX',role:'Revenue',color:'#ef4444',emoji:'💰'},
+  {name:'PIKADON',role:'Security',color:'#8b5cf6',emoji:'🛡️'}
+];
+function initAgents(){
+  const el=document.getElementById('agentGrid');if(!el)return;
+  el.innerHTML=AGENTS.map(a=>`
+    <div class="card card-sm agent-card" onclick="go('${a.name==='ORACLE'?'oracle':a.name==='TURTLE'?'turtle':'home'}')">
+      <div class="avatar" style="background:${a.color}20;border:2px solid ${a.color}">${a.emoji}</div>
+      <div class="name" style="color:${a.color}">${a.name}</div>
+      <div class="role">${a.role}</div>
+    </div>`).join('');
+}
+
+// ── AGENT CHAT ──
+async function sendOracle(){
+  const input=document.getElementById('oracleInput');const msg=input.value.trim();if(!msg)return;input.value='';
+  addChatMsg('oracleMessages',msg,'user');
+  addChatMsg('oracleMessages','<span style="opacity:.5">Thinking...</span>','agent');
+  try{
+    const res=await fetch('https://shaddai-g81x.onrender.com/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agent:'oracle',message:msg})});
+    const data=await res.json();
+    const msgs=document.getElementById('oracleMessages');msgs.removeChild(msgs.lastChild);
+    addChatMsg('oracleMessages',data.reply||data.message||'No response','agent');
+  }catch(e){
+    const msgs=document.getElementById('oracleMessages');msgs.removeChild(msgs.lastChild);
+    addChatMsg('oracleMessages','Connection error — is the server running?','agent');
+  }
+}
+async function sendTurtle(){
+  const input=document.getElementById('turtleInput');const msg=input.value.trim();if(!msg)return;input.value='';
+  addChatMsg('turtleMessages',msg,'user');
+  addChatMsg('turtleMessages','<span style="opacity:.5">Thinking...</span>','agent');
+  try{
+    const res=await fetch('https://shaddai-g81x.onrender.com/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agent:'turtle',message:msg})});
+    const data=await res.json();
+    const msgs=document.getElementById('turtleMessages');msgs.removeChild(msgs.lastChild);
+    addChatMsg('turtleMessages',data.reply||data.message||'No response','agent');
+  }catch(e){
+    const msgs=document.getElementById('turtleMessages');msgs.removeChild(msgs.lastChild);
+    addChatMsg('turtleMessages','Connection error — is the server running?','agent');
+  }
+}
+function addChatMsg(containerId,msg,type){
+  const el=document.getElementById(containerId);
+  const div=document.createElement('div');div.className='chat-msg '+type;div.innerHTML=msg;
+  el.appendChild(div);el.scrollTop=el.scrollHeight;
+}
+
+// ── JOURNAL ──
+let _journalType='mood';
+function setJournalType(btn,type){
+  _journalType=type;
+  btn.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+}
+function saveJournal(){
+  const text=document.getElementById('journalEntry').value.trim();if(!text)return;
+  const entries=JSON.parse(localStorage.getItem('d_journal')||'[]');
+  entries.unshift({type:_journalType,text,date:new Date().toISOString()});
+  localStorage.setItem('d_journal',JSON.stringify(entries));
+  document.getElementById('journalEntry').value='';
+  renderJournal();
+}
+function renderJournal(){
+  const entries=JSON.parse(localStorage.getItem('d_journal')||'[]');
+  const el=document.getElementById('journalList');
+  if(!entries.length){el.innerHTML='<p style="font-size:11px;color:var(--text-faint);text-align:center;padding:20px">No entries yet</p>';return}
+  el.innerHTML=entries.map(e=>`
+    <div style="padding:12px;background:var(--surface);border-radius:var(--radius-sm);margin-bottom:8px;border-left:3px solid var(--pri)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span class="badge badge-pri" style="font-size:8px">${e.type}</span>
+        <span style="font-size:9px;color:var(--text-faint)">${new Date(e.date).toLocaleDateString()}</span>
+      </div>
+      <p style="font-size:12px;color:var(--text);line-height:1.5">${e.text}</p>
+    </div>`).join('');
+}
+
+// ── PROFILE ──
+function saveProfile(){
+  const name=document.getElementById('profileName').value;
+  localStorage.setItem('d_profile',JSON.stringify({name}));
+  if(name){document.getElementById('profileAvatar').textContent=name[0].toUpperCase()}
+}
+function loadProfile(){
+  const p=JSON.parse(localStorage.getItem('d_profile')||'{}');
+  if(p.name){document.getElementById('profileName').value=p.name;document.getElementById('profileAvatar').textContent=p.name[0].toUpperCase()}
+}
+
+// ── SETTINGS ──
+function saveKeys(){
+  localStorage.setItem('d_keys',JSON.stringify({
+    openrouter:document.getElementById('keyOpenRouter').value,
+    hf:document.getElementById('keyHF').value,
+    fal:document.getElementById('keyFal').value
+  }));
+}
+function loadKeys(){
+  const k=JSON.parse(localStorage.getItem('d_keys')||'{}');
+  if(k.openrouter)document.getElementById('keyOpenRouter').value=k.openrouter;
+  if(k.hf)document.getElementById('keyHF').value=k.hf;
+  if(k.fal)document.getElementById('keyFal').value=k.fal;
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  initPiano();initChakraList();initChakraSvg();initZodiacWheel();initAgents();renderJournal();loadProfile();loadKeys();
+});
+</script>
+</body>
+</html>
