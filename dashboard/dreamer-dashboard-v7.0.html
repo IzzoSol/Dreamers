@@ -4,20 +4,20 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>DREAMERS v7.0</title>
-<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;700;900&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#080610;--surface:#0e0b1a;--card:#13102a;--card-h:#1a1535;
-  --border:#ffffff0d;--border-h:#cc97ff25;
-  --text:#e0dcf5;--text-dim:#8a84a8;--text-faint:#5a5478;
-  --pri:#cc97ff;--pri-dim:#9c48ea;--sec:#2db7f2;--acc:#ffd700;
+  --bg:#0a1a1f;--surface:#0d2228;--card:#132e33;--card-h:#1a3840;
+  --border:#ffffff15;--border-h:#15BDB135;
+  --text:#e0f5f0;--text-dim:#8aacaa;--text-faint:#5a7878;
+  --pri:#15BDB1;--pri-dim:#129e94;--sec:#9932cc;--acc:#f0a500;
   --green:#10b981;--red:#ff6e84;--orange:#f59e0b;
   --radius:12px;--radius-sm:8px;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;overflow:hidden;height:100vh}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;height:100vh}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--pri);border-radius:4px}
@@ -33,7 +33,7 @@ body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-ser
 
 /* ── sidebar ── */
 .sb-header{padding:20px;border-bottom:1px solid var(--border)}
-.sb-logo{font-family:'Epilogue',sans-serif;font-weight:900;font-size:22px;color:#fff;font-style:italic;letter-spacing:-1px}
+.sb-logo{font-family:'Oswald',sans-serif;font-weight:700;font-size:22px;color:#fff;letter-spacing:-1px}
 .sb-logo span{color:var(--pri)}
 .sb-version{font-size:10px;color:var(--text-faint);letter-spacing:3px;text-transform:uppercase;margin-top:2px}
 
@@ -41,21 +41,21 @@ body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-ser
 .sb-section{margin-bottom:16px}
 .sb-label{font-size:9px;font-weight:700;color:var(--text-faint);letter-spacing:3px;text-transform:uppercase;padding:8px 12px 4px}
 
-.sb-tab{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:none;background:none;color:var(--text-dim);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;text-align:left;border-left:3px solid transparent}
+.sb-tab{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:none;background:none;color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;text-align:left;border-left:3px solid transparent}
 .sb-tab:hover{background:var(--card);color:var(--text);transform:translateX(4px)}
 .sb-tab.active{background:var(--card);color:var(--pri);border-left-color:var(--pri);box-shadow:0 0 20px #cc97ff08}
 .sb-tab .icon{font-size:18px;opacity:.7}
 .sb-tab.active .icon{opacity:1}
 
 .sb-footer{padding:16px;border-top:1px solid var(--border)}
-.sb-footer-btn{width:100%;padding:10px;background:var(--pri);color:var(--bg);border:none;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .2s}
+.sb-footer-btn{width:100%;padding:10px;background:var(--pri);color:var(--bg);border:none;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .2s}
 .sb-footer-btn:hover{background:var(--pri-dim);transform:translateY(-1px)}
 
 /* ── header ── */
 .hdr{position:sticky;top:0;z-index:40;background:rgba(8,6,16,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
-.hdr-title{font-family:'Epilogue',sans-serif;font-weight:900;font-size:16px;color:#fff;font-style:italic;letter-spacing:-0.5px}
+.hdr-title{font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;color:#fff;;letter-spacing:-0.5px}
 .hdr-actions{display:flex;gap:8px}
-.hdr-btn{padding:6px 14px;border:1px solid var(--border);background:none;color:var(--text-dim);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;font-family:'Space Grotesk',sans-serif}
+.hdr-btn{padding:6px 14px;border:1px solid var(--border);background:none;color:var(--text-dim);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;font-family:'DM Sans',sans-serif}
 .hdr-btn:hover{border-color:var(--pri);color:var(--pri)}
 .hdr-btn.active{background:var(--pri);color:var(--bg);border-color:var(--pri)}
 
@@ -78,12 +78,12 @@ body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-ser
 
 /* ── sub-tabs (pill bar) ── */
 .pill-bar{display:flex;gap:4px;padding:4px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:20px;overflow-x:auto}
-.pill{padding:8px 16px;border:none;background:none;color:var(--text-dim);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;white-space:nowrap}
+.pill{padding:8px 16px;border:none;background:none;color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;white-space:nowrap}
 .pill:hover{color:var(--text);background:var(--card)}
 .pill.active{background:var(--pri);color:var(--bg)}
 
 /* ── buttons ── */
-.btn{padding:10px 20px;border:none;border-radius:var(--radius-sm);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn{padding:10px 20px;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
 .btn-pri{background:var(--pri);color:var(--bg)}
 .btn-pri:hover{background:var(--pri-dim);transform:translateY(-1px)}
 .btn-sec{background:var(--sec);color:var(--bg)}
@@ -95,7 +95,7 @@ body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-ser
 .btn-green{background:var(--green);color:var(--bg)}
 
 /* ── inputs ── */
-.inp{width:100%;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:13px;outline:none;transition:border-color .15s}
+.inp{width:100%;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .15s}
 .inp:focus{border-color:var(--pri)}
 .inp::placeholder{color:var(--text-faint)}
 textarea.inp{resize:vertical;min-height:80px}
@@ -241,7 +241,7 @@ select.inp{cursor:pointer}
   <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:32px">
     <div>
       <span class="badge badge-pri" style="margin-bottom:12px;display:inline-block">CREATOR COLLECTIVE</span>
-      <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:clamp(32px,5vw,52px);color:#fff;font-style:italic;line-height:.9;letter-spacing:-2px">CREATE.<br>CONNECT.<br><span style="color:var(--pri)">GROW.</span></h1>
+      <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(32px,5vw,52px);color:#fff;;line-height:.9;letter-spacing:-2px">CREATE.<br>CONNECT.<br><span style="color:var(--pri)">GROW.</span></h1>
       <p style="color:var(--text-dim);font-size:13px;margin-top:12px;letter-spacing:2px;text-transform:uppercase">Join a global movement of artists & creators</p>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -276,7 +276,7 @@ select.inp{cursor:pointer}
   </div>
 
   <!-- Workflows -->
-  <h2 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:18px;color:#fff;font-style:italic;margin-bottom:16px">Quick Workflows</h2>
+  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:18px;color:#fff;;margin-bottom:16px">Quick Workflows</h2>
   <div class="grid-2" style="margin-bottom:32px">
     <div class="card" style="cursor:pointer" onclick="go('create');setTimeout(()=>setCreateTab('img2music'),100)">
       <div class="workflow" style="margin:0">
@@ -301,13 +301,13 @@ select.inp{cursor:pointer}
   </div>
 
   <!-- Agent Grid -->
-  <h2 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:18px;color:#fff;font-style:italic;margin-bottom:16px">The Council</h2>
+  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:18px;color:#fff;;margin-bottom:16px">The Council</h2>
   <div class="grid-4" id="agentGrid"></div>
 </section>
 
 <!-- ══════ MUSIC ══════ -->
 <section class="panel" id="panel-music">
-  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">MUSIC</h1>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">MUSIC</h1>
   <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Make · Heal · Create with AI</p>
 
   <div class="pill-bar" id="musicPills">
@@ -424,7 +424,7 @@ select.inp{cursor:pointer}
 
 <!-- ══════ CREATE STUDIO ══════ -->
 <section class="panel" id="panel-create">
-  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">STUDIO</h1>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">STUDIO</h1>
   <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Transform · Generate · Export</p>
 
   <div class="pill-bar" id="createPills">
@@ -554,7 +554,7 @@ select.inp{cursor:pointer}
 
 <!-- ══════ ASTROLOGY ══════ -->
 <section class="panel" id="panel-astrology">
-  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">COSMIC BLUEPRINT</h1>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">COSMIC BLUEPRINT</h1>
   <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Your birth chart · Zodiac · Daily horoscope</p>
 
   <!-- Birth Info -->
@@ -607,7 +607,7 @@ select.inp{cursor:pointer}
 <section class="panel" id="panel-game">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
     <div>
-      <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">GAMES</h1>
+      <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">GAMES</h1>
       <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase">Pick a game to play</p>
     </div>
     <a id="gameFullscreen" href="#" target="_blank" class="btn btn-outline">
@@ -615,26 +615,15 @@ select.inp{cursor:pointer}
     </a>
   </div>
 
-  <!-- Game Picker -->
-  <div class="pill-bar" id="gamePills">
-    <button class="pill active" onclick="loadGame('game/dreamers-climb-v31.0.html',this)">Climb v31</button>
-    <button class="pill" onclick="loadGame('game/dreamers-climb-v28.88.html',this)">Climb v28.88</button>
-    <button class="pill" onclick="loadGame('game/dreamers-climb-v25.html',this)">Climb v25</button>
-    <button class="pill" onclick="loadGame('game/dreamers-climb-v24.0.html',this)">Climb v24</button>
-    <button class="pill" onclick="loadGame('game/dreamers-climb-v22.html',this)">Climb v22</button>
-    <button class="pill" onclick="loadGame('game/dreamers-climb-v15.html',this)">Climb v15</button>
-    <button class="pill" onclick="loadGame('game/dream-world.html',this)">Dream World</button>
-  </div>
-
-  <!-- Game Frame -->
+  <!-- Game -->
   <div style="border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);background:#000">
-    <iframe id="gameFrame" src="game/dreamers-climb-v31.0.html" style="width:100%;height:calc(100vh - 220px);border:none" allow="autoplay"></iframe>
+    <iframe id="gameFrame" src="game/dreamers-climb-v25.html" style="width:100%;height:calc(100vh - 180px);border:none" allow="autoplay"></iframe>
   </div>
 </section>
 
 <!-- ══════ ORACLE ══════ -->
 <section class="panel" id="panel-oracle">
-  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">ORACLE</h1>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">ORACLE</h1>
   <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Research · Intelligence · Trend Analysis</p>
 
   <div class="card" style="margin-bottom:16px">
@@ -659,7 +648,7 @@ select.inp{cursor:pointer}
 
 <!-- ══════ TURTLE ══════ -->
 <section class="panel" id="panel-turtle">
-  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">TURTLE</h1>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">TURTLE</h1>
   <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Design · UI/UX · Creative Direction</p>
 
   <div class="card" style="margin-bottom:16px">
@@ -684,7 +673,7 @@ select.inp{cursor:pointer}
 
 <!-- ══════ SANCTUARY ══════ -->
 <section class="panel" id="panel-sanctuary">
-  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">SANCTUARY</h1>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">SANCTUARY</h1>
   <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Breathe · Align · Heal</p>
 
   <!-- Breathing -->
@@ -714,7 +703,7 @@ select.inp{cursor:pointer}
 
 <!-- ══════ JOURNAL ══════ -->
 <section class="panel" id="panel-journal">
-  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">JOURNAL</h1>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">JOURNAL</h1>
   <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Reflect · Write · Grow</p>
 
   <div class="grid-2">
@@ -740,7 +729,7 @@ select.inp{cursor:pointer}
 
 <!-- ══════ PROFILE ══════ -->
 <section class="panel" id="panel-profile">
-  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:20px">PROFILE</h1>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:20px">PROFILE</h1>
   <div class="card" style="max-width:500px">
     <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--sec));display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;color:var(--bg);margin-bottom:16px" id="profileAvatar">?</div>
     <input class="inp" id="profileName" placeholder="Display Name" style="margin-bottom:12px">
@@ -751,7 +740,7 @@ select.inp{cursor:pointer}
 
 <!-- ══════ COMMUNITY ══════ -->
 <section class="panel" id="panel-community">
-  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:20px">COMMUNITY</h1>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:20px">COMMUNITY</h1>
   <div class="card" style="text-align:center;padding:60px">
     <span class="material-symbols-outlined" style="font-size:48px;color:var(--text-faint)">groups</span>
     <h3 style="font-weight:700;font-size:16px;color:#fff;margin-top:12px">Coming Soon</h3>
@@ -761,7 +750,7 @@ select.inp{cursor:pointer}
 
 <!-- ══════ SETTINGS ══════ -->
 <section class="panel" id="panel-settings">
-  <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:20px">SETTINGS</h1>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:20px">SETTINGS</h1>
   <div class="card" style="max-width:600px">
     <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:16px">API KEYS</h3>
     <div style="margin-bottom:12px">

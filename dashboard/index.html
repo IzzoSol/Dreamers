@@ -18,15 +18,15 @@
 <meta name="twitter:image" content="https://dreamers-i5nj.onrender.com/assets/share/dreamers.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Sora:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --void:#08060f; --void2:#0d0a1a; --ink:#f4eefb;
-    --amethyst:#b78bff; --amethyst-2:#8a5cf6;
-    --rose:#ff9ecf; --gold:#f2cd8a; --iris:#84f4e2;
-    --dim:rgba(244,238,251,.56); --faint:rgba(244,238,251,.34);
-    --line:rgba(183,139,255,.18);
-    --display:'Fraunces',serif; --mono:'Space Mono',monospace; --body:'Sora',sans-serif;
+    --void:#0a1a1f; --void2:#0d2228; --ink:#f4eefb;
+    --amethyst:#15BDB1; --amethyst-2:#9932cc;
+    --rose:#ff9ecf; --gold:#f0a500; --iris:#16D3BA;
+    --dim:rgba(244,238,251,.7); --faint:rgba(244,238,251,.4);
+    --line:rgba(21,189,177,.2);
+    --display:'Oswald',sans-serif; --mono:'Space Mono',monospace; --body:'DM Sans',sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -41,9 +41,9 @@
   /* ---------- atmosphere layers ---------- */
   #dream{position:fixed;inset:0;z-index:0;display:block}
   .aurora{position:fixed;inset:-20%;z-index:0;pointer-events:none;filter:blur(90px);opacity:.55;mix-blend-mode:screen}
-  .aurora.a1{background:radial-gradient(40% 50% at 30% 30%, var(--amethyst-2) 0%, transparent 60%);animation:drift1 26s ease-in-out infinite}
-  .aurora.a2{background:radial-gradient(38% 46% at 72% 40%, var(--rose) 0%, transparent 60%);animation:drift2 32s ease-in-out infinite;opacity:.4}
-  .aurora.a3{background:radial-gradient(36% 44% at 55% 78%, var(--gold) 0%, transparent 62%);animation:drift3 38s ease-in-out infinite;opacity:.3}
+  .aurora.a1{background:radial-gradient(40% 50% at 30% 30%, #15BDB1 0%, transparent 60%);animation:drift1 26s ease-in-out infinite}
+  .aurora.a2{background:radial-gradient(38% 46% at 72% 40%, #9932cc 0%, transparent 60%);animation:drift2 32s ease-in-out infinite;opacity:.4}
+  .aurora.a3{background:radial-gradient(36% 44% at 55% 78%, #f0a500 0%, transparent 62%);animation:drift3 38s ease-in-out infinite;opacity:.3}
   @keyframes drift1{50%{transform:translate(6%,4%) scale(1.15)}}
   @keyframes drift2{50%{transform:translate(-7%,5%) scale(1.2)}}
   @keyframes drift3{50%{transform:translate(4%,-6%) scale(1.1)}}
@@ -588,17 +588,61 @@
 
   <!-- SHOP -->
   <section class="blk" id="shop">
-    <div class="reveal-up" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
-      <div>
-        <div class="kick">the shop</div>
-        <h2 class="h2">The <em class="glitch" data-text="shop">shop</em>.</h2>
+    <div class="reveal-up" style="text-align:center;margin-bottom:40px">
+      <div class="kick" style="display:inline-block">the shop</div>
+      <h2 class="h2" style="margin:0 auto">The <em class="glitch" data-text="shop">shop</em>.</h2>
+      <p class="lead" style="margin:16px auto 0;text-align:center">All items priced in SOL. Simple checkout. Own the culture.</p>
+    </div>
+    <div class="grid reveal-up" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px">
+      <!-- Item 1 -->
+      <div class="card" style="cursor:pointer" onclick="window.open('https://phantom.app/','_blank')">
+        <div style="aspect-ratio:1;background:linear-gradient(135deg,#9932cc30,#15BDB120);display:flex;align-items:center;justify-content:center;border-radius:6px;margin-bottom:16px">
+          <span style="font-size:48px">👕</span>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)">apparel</div>
+        <h3 style="font-family:var(--display);font-size:20px;font-weight:500;margin-top:4px">Dreamers Tee</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+          <span style="font-family:var(--display);font-size:22px;font-weight:700;color:var(--gold)">1 SOL</span>
+          <span style="font-family:var(--mono);font-size:10px;padding:6px 14px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);letter-spacing:.1em">BUY NOW</span>
+        </div>
       </div>
-      <div style="display:flex;gap:12px">
-        <button class="gal-arrow" onclick="galScroll(-1,'shop-rail')" aria-label="Previous">&lsaquo;</button>
-        <button class="gal-arrow" onclick="galScroll(1,'shop-rail')" aria-label="Next">&rsaquo;</button>
+      <!-- Item 2 -->
+      <div class="card" style="cursor:pointer" onclick="window.open('https://phantom.app/','_blank')">
+        <div style="aspect-ratio:1;background:linear-gradient(135deg,#f0a50020,#9932cc20);display:flex;align-items:center;justify-content:center;border-radius:6px;margin-bottom:16px">
+          <span style="font-size:48px">🧢</span>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)">headwear</div>
+        <h3 style="font-family:var(--display);font-size:20px;font-weight:500;margin-top:4px">Dreamers Cap</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+          <span style="font-family:var(--display);font-size:22px;font-weight:700;color:var(--gold)">0.5 SOL</span>
+          <span style="font-family:var(--mono);font-size:10px;padding:6px 14px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);letter-spacing:.1em">BUY NOW</span>
+        </div>
+      </div>
+      <!-- Item 3 -->
+      <div class="card" style="cursor:pointer" onclick="window.open('https://phantom.app/','_blank')">
+        <div style="aspect-ratio:1;background:linear-gradient(135deg,#15BDB120,#16D3BA20);display:flex;align-items:center;justify-content:center;border-radius:6px;margin-bottom:16px">
+          <span style="font-size:48px">🖼️</span>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)">digital art</div>
+        <h3 style="font-family:var(--display);font-size:20px;font-weight:500;margin-top:4px">OG Dreamers Print</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+          <span style="font-family:var(--display);font-size:22px;font-weight:700;color:var(--gold)">1 SOL</span>
+          <span style="font-family:var(--mono);font-size:10px;padding:6px 14px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);letter-spacing:.1em">BUY NOW</span>
+        </div>
+      </div>
+      <!-- Item 4 -->
+      <div class="card" style="cursor:pointer" onclick="window.open('https://phantom.app/','_blank')">
+        <div style="aspect-ratio:1;background:linear-gradient(135deg,#9932cc20,#f0a50020);display:flex;align-items:center;justify-content:center;border-radius:6px;margin-bottom:16px">
+          <span style="font-size:48px">🎵</span>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)">music</div>
+        <h3 style="font-family:var(--display);font-size:20px;font-weight:500;margin-top:4px">Good Samaritan Vinyl</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+          <span style="font-family:var(--display);font-size:22px;font-weight:700;color:var(--gold)">0.5 SOL</span>
+          <span style="font-family:var(--mono);font-size:10px;padding:6px 14px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);letter-spacing:.1em">BUY NOW</span>
+        </div>
       </div>
     </div>
-    <div id="shop-rail" class="gallery-rail reveal-up"></div>
   </section>
 
   <!-- BOOKS / LIBRARY -->
@@ -623,7 +667,41 @@
         <div class="kick" style="margin-bottom:6px">the game</div>
         <div style="font-family:var(--display);font-size:clamp(20px,3vw,28px);font-weight:300">Dreamers Climb</div>
       </div>
-      <a class="btn ghost" href="game/dreamers-climb-v31.0.html">Play →</a>
+      <a class="btn ghost" href="game/dreamers-climb-v25.html">Play →</a>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="blk" id="roadmap">
+    <div class="reveal-up" style="text-align:center;margin-bottom:40px">
+      <div class="kick" style="display:inline-block">the vision</div>
+      <h2 class="h2" style="margin:0 auto">The <em class="glitch" data-text="roadmap">roadmap</em>.</h2>
+    </div>
+    <div class="pillars reveal-up">
+      <div class="pillar">
+        <div class="n">Phase 01</div>
+        <h4>Foundation</h4>
+        <p>Launch the platform, onboard creators, ship the Good Samaritan album showcase, Dreamers Climb game, and core music tools.</p>
+        <div style="margin-top:12px"><span style="font-family:var(--mono);font-size:10px;padding:4px 10px;border:1px solid var(--iris);border-radius:999px;color:var(--iris);letter-spacing:.1em">ACTIVE</span></div>
+      </div>
+      <div class="pillar">
+        <div class="n">Phase 02</div>
+        <h4>AI Agents</h4>
+        <p>Deploy the 7-agent council — ORACLE for research, TURTLE for design, QUILL for writing, NEXUS for code. Each agent powers a creative workflow.</p>
+        <div style="margin-top:12px"><span style="font-family:var(--mono);font-size:10px;padding:4px 10px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);letter-spacing:.1em">IN PROGRESS</span></div>
+      </div>
+      <div class="pillar">
+        <div class="n">Phase 03</div>
+        <h4>$DREAM Token</h4>
+        <p>Solana SPL token for governance, staking, and marketplace payments. Earn tokens by creating, curating, and contributing to the ecosystem.</p>
+        <div style="margin-top:12px"><span style="font-family:var(--mono);font-size:10px;padding:4px 10px;border:1px solid var(--faint);border-radius:999px;color:var(--faint);letter-spacing:.1em">UPCOMING</span></div>
+      </div>
+      <div class="pillar">
+        <div class="n">Phase 04</div>
+        <h4>NFT Genesis</h4>
+        <p>DreamerBox collectibles — cereal-box themed NFTs with embedded AI agents, on-chain vaults, and 10 archetype characters.</p>
+        <div style="margin-top:12px"><span style="font-family:var(--mono);font-size:10px;padding:4px 10px;border:1px solid var(--faint);border-radius:999px;color:var(--faint);letter-spacing:.1em">UPCOMING</span></div>
+      </div>
     </div>
   </section>
 
@@ -784,23 +862,13 @@ function buildRing(list){
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.15});
 document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));
 
-// gallery — data-driven collection (add a line here to add a piece)
+// gallery — curated collection (best pieces only)
 const GALLERY=[
-  {src:'assets/share/dreamers.png', series:'Synthesis · Genesis', name:'Matrix'},
+  {src:'assets/share/dreamers.png', series:'OG Dreamers', name:'Matrix'},
   {src:'assets/collection/synthesis-01.png', series:'Synthesis', name:'Prism I'},
-  {src:'assets/collection/synthesis-02.png', series:'Synthesis', name:'Prism II'},
-  {src:'assets/collection/synthesis-03.png', series:'Synthesis', name:'Prism III'},
-  {src:'assets/collection/synthesis-04.png', series:'Synthesis', name:'Prism IV'},
   {src:'assets/collection/synthesis-05.png', series:'Synthesis', name:'Prism V'},
-  {src:'assets/collection/synthesis-06.png', series:'Synthesis', name:'Prism VI'},
-  {src:'assets/collection/synthesis-07.png', series:'Synthesis', name:'Prism VII'},
-  {src:'assets/collection/synthesis-08.png', series:'Synthesis', name:'Prism VIII'},
-  {src:'assets/collection/synthesis-09.png', series:'Synthesis', name:'Prism IX'},
-  {src:'assets/collection/synthesis-10.png', series:'Synthesis', name:'Prism X'},
   {src:'assets/glitch/ocean.png', series:'Glitch', name:'Ocean Double'},
   {src:'assets/glitch/purple.png', series:'Glitch', name:'Amethyst Signal'},
-  {src:'assets/glitch/blue.png', series:'Glitch', name:'Cyan Drift'},
-  {src:'assets/glitch/green.png', series:'Glitch', name:'Emerald Static'},
   {src:'assets/glitch/glitch-4.png', series:'Glitch', name:'Fragment'},
 ];
 (function renderGallery(){
