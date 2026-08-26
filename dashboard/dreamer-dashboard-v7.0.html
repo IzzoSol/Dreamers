@@ -350,6 +350,23 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 .shop-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:16px}
 .shop-modal.open{display:flex}
 .shop-modal-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;max-width:420px;width:100%;position:relative;animation:fadeUp .25s ease-out}
+/* ── SANCTUARY TABS ── */
+.sanc-tab{animation:fadeUp .3s ease-out}
+/* ── HERB CARDS ── */
+.herb-card{cursor:pointer;transition:all .2s}
+.herb-card:hover{border-color:var(--green)!important}
+.herb-card .herb-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.herb-card .herb-name{font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;color:#fff}
+.herb-card .herb-latin{font-size:10px;color:var(--text-faint);font-style:italic}
+.herb-card .herb-benefits{font-size:11px;color:var(--text-dim);line-height:1.5;margin-top:6px}
+.herb-card .herb-usage{font-size:10px;color:var(--pri);margin-top:6px;font-weight:600}
+/* ── MOOD TRACKER ── */
+.mood-btn.selected{border-color:var(--pri)!important;background:var(--card)!important;transform:scale(1.1)}
+/* ── HEALTH CARD ── */
+.health-card .h-icon{font-size:32px;margin-bottom:8px}
+.health-card .h-title{font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;color:#fff}
+.health-card .h-tip{font-size:11px;color:var(--text-dim);line-height:1.5;margin-top:6px}
+.health-card .h-tag{display:inline-block;font-family:var(--mono);font-size:9px;padding:3px 8px;border:1px solid var(--border);border-radius:999px;color:var(--text-faint);margin-top:8px;letter-spacing:.1em}
 .shop-modal-close{position:absolute;top:10px;right:14px;background:none;border:none;color:var(--text-faint);font-size:24px;cursor:pointer;padding:4px;line-height:1}
 .shop-modal-close:hover{color:var(--text)}
 </style>
@@ -1110,31 +1127,62 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 
 <!-- ══════ SANCTUARY ══════ -->
 <section class="panel" id="panel-sanctuary">
-  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">SANCTUARY</h1>
-  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Breathe · Align · Heal</p>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;margin-bottom:4px">SANCTUARY</h1>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">Herbs · Healing · Affirmations · Health</p>
 
-  <!-- Breathing -->
-  <div class="card" style="text-align:center;margin-bottom:20px">
-    <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:16px">BREATHING EXERCISE</h3>
-    <div class="breathe-orb" id="breatheOrb"></div>
-    <div id="breatheText" style="font-size:18px;font-weight:900;color:#fff;margin-top:20px;letter-spacing:2px">TAP TO START</div>
-    <div style="display:flex;gap:8px;justify-content:center;margin-top:16px">
-      <button class="btn btn-pri" onclick="startBreathing()">Start</button>
-      <button class="btn btn-outline" onclick="stopBreathing()">Stop</button>
+  <div class="pill-bar" id="sanctuaryPills">
+    <button class="pill active" onclick="setSanctuaryTab('herbs')">Herbs</button>
+    <button class="pill" onclick="setSanctuaryTab('affirmations')">Affirmations</button>
+    <button class="pill" onclick="setSanctuaryTab('health')">Health Tips</button>
+    <button class="pill" onclick="setSanctuaryTab('workouts')">Workouts</button>
+  </div>
+
+  <!-- HERBS -->
+  <div id="st-herbs" class="sanc-tab">
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <input class="inp" id="herbSearch" placeholder="Search herbs..." style="max-width:300px" oninput="filterHerbs()"/>
+    </div>
+    <div class="grid-3" id="herbGrid"></div>
+  </div>
+
+  <!-- AFFIRMATIONS -->
+  <div id="st-affirmations" class="sanc-tab" style="display:none">
+    <div class="card" style="text-align:center;padding:32px;border-left:4px solid var(--sec)">
+      <div style="font-size:36px;margin-bottom:16px">🧘</div>
+      <p style="font-family:'Oswald',sans-serif;font-size:22px;font-weight:500;color:#fff;line-height:1.4;margin-bottom:20px" id="affirmationText">I am worthy of abundance, love, and creative flow.</p>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-pri" onclick="nextAffirmation()">Next Affirmation</button>
+        <button class="btn btn-sec" onclick="copyAffirmation()">Copy</button>
+        <button class="btn btn-acc" onclick="shareAffirmation()">Share</button>
+      </div>
+    </div>
+    <div style="margin-top:16px">
+      <h3 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;color:#fff;margin-bottom:12px">DAILY AFFIRMATION REMINDER</h3>
+      <div class="card" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <label style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Reminder Time</label>
+          <input class="inp" id="affirmTime" type="time" value="08:00"/>
+        </div>
+        <div style="flex:1;min-width:200px">
+          <label style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Google Calendar</label>
+          <button class="btn btn-pri" style="width:100%;justify-content:center" onclick="downloadAffirmCalendar()">Add to Google Calendar</button>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px">
+      <h3 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;color:#fff;margin-bottom:12px">AFFIRMATION HISTORY</h3>
+      <div id="affirmHistory"></div>
     </div>
   </div>
 
-  <!-- Chakra Alignment -->
-  <div class="card">
-    <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:16px">CHAKRA ALIGNMENT</h3>
-    <div class="grid-2">
-      <div style="text-align:center">
-        <svg viewBox="0 0 200 480" style="max-width:240px" id="chakraSvg"></svg>
-      </div>
-      <div id="chakraDetail">
-        <p style="font-size:11px;color:var(--text-faint)">Tap a chakra to explore it</p>
-      </div>
-    </div>
+  <!-- HEALTH TIPS -->
+  <div id="st-health" class="sanc-tab" style="display:none">
+    <div class="grid-2" id="healthGrid"></div>
+  </div>
+
+  <!-- WORKOUTS -->
+  <div id="st-workouts" class="sanc-tab" style="display:none">
+    <div class="grid-2" id="workoutGrid"></div>
   </div>
 </section>
 
@@ -1316,28 +1364,50 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 
 <!-- ══════ JOURNAL ══════ -->
 <section class="panel" id="panel-journal">
-  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">JOURNAL</h1>
-  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Reflect · Write · Grow</p>
-
-  <div class="grid-2">
-    <div class="card">
-      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">NEW ENTRY</h3>
-      <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap">
-        <button class="pill active" onclick="setJournalType(this,'mood')">Mood</button>
-        <button class="pill" onclick="setJournalType(this,'daily')">Daily</button>
-        <button class="pill" onclick="setJournalType(this,'shadow')">Shadow Work</button>
-        <button class="pill" onclick="setJournalType(this,'goals')">Goals</button>
-      </div>
-      <textarea class="inp" id="journalEntry" rows="8" placeholder="Write your thoughts..."></textarea>
-      <button class="btn btn-pri" onclick="saveJournal()" style="width:100%;justify-content:center;margin-top:12px">Save Entry</button>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px">
+    <div>
+      <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;margin-bottom:4px">JOURNAL</h1>
+      <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase">Write · Reflect · Grow</p>
     </div>
-    <div class="card">
-      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">PAST ENTRIES</h3>
-      <div id="journalList" style="max-height:400px;overflow-y:auto">
-        <p style="font-size:11px;color:var(--text-faint);text-align:center;padding:20px">No entries yet</p>
-      </div>
+    <button class="btn btn-pri" onclick="exportJournal()"><span class="material-symbols-outlined" style="font-size:16px">download</span>Export .ICS</button>
+  </div>
+
+  <!-- Mood Tracker -->
+  <div class="card" style="margin-bottom:20px;border-left:4px solid var(--sec)">
+    <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">HOW ARE YOU FEELING?</h3>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button class="mood-btn" onclick="setMood('amazing')" style="background:none;border:2px solid var(--border);border-radius:12px;padding:12px 16px;cursor:pointer;transition:all .15s;font-size:24px;text-align:center;min-width:64px" onmouseenter="this.style.borderColor='var(--acc)'" onmouseleave="this.style.borderColor='var(--border)'">🔥<div style="font-size:9px;color:var(--text-faint);margin-top:4px">Amazing</div></button>
+      <button class="mood-btn" onclick="setMood('happy')" style="background:none;border:2px solid var(--border);border-radius:12px;padding:12px 16px;cursor:pointer;transition:all .15s;font-size:24px;text-align:center;min-width:64px" onmouseenter="this.style.borderColor='var(--green)'" onmouseleave="this.style.borderColor='var(--border)'">😊<div style="font-size:9px;color:var(--text-faint);margin-top:4px">Happy</div></button>
+      <button class="mood-btn" onclick="setMood('calm')" style="background:none;border:2px solid var(--border);border-radius:12px;padding:12px 16px;cursor:pointer;transition:all .15s;font-size:24px;text-align:center;min-width:64px" onmouseenter="this.style.borderColor='var(--pri)'" onmouseleave="this.style.borderColor='var(--border)'">😌<div style="font-size:9px;color:var(--text-faint);margin-top:4px">Calm</div></button>
+      <button class="mood-btn" onclick="setMood('anxious')" style="background:none;border:2px solid var(--border);border-radius:12px;padding:12px 16px;cursor:pointer;transition:all .15s;font-size:24px;text-align:center;min-width:64px" onmouseenter="this.style.borderColor='var(--orange)'" onmouseleave="this.style.borderColor='var(--border)'">😰<div style="font-size:9px;color:var(--text-faint);margin-top:4px">Anxious</div></button>
+      <button class="mood-btn" onclick="setMood('low')" style="background:none;border:2px solid var(--border);border-radius:12px;padding:12px 16px;cursor:pointer;transition:all .15s;font-size:24px;text-align:center;min-width:64px" onmouseenter="this.style.borderColor='var(--red)'" onmouseleave="this.style.borderColor='var(--border)'">😔<div style="font-size:9px;color:var(--text-faint);margin-top:4px">Low</div></button>
     </div>
   </div>
+
+  <!-- Today's Affirmation -->
+  <div class="card" style="margin-bottom:20px;text-align:center;border-left:4px solid var(--acc)">
+    <div style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">TODAY'S AFFIRMATION</div>
+    <p style="font-family:'Oswald',sans-serif;font-size:16px;color:#fff;font-weight:500" id="journalAffirmation">I attract abundance through creative expression.</p>
+    <button class="btn btn-acc" style="margin-top:12px" onclick="nextAffirmation();document.getElementById('journalAffirmation').textContent=document.getElementById('affirmationText').textContent">New One</button>
+  </div>
+
+  <!-- Journal Entry -->
+  <div class="card" style="margin-bottom:20px">
+    <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">WRITE</h3>
+    <div style="margin-bottom:12px">
+      <label style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Title</label>
+      <input class="inp" id="journalTitle" placeholder="Today's entry..."/>
+    </div>
+    <textarea class="inp" id="journalEntry" rows="8" placeholder="Write your thoughts..."></textarea>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn btn-pri" onclick="saveJournal()">Save Entry</button>
+      <button class="btn btn-sec" onclick="exportJournal()">Export</button>
+    </div>
+  </div>
+
+  <!-- Past Entries -->
+  <h3 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;color:#fff;margin-bottom:12px">PAST ENTRIES</h3>
+  <div id="journalEntries"></div>
 </section>
 
 <!-- ══════ PROFILE ══════ -->
@@ -2790,16 +2860,233 @@ function submitDashRequest(){
   const e=document.getElementById('dRequestEmail').value.trim();
   const w=document.getElementById('dRequestWallet').value.trim();
   if(!n||!e||!w){alert('Fill in all fields');return}
+  const itemText=document.getElementById('dRequestItemName').textContent;
+  const qty=parseInt(document.getElementById('dRequestQty').value)||1;
+  const priceMatch=itemText.match(/([\d.]+)\s*SOL/);
+  const unitPrice=priceMatch?parseFloat(priceMatch[1]):1;
+  const totalSOL=unitPrice*qty;
   const reqs=JSON.parse(getUserData('shop_requests','[]'));
-  reqs.push({name:n,email:e,wallet:w,item:document.getElementById('dRequestItemName').textContent,qty:document.getElementById('dRequestQty').value,time:Date.now()});
+  reqs.push({name:n,email:e,wallet:w,item:itemText,qty:qty,totalSOL:totalSOL,time:Date.now()});
   setUserData('shop_requests',reqs);
   document.getElementById('dashShopModal').classList.remove('open');
   document.getElementById('dRequestName').value='';
   document.getElementById('dRequestEmail').value='';
   document.getElementById('dRequestWallet').value='';
-  addCredits(5,'Requested a shop item');
-  alert('Request submitted! +5 Culture Credits.');
+  let credits=5;
+  let bonus='';
+  if(totalSOL>=3){credits=25;bonus='\n🎉 SPEND BONUS: +20 bonus credits + FREE sticker pack!'}
+  else if(totalSOL>=2){credits=15;bonus='\n⭐ +10 bonus credits! Spend 3+ for a free item.'}
+  addCredits(credits,'Requested shop item ('+totalSOL+' SOL)');
+  alert('Request submitted!\nTotal: '+totalSOL+' SOL\n+'+credits+' Culture Credits earned!'+bonus);
 }
+
+// ── SANCTUARY ──
+function setSanctuaryTab(id){
+  document.querySelectorAll('.sanc-tab').forEach(t=>t.style.display='none');
+  const el=document.getElementById('st-'+id);
+  if(el)el.style.display='block';
+  document.querySelectorAll('#sanctuaryPills .pill').forEach((p,i)=>{
+    const tabs=['herbs','affirmations','health','workouts'];
+    p.classList.toggle('active',tabs[i]===id);
+  });
+}
+
+const HERBS=[
+  {name:'Ashwagandha',latin:'Withania somnifera',icon:'🌿',color:'var(--green)',benefits:'Reduces stress & anxiety. Boosts testosterone. Improves sleep quality. Enhances cognitive function.',usage:'Take 300-600mg daily with food. Best taken in the evening.'},
+  {name:'Lion\'s Mane',latin:'Hericium erinaceus',icon:'🍄',color:'var(--pri)',benefits:'Enhances focus & memory. Supports nerve growth factor. Reduces brain fog. Neuroprotective.',usage:'500-1000mg daily. Morning or early afternoon.'},
+  {name:'Turmeric',latin:'Curcuma longa',icon:'🟡',color:'var(--acc)',benefits:'Powerful anti-inflammatory. Joint health. Antioxidant. Supports liver detox.',usage:'500-1000mg with black pepper (piperine) for absorption. Take with meals.'},
+  {name:'Moringa',latin:'Moringa oleifera',icon:'🍃',color:'var(--green)',benefits:'Superfood nutrient density. Iron, calcium, vitamins. Anti-inflammatory. Energy boost.',usage:'1-2 teaspoons powder daily. Add to smoothies or tea.'},
+  {name:'Reishi Mushroom',latin:'Ganoderma lucidum',icon:'🍄',color:'var(--sec)',benefits:'Immune support. Stress relief. Better sleep. Adaptogenic. Heart health.',usage:'1000-1500mg daily. Best in the evening for sleep support.'},
+  {name:'Spirulina',latin:'Arthrospira platensis',icon:'💙',color:'var(--pri)',benefits:'Complete protein. Detoxifies heavy metals. Boosts energy. Anti-inflammatory.',usage:'1-3g daily. Start small and work up. Add to smoothies.'},
+  {name:'Maca Root',latin:'Lepidium meyenii',icon:'🟤',color:'var(--acc)',benefits:'Boosts energy & stamina. Balances hormones. Enhances mood. Improves libido.',usage:'1500-3000mg daily. Take in the morning for energy.'},
+  {name:'Chaga Mushroom',latin:'Inonotus obliquus',icon:'🪵',color:'var(--acc)',benefits:'Highest antioxidant food. Immune boost. Anti-viral. Skin health. Gut healing.',usage:'1000mg daily. Can brew as tea or take capsule.'},
+  {name:'Holy Basil (Tulsi)',latin:'Ocimum tenuiflorum',icon:'🌱',color:'var(--green)',benefits:'Reduces cortisol. Adaptogenic. Respiratory health. Blood sugar balance. Calming.',usage:'300-600mg daily. Tea or capsule. Best in the evening.'},
+  {name:'Cacao',latin:'Theobroma cacao',icon:'🍫',color:'var(--acc)',benefits:'Heart health. Rich in magnesium. Mood enhancer. Antioxidant. PEA (bliss chemical).',usage:'1-2 tablespoons raw cacao powder daily. Hot drink or smoothie.'},
+  {name:'Nettle Leaf',latin:'Urtica dioica',icon:'🌿',color:'var(--green)',benefits:'Blood cleanser. Kidney support. Rich in iron & minerals. Allergy relief. Hair health.',usage:'Steep 1-2 tablespoons in hot water for 10 min. Drink 2-3 cups daily.'},
+  {name:'Astragalus',latin:'Astragalus membranaceus',icon:'🛡️',color:'var(--pri)',benefits:'Immune modulator. Heart health. Anti-aging. Energy. Adaptogenic stress defense.',usage:'500-1000mg daily. Take with meals. Long-term use recommended.'},
+];
+
+function renderHerbs(list){
+  const grid=document.getElementById('herbGrid');if(!grid)return;
+  grid.innerHTML=list.map(h=>`<div class="card herb-card">
+    <div style="display:flex;gap:12px;align-items:start">
+      <div class="herb-icon" style="background:${h.color}20">${h.icon}</div>
+      <div>
+        <div class="herb-name">${h.name}</div>
+        <div class="herb-latin">${h.latin}</div>
+      </div>
+    </div>
+    <div class="herb-benefits">${h.benefits}</div>
+    <div class="herb-usage">How to use: ${h.usage}</div>
+  </div>`).join('');
+}
+function filterHerbs(){
+  const q=(document.getElementById('herbSearch')?.value||'').toLowerCase();
+  renderHerbs(HERBS.filter(h=>!q||h.name.toLowerCase().includes(q)||h.latin.toLowerCase().includes(q)||h.benefits.toLowerCase().includes(q)));
+}
+renderHerbs(HERBS);
+
+const AFFIRMATIONS=[
+  'I am worthy of abundance, love, and creative flow.',
+  'I attract prosperity through my art and vision.',
+  'Every day I grow stronger, wiser, and more aligned.',
+  'My creativity is a gift that serves the world.',
+  'I release fear and welcome abundance into my life.',
+  'I am building something that matters. The universe supports me.',
+  'My work heals, inspires, and transforms.',
+  'I am magnetic to opportunities that align with my purpose.',
+  'I choose peace over worry and action over doubt.',
+  'My dreams are valid, my vision is clear, my path is lit.',
+  'I attract the right people, places, and energy.',
+  'I am grateful for today and excited for tomorrow.',
+  'My body is healthy, my mind is sharp, my spirit is free.',
+  'I give myself permission to dream bigger.',
+  'I am the architect of my reality. I build with intention.',
+  'Wealth flows to me through creativity and service.',
+  'I honor my journey and trust the process.',
+  'My energy is magnetic. Good things come to me naturally.',
+  'I am surrounded by love, support, and abundance.',
+  'I choose joy. I choose growth. I choose me.',
+];
+let _affIdx=Math.floor(Math.random()*AFFIRMATIONS.length);
+function nextAffirmation(){
+  _affIdx=(_affIdx+1)%AFFIRMATIONS.length;
+  document.getElementById('affirmationText').textContent=AFFIRMATIONS[_affIdx];
+  const hist=JSON.parse(getUserData('affirm_history','[]'));
+  hist.push({text:AFFIRMATIONS[_affIdx],time:Date.now()});
+  setUserData('affirm_history',hist.slice(-20));
+  renderAffirmHistory();
+}
+function copyAffirmation(){
+  navigator.clipboard?.writeText(AFFIRMATIONS[_affIdx]).then(()=>alert('Copied!'));
+}
+function shareAffirmation(){
+  const t=AFFIRMATIONS[_affIdx];
+  if(navigator.share){navigator.share({text:t+' — Dreamers Sanctuary'})}
+  else{navigator.clipboard?.writeText(t+' — Dreamers Sanctuary').then(()=>alert('Copied to clipboard!'))}
+}
+function renderAffirmHistory(){
+  const hist=JSON.parse(getUserData('affirm_history','[]'));
+  const el=document.getElementById('affirmHistory');if(!el)return;
+  if(!hist.length){el.innerHTML='<p style="font-size:11px;color:var(--text-faint)">No affirmations yet. Start your day with one.</p>';return}
+  el.innerHTML=hist.slice(-5).reverse().map(a=>{
+    const d=new Date(a.time);
+    return `<div class="card card-sm" style="margin-bottom:8px"><div style="font-size:12px;color:#fff;font-style:italic">"${a.text}"</div><div style="font-size:9px;color:var(--text-faint);margin-top:4px">${d.toLocaleDateString()} ${d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div>`;
+  }).join('');
+}
+function downloadAffirmCalendar(){
+  const time=document.getElementById('affirmTime')?.value||'08:00';
+  const [h,m]=time.split(':');
+  let ics='BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Dreamers//Affirmations//EN\n';
+  for(let i=0;i<30;i++){
+    const d=new Date();d.setDate(d.getDate()+i);
+    const dt=d.toISOString().split('T')[0].replace(/-/g,'');
+    ics+=`BEGIN:VEVENT\nDTSTART:${dt}T${h}${m}00\nDTEND:${dt}T${h}${m}00\nRRULE:FREQ=DAILY;COUNT=30\nSUMMARY:Daily Affirmation\nDESCRIPTION:${AFFIRMATIONS[i%AFFIRMATIONS.length]}\nBEGIN:VALARM\nTRIGGER:-PT0M\nACTION:DISPLAY\nDESCRIPTION:Time for your daily affirmation\nEND:VALARM\nEND:VEVENT\n`;
+  }
+  ics+='END:VCALENDAR';
+  const blob=new Blob([ics],{type:'text/calendar'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='dreamers-affirmations.ics';a.click();
+  URL.revokeObjectURL(url);
+  alert('Calendar file downloaded! Import into Google Calendar.');
+}
+
+const HEALTH_TIPS=[
+  {icon:'💧',title:'Hydration Rule',tip:'Drink half your body weight in ounces daily. Add lemon for Vitamin C and liver support. Start every morning with 16oz of water.',tag:'NUTRITION'},
+  {icon:'🌙',title:'Sleep Hygiene',tip:'No screens 1 hour before bed. Keep room at 65-68°F. Take Reishi or Ashwagandha 30 min before sleep. Aim for 7-9 hours.',tag:'SLEEP'},
+  {icon:'🧠',title:'Brain Fuel',tip:'Lion\'s Mane mushroom is the #1 nootropic for focus. Take with healthy fats (avocado, MCT oil) for better absorption.',tag:'FOCUS'},
+  {icon:'🏃',title:'Movement Medicine',tip:'30 min of movement daily reduces anxiety by 40%. Walk, dance, stretch — it doesn\'t have to be intense. Just move.',tag:'MOVEMENT'},
+  {icon:'🫁',title:'Breath Work',tip:'Try 4-7-8 breathing: Inhale 4s, hold 7s, exhale 8s. Do 4 rounds. Activates parasympathetic nervous system. Instant calm.',tag:'BREATHING'},
+  {icon:'🌱',title:'Gut Health',tip:'Your gut is your second brain. Eat fermented foods daily (kimchi, sauerkraut, kombucha). Take probiotics on empty stomach.',tag:'DIGESTION'},
+  {icon:'☀️',title:'Morning Sunlight',tip:'Get 10 min of direct sunlight within 1 hour of waking. Sets circadian rhythm. Boosts serotonin. Improves sleep quality at night.',tag:'CIRCADIAN'},
+  {icon:'🧘',title:'Meditation Stack',tip:'Morning: 10 min meditation. Midday: 5 min breathwork. Evening: gratitude journaling. This stack rewires your brain in 30 days.',tag:'MINDFULNESS'},
+];
+function renderHealthTips(){
+  const grid=document.getElementById('healthGrid');if(!grid)return;
+  grid.innerHTML=HEALTH_TIPS.map(t=>`<div class="card health-card">
+    <div class="h-icon">${t.icon}</div>
+    <div class="h-title">${t.title}</div>
+    <div class="h-tip">${t.tip}</div>
+    <span class="h-tag">${t.tag}</span>
+  </div>`).join('');
+}
+renderHealthTips();
+
+const WORKOUTS=[
+  {name:'Morning Flow',time:'10 min',level:'Beginner',icon:'🧘',exercises:['Cat-Cow Stretch','Downward Dog','Sun Salutation x3','Warrior I → II','Standing Forward Fold','Child\'s Pose'],calories:60},
+  {name:'Core Crusher',time:'15 min',level:'Intermediate',icon:'💪',exercises:['Plank Hold 60s','Bicycle Crunches x20','Leg Raises x15','Russian Twists x20','Dead Bug x12','Mountain Climbers x30'],calories:120},
+  {name:'Full Body Burn',time:'20 min',level:'Advanced',icon:'🔥',exercises:['Jumping Jacks x30','Push-ups x15','Squats x20','Lunges x12 each','Burpees x10','Plank Shoulder Taps x20','Cool Down Stretch'],calories:200},
+  {name:'Herbal Yoga',time:'15 min',level:'All Levels',icon:'🌿',exercises:['Deep Breathing 2min','Lotus Pose','Tree Pose','Cobra Pose','Seated Forward Bend','Savasana with Ashwagandha tea'],calories:80},
+  {name:'HIIT Express',time:'12 min',level:'Intermediate',icon:'⚡',exercises:['Warm-up 1min','Squat Jumps x30s','Rest 15s','High Knees x30s','Rest 15s','Push-up Burpees x30s','Rest 15s','Repeat x3','Cool Down'],calories:180},
+  {name:'Night Stretch',time:'8 min',level:'Beginner',icon:'🌙',exercises:['Neck Rolls','Shoulder Shrugs','Seated Spinal Twist','Knee-to-Chest','Butterfly Stretch','Legs Up the Wall','Deep Breathing'],calories:30},
+];
+function renderWorkouts(){
+  const grid=document.getElementById('workoutGrid');if(!grid)return;
+  grid.innerHTML=WORKOUTS.map(w=>`<div class="card" style="cursor:pointer">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <div style="width:48px;height:48px;border-radius:12px;background:var(--pri)15;display:flex;align-items:center;justify-content:center;font-size:24px">${w.icon}</div>
+      <div>
+        <div style="font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;color:#fff">${w.name}</div>
+        <div style="display:flex;gap:8px;margin-top:2px">
+          <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:1px solid var(--pri);border-radius:999px;color:var(--pri)">${w.time}</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:1px solid var(--acc);border-radius:999px;color:var(--acc)">${w.level}</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:1px solid var(--sec);border-radius:999px;color:var(--sec)">${w.calories} cal</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding-left:12px;border-left:2px solid var(--border)">
+      ${w.exercises.map((e,i)=>`<div style="font-size:11px;color:var(--text-dim);padding:3px 0;display:flex;gap:8px"><span style="color:var(--pri);font-weight:700;min-width:16px">${i+1}.</span>${e}</div>`).join('')}
+    </div>
+    <button class="btn btn-pri" style="width:100%;justify-content:center;margin-top:12px" onclick="addCredits(10,'Completed ${w.name} workout');alert('Workout complete! +10 Culture Credits')">MARK COMPLETE · +10 Credits</button>
+  </div>`).join('');
+}
+renderWorkouts();
+
+// ── JOURNAL ──
+function setMood(mood){
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  const moods=JSON.parse(getUserData('moods','[]'));
+  moods.push({mood,time:Date.now()});
+  setUserData('moods',moods);
+}
+function saveJournal(){
+  const title=document.getElementById('journalTitle').value.trim();
+  const text=document.getElementById('journalEntry').value.trim();
+  if(!text){alert('Write something first');return}
+  const entries=JSON.parse(getUserData('journal_entries','[]'));
+  entries.push({title:title||'Untitled',text,time:Date.now()});
+  setUserData('journal_entries',entries);
+  document.getElementById('journalTitle').value='';
+  document.getElementById('journalEntry').value='';
+  addCredits(5,'Wrote a journal entry');
+  renderJournalEntries();
+}
+function renderJournalEntries(){
+  const entries=JSON.parse(getUserData('journal_entries','[]'));
+  const el=document.getElementById('journalEntries');if(!el)return;
+  if(!entries.length){el.innerHTML='<p style="font-size:12px;color:var(--text-faint);text-align:center;padding:24px">No entries yet. Start writing.</p>';return}
+  el.innerHTML=entries.slice(-10).reverse().map(e=>{
+    const d=new Date(e.time);
+    return `<div class="card" style="margin-bottom:8px"><div style="font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;color:#fff">${e.title}</div><div style="font-size:11px;color:var(--text-dim);margin-top:4px;line-height:1.5">${e.text.substring(0,200)}${e.text.length>200?'...':''}</div><div style="font-size:9px;color:var(--text-faint);margin-top:6px">${d.toLocaleDateString()} ${d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div>`;
+  }).join('');
+}
+function exportJournal(){
+  const entries=JSON.parse(getUserData('journal_entries','[]'));
+  let ics='BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Dreamers//Journal//EN\n';
+  entries.forEach(e=>{
+    const d=new Date(e.time);
+    const dt=d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+    ics+=`BEGIN:VEVENT\nDTSTART:${dt}\nSUMMARY:Journal: ${e.title}\nDESCRIPTION:${e.text.substring(0,500)}\nEND:VEVENT\n`;
+  });
+  ics+='END:VCALENDAR';
+  const blob=new Blob([ics],{type:'text/calendar'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='dreamers-journal.ics';a.click();
+  URL.revokeObjectURL(url);
+}
+renderJournalEntries();
+renderAffirmHistory();
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded',()=>{

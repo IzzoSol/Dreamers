@@ -890,7 +890,7 @@
         <div class="shop-meta">
           <div class="shop-cat">BUNDLE</div>
           <h3 class="shop-name">Culture Pack</h3>
-          <p class="shop-desc">Tee + Vinyl + Print + Badge + NFT. The full Dreamers starter kit.</p>
+          <p class="shop-desc">Tee + Vinyl + Print + Badge + NFT. Spend 3+ SOL total and unlock a FREE bonus sticker pack.</p>
           <div class="shop-bottom">
             <span class="shop-price">2.5 SOL</span>
             <button class="shop-btn" onclick="openRequestModal('Culture Pack Bundle','2.5 SOL')">REQUEST DROP</button>
@@ -1526,14 +1526,22 @@ function submitRequest(){
   const e=document.getElementById('requestEmail').value.trim();
   const w=document.getElementById('requestWallet').value.trim();
   if(!n||!e||!w){alert('Please fill in all fields');return}
+  const itemText=document.getElementById('requestItemDisplay').textContent;
+  const qty=parseInt(document.getElementById('requestQty').value)||1;
+  const priceMatch=itemText.match(/([\d.]+)\s*SOL/);
+  const unitPrice=priceMatch?parseFloat(priceMatch[1]):1;
+  const totalSOL=unitPrice*qty;
   const requests=JSON.parse(localStorage.getItem('shop_requests')||'[]');
-  requests.push({name:n,email:e,wallet:w,item:document.getElementById('requestItemDisplay').textContent,qty:document.getElementById('requestQty').value,time:Date.now()});
+  requests.push({name:n,email:e,wallet:w,item:itemText,qty:qty,totalSOL:totalSOL,time:Date.now()});
   localStorage.setItem('shop_requests',JSON.stringify(requests));
+  let bonus='';
+  if(totalSOL>=3){bonus='\n\n🎉 SPEND BONUS: You qualify for a FREE Culture Pack sticker pack!'}
+  else if(totalSOL>=2){bonus='\n\n⭐ You\'re close to 3 SOL — spend 3+ SOL to unlock a free bonus item!'}
   closeRequestModal();
   document.getElementById('requestName').value='';
   document.getElementById('requestEmail').value='';
   document.getElementById('requestWallet').value='';
-  alert('Request submitted! We\'ll notify you at '+e+' when the drop is ready.');
+  alert('Request submitted for '+qty+'x '+itemText.split(' — ')[0]+'!\nTotal: '+totalSOL+' SOL\nWe\'ll notify you at '+e+' when the drop is ready.'+bonus);
 }
 function shopScroll(idx){
   const rail=document.getElementById('shopRail');
