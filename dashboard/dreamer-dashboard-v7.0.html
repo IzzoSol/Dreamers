@@ -197,7 +197,7 @@ select.inp{cursor:pointer}
 <aside class="sidebar" id="sidebar">
   <div class="sb-header">
     <div class="sb-logo">DREAMERS<span>.</span></div>
-    <div class="sb-version">v7.0 — Impact Layer</div>
+    <div class="sb-version">v7.0 — Culture Layer</div>
   </div>
   <nav class="sb-nav" id="sbNav">
     <div class="sb-section">
@@ -210,13 +210,18 @@ select.inp{cursor:pointer}
       <div class="sb-label">Create</div>
       <button class="sb-tab" data-tab="music" onclick="go('music')"><span class="material-symbols-outlined icon">graphic_eq</span>Music</button>
       <button class="sb-tab" data-tab="create" onclick="go('create')"><span class="material-symbols-outlined icon">palette</span>Studio</button>
+      <button class="sb-tab" data-tab="nfts" onclick="go('nfts')"><span class="material-symbols-outlined icon">token</span>NFTs</button>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Discover</div>
       <button class="sb-tab" data-tab="astrology" onclick="go('astrology')"><span class="material-symbols-outlined icon">auto_awesome</span>Astrology</button>
+      <button class="sb-tab" data-tab="events" onclick="go('events')"><span class="material-symbols-outlined icon">event</span>Events</button>
       <button class="sb-tab" data-tab="game" onclick="go('game')"><span class="material-symbols-outlined icon">sports_esports</span>Game</button>
     </div>
     <div class="sb-section">
       <div class="sb-label">AI Agents</div>
       <button class="sb-tab" data-tab="oracle" onclick="go('oracle')"><span class="material-symbols-outlined icon">psychology</span>Oracle</button>
-      <button class="sb-tab" data-tab="turtle" onclick="go('turtle')"><span class="material-symbols-outlined icon">palette</span>Turtle</button>
+      <button class="sb-tab" data-tab="turtle" onclick="go('turtle')"><span class="material-symbols-outlined icon">healing</span>Turtle</button>
     </div>
     <div class="sb-section">
       <div class="sb-label">Wellness</div>
@@ -246,8 +251,8 @@ select.inp{cursor:pointer}
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn btn-pri" onclick="go('music')"><span class="material-symbols-outlined" style="font-size:16px">music_note</span>Make Music</button>
-      <button class="btn btn-sec" onclick="go('create')"><span class="material-symbols-outlined" style="font-size:16px">brush</span>Create Art</button>
-      <button class="btn btn-acc" onclick="go('astrology')"><span class="material-symbols-outlined" style="font-size:16px">auto_awesome</span>Cosmic Map</button>
+      <button class="btn btn-acc" onclick="go('nfts')"><span class="material-symbols-outlined" style="font-size:16px">token</span>Collect NFTs</button>
+      <button class="btn btn-sec" onclick="go('events')"><span class="material-symbols-outlined" style="font-size:16px">event</span>Find Events</button>
     </div>
   </div>
 
@@ -258,20 +263,20 @@ select.inp{cursor:pointer}
       <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Music Studio</h3>
       <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Beats · Binaural · AI</p>
     </div>
-    <div class="card card-sm" style="cursor:pointer" onclick="go('create')">
-      <span class="material-symbols-outlined" style="color:var(--sec);font-size:28px">palette</span>
-      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Create Studio</h3>
-      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Image↔Music · Binary</p>
+    <div class="card card-sm" style="cursor:pointer" onclick="go('nfts')">
+      <span class="material-symbols-outlined" style="color:var(--acc);font-size:28px">token</span>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">NFTs & Credits</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Culture · Own · Earn</p>
+    </div>
+    <div class="card card-sm" style="cursor:pointer" onclick="go('events')">
+      <span class="material-symbols-outlined" style="color:var(--sec);font-size:28px">event</span>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Events</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Find · Create · Connect</p>
     </div>
     <div class="card card-sm" style="cursor:pointer" onclick="go('astrology')">
-      <span class="material-symbols-outlined" style="color:var(--acc);font-size:28px">auto_awesome</span>
+      <span class="material-symbols-outlined" style="color:var(--green);font-size:28px">auto_awesome</span>
       <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Astrology</h3>
       <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Birth Chart · Zodiac</p>
-    </div>
-    <div class="card card-sm" style="cursor:pointer" onclick="go('game')">
-      <span class="material-symbols-outlined" style="color:var(--green);font-size:28px">sports_esports</span>
-      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Game</h3>
-      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Dreamers Climb</p>
     </div>
   </div>
 
@@ -301,8 +306,8 @@ select.inp{cursor:pointer}
   </div>
 
   <!-- Agent Grid -->
-  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:18px;color:#fff;;margin-bottom:16px">The Council</h2>
-  <div class="grid-4" id="agentGrid"></div>
+  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:18px;color:#fff;;margin-bottom:16px">Your Guides</h2>
+  <div class="grid-2" id="agentGrid"></div>
 </section>
 
 <!-- ══════ MUSIC ══════ -->
@@ -624,19 +629,19 @@ select.inp{cursor:pointer}
 <!-- ══════ ORACLE ══════ -->
 <section class="panel" id="panel-oracle">
   <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">ORACLE</h1>
-  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Research · Intelligence · Trend Analysis</p>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Mind · Psychology · Astrology · Stars</p>
 
   <div class="card" style="margin-bottom:16px">
     <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px">
       <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:24px">🔮</div>
       <div>
         <h3 style="font-weight:700;font-size:14px;color:#fff">ORACLE Agent</h3>
-        <p style="font-size:10px;color:var(--text-dim)">Research · Market Analysis · Trend Spotting</p>
+        <p style="font-size:10px;color:var(--text-dim)">Psychology · Birth Chart · Daily Horoscope · Trend Analysis</p>
       </div>
     </div>
     <div class="chat-box" id="oracleChat">
       <div class="chat-messages" id="oracleMessages">
-        <div class="chat-msg agent">I am ORACLE — your research and intelligence agent. Ask me about market trends, tech analysis, competitive research, or creative insights. I connect dots others miss.</div>
+        <div class="chat-msg agent">I am ORACLE — your mind and astrology guide. Ask me about your birth chart, daily horoscope, psychology insights, or trend analysis. I connect the stars to your daily life.</div>
       </div>
       <div class="chat-input-bar">
         <input class="inp" id="oracleInput" placeholder="Ask Oracle anything..." onkeydown="if(event.key==='Enter')sendOracle()">
@@ -649,19 +654,19 @@ select.inp{cursor:pointer}
 <!-- ══════ TURTLE ══════ -->
 <section class="panel" id="panel-turtle">
   <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">TURTLE</h1>
-  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Design · UI/UX · Creative Direction</p>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Health · Nutrition · Art · Design</p>
 
   <div class="card" style="margin-bottom:16px">
     <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px">
       <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:24px">🐢</div>
       <div>
         <h3 style="font-weight:700;font-size:14px;color:#fff">TURTLE Agent</h3>
-        <p style="font-size:10px;color:var(--text-dim)">Design · Visuals · Creative Direction</p>
+        <p style="font-size:10px;color:var(--text-dim)">Meal Plans · Health Tips · Art Direction · Creative Design</p>
       </div>
     </div>
     <div class="chat-box" id="turtleChat">
       <div class="chat-messages" id="turtleMessages">
-        <div class="chat-msg agent">I am TURTLE — your design and creative agent. Ask me to design layouts, review visuals, suggest color palettes, create UI components, or direct creative projects. Aesthetic is everything.</div>
+        <div class="chat-msg agent">I am TURTLE — your health and creative guide. Ask me for meal plans, wellness tips, art direction, or design help. I nurture both body and soul.</div>
       </div>
       <div class="chat-input-bar">
         <input class="inp" id="turtleInput" placeholder="Ask Turtle anything..." onkeydown="if(event.key==='Enter')sendTurtle()">
@@ -697,6 +702,182 @@ select.inp{cursor:pointer}
       <div id="chakraDetail">
         <p style="font-size:11px;color:var(--text-faint)">Tap a chakra to explore it</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ NFTs ══════ -->
+<section class="panel" id="panel-nfts">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:32px">
+    <div>
+      <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">NFTs</h1>
+      <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase">Culture · Ownership · Community</p>
+    </div>
+  </div>
+
+  <!-- Culture Credits -->
+  <div class="card" style="margin-bottom:24px;border-left:4px solid var(--acc)">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+      <span style="font-size:36px">✨</span>
+      <div>
+        <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;color:#fff">Culture Credits</h2>
+        <p style="font-size:11px;color:var(--text-dim);margin-top:2px">Earn credits by creating, sharing, and contributing to the Dreamers ecosystem</p>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-bottom:16px">
+      <div style="text-align:center;padding:16px;background:var(--surface);border-radius:var(--radius-sm)">
+        <div style="font-size:24px;font-weight:900;color:var(--acc)" id="userCredits">0</div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:4px">YOUR CREDITS</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:var(--surface);border-radius:var(--radius-sm)">
+        <div style="font-size:24px;font-weight:900;color:var(--pri)" id="creditsEarned">0</div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:4px">EARNED THIS MONTH</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:var(--surface);border-radius:var(--radius-sm)">
+        <div style="font-size:24px;font-weight:900;color:var(--sec)" id="creditsRedeemed">0</div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:4px">REDEEMED</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <div style="flex:1;min-width:140px;padding:12px;background:var(--surface);border-radius:var(--radius-sm);border-left:3px solid var(--pri)">
+        <div style="font-size:10px;color:var(--text-dim)">Upload Art</div>
+        <div style="font-size:14px;font-weight:700;color:#fff">+10 Credits</div>
+      </div>
+      <div style="flex:1;min-width:140px;padding:12px;background:var(--surface);border-radius:var(--radius-sm);border-left:3px solid var(--sec)">
+        <div style="font-size:10px;color:var(--text-dim)">Share Track</div>
+        <div style="font-size:14px;font-weight:700;color:#fff">+5 Credits</div>
+      </div>
+      <div style="flex:1;min-width:140px;padding:12px;background:var(--surface);border-radius:var(--radius-sm);border-left:3px solid var(--green)">
+        <div style="font-size:10px;color:var(--text-dim)">Attend Event</div>
+        <div style="font-size:14px;font-weight:700;color:#fff">+15 Credits</div>
+      </div>
+      <div style="flex:1;min-width:140px;padding:12px;background:var(--surface);border-radius:var(--radius-sm);border-left:3px solid var(--acc)">
+        <div style="font-size:10px;color:var(--text-dim)">Create Event</div>
+        <div style="font-size:14px;font-weight:700;color:#fff">+25 Credits</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NFT Collection -->
+  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;color:#fff;margin-bottom:16px">DREAMERBOX GENESIS</h2>
+  <div class="grid-3">
+    <div class="card" style="text-align:center;cursor:pointer">
+      <div style="width:120px;height:120px;margin:0 auto 12px;background:linear-gradient(135deg,var(--pri),var(--sec));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:48px">📦</div>
+      <h3 style="font-weight:700;font-size:14px;color:#fff">DreamerBox #001</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Cereal Box NFT · AI Agent Inside</p>
+      <div style="margin-top:12px;padding:8px 16px;background:var(--acc);color:#000;border-radius:999px;font-size:11px;font-weight:700;display:inline-block">1 SOL</div>
+    </div>
+    <div class="card" style="text-align:center;cursor:pointer">
+      <div style="width:120px;height:120px;margin:0 auto 12px;background:linear-gradient(135deg,var(--acc),var(--green));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:48px">🎵</div>
+      <h3 style="font-weight:700;font-size:14px;color:#fff">Good Samaritan Pass</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Album Access + Exclusive Content</p>
+      <div style="margin-top:12px;padding:8px 16px;background:var(--acc);color:#000;border-radius:999px;font-size:11px;font-weight:700;display:inline-block">0.5 SOL</div>
+    </div>
+    <div class="card" style="text-align:center;cursor:pointer">
+      <div style="width:120px;height:120px;margin:0 auto 12px;background:linear-gradient(135deg,var(--sec),var(--pri));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:48px">🌟</div>
+      <h3 style="font-weight:700;font-size:14px;color:#fff">OG Dreamers Badge</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Founding Member · Lifetime Access</p>
+      <div style="margin-top:12px;padding:8px 16px;background:var(--acc);color:#000;border-radius:999px;font-size:11px;font-weight:700;display:inline-block">2 SOL</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ EVENTS ══════ -->
+<section class="panel" id="panel-events">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:32px">
+    <div>
+      <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">EVENTS</h1>
+      <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase">Discover · Connect · Create</p>
+    </div>
+    <button class="btn btn-pri" onclick="showCreateEvent()">
+      <span class="material-symbols-outlined" style="font-size:16px">add</span>Create Event
+    </button>
+  </div>
+
+  <!-- Location -->
+  <div class="card" style="margin-bottom:24px">
+    <div style="display:flex;gap:12px;align-items:center">
+      <span class="material-symbols-outlined" style="color:var(--pri)">location_on</span>
+      <input class="inp" id="eventLocation" placeholder="Enter your city or zip code" style="flex:1">
+      <button class="btn btn-sec" onclick="findEvents()">Find Events</button>
+    </div>
+  </div>
+
+  <!-- Nearby Events -->
+  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;color:#fff;margin-bottom:16px">NEARBY EVENTS</h2>
+  <div class="grid-2" id="eventsList" style="margin-bottom:32px">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">
+        <div>
+          <span class="badge badge-pri" style="margin-bottom:8px;display:inline-block">ART SHOW</span>
+          <h3 style="font-weight:700;font-size:16px;color:#fff">Dreamers Collective Gallery</h3>
+        </div>
+        <span style="font-size:24px">🎨</span>
+      </div>
+      <p style="font-size:11px;color:var(--text-dim);margin-bottom:8px">Local artists showcase digital and physical works. Live music, food trucks, community vibes.</p>
+      <div style="display:flex;gap:16px;font-size:10px;color:var(--text-faint)">
+        <span>📍 Downtown Arts District</span>
+        <span>📅 This Saturday</span>
+        <span>🕐 6PM - 10PM</span>
+      </div>
+      <button class="btn btn-outline" style="margin-top:12px;width:100%;justify-content:center">RSVP · +15 Credits</button>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">
+        <div>
+          <span class="badge badge-sec" style="margin-bottom:8px;display:inline-block">MUSIC</span>
+          <h3 style="font-weight:700;font-size:16px;color:#fff">Open Mic Night</h3>
+        </div>
+        <span style="font-size:24px">🎤</span>
+      </div>
+      <p style="font-size:11px;color:var(--text-dim);margin-bottom:8px">Share your music, poetry, or spoken word. All genres welcome. Free entry.</p>
+      <div style="display:flex;gap:16px;font-size:10px;color:var(--text-faint)">
+        <span>📍 The Warehouse</span>
+        <span>📅 Friday</span>
+        <span>🕐 8PM - 12AM</span>
+      </div>
+      <button class="btn btn-outline" style="margin-top:12px;width:100%;justify-content:center">RSVP · +15 Credits</button>
+    </div>
+  </div>
+
+  <!-- Create Event Form (hidden by default) -->
+  <div class="card" id="createEventForm" style="display:none;border-left:4px solid var(--acc)">
+    <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;color:#fff;margin-bottom:16px">CREATE EVENT</h2>
+    <div class="grid-2">
+      <div>
+        <label style="font-size:10px;color:var(--text-dim);display:block;margin-bottom:4px">EVENT NAME</label>
+        <input class="inp" id="eventName" placeholder="My Dreamers Event">
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--text-dim);display:block;margin-bottom:4px">EVENT TYPE</label>
+        <select class="inp" id="eventType">
+          <option value="art">Art Show</option>
+          <option value="music">Music / Open Mic</option>
+          <option value="workshop">Workshop</option>
+          <option value="meetup">Community Meetup</option>
+          <option value="festival">Festival</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--text-dim);display:block;margin-bottom:4px">DATE</label>
+        <input class="inp" id="eventDate" type="date">
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--text-dim);display:block;margin-bottom:4px">TIME</label>
+        <input class="inp" id="eventTime" type="time">
+      </div>
+      <div style="grid-column:span 2">
+        <label style="font-size:10px;color:var(--text-dim);display:block;margin-bottom:4px">LOCATION</label>
+        <input class="inp" id="eventAddr" placeholder="Venue name or address">
+      </div>
+      <div style="grid-column:span 2">
+        <label style="font-size:10px;color:var(--text-dim);display:block;margin-bottom:4px">DESCRIPTION</label>
+        <textarea class="inp" id="eventDesc" rows="3" placeholder="Tell people what to expect..."></textarea>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="btn btn-pri" onclick="submitEvent()" style="flex:1;justify-content:center">Publish Event · +25 Credits</button>
+      <button class="btn btn-outline" onclick="hideCreateEvent()">Cancel</button>
     </div>
   </div>
 </section>
@@ -1251,18 +1432,13 @@ function calculateChart(){
 
 // ── AGENTS ──
 const AGENTS=[
-  {name:'SHADDAI',role:'Orchestrator',color:'#cc97ff',emoji:'👑'},
-  {name:'NEXUS',role:'Architect',color:'#2db7f2',emoji:'⚡'},
-  {name:'ORACLE',role:'Research',color:'#6366f1',emoji:'🔮'},
-  {name:'TURTLE',role:'Design',color:'#10b981',emoji:'🐢'},
-  {name:'QUILL',role:'Writing',color:'#f59e0b',emoji:'✒️'},
-  {name:'ZEROX',role:'Revenue',color:'#ef4444',emoji:'💰'},
-  {name:'PIKADON',role:'Security',color:'#8b5cf6',emoji:'🛡️'}
+  {name:'ORACLE',role:'Mind · Astrology · Psychology',color:'#6366f1',emoji:'🔮'},
+  {name:'TURTLE',role:'Health · Art · Design',color:'#10b981',emoji:'🐢'}
 ];
 function initAgents(){
   const el=document.getElementById('agentGrid');if(!el)return;
   el.innerHTML=AGENTS.map(a=>`
-    <div class="card card-sm agent-card" onclick="go('${a.name==='ORACLE'?'oracle':a.name==='TURTLE'?'turtle':'home'}')">
+    <div class="card card-sm agent-card" onclick="go('${a.name==='ORACLE'?'oracle':'turtle'}')">
       <div class="avatar" style="background:${a.color}20;border:2px solid ${a.color}">${a.emoji}</div>
       <div class="name" style="color:${a.color}">${a.name}</div>
       <div class="role">${a.role}</div>
@@ -1302,6 +1478,72 @@ function addChatMsg(containerId,msg,type){
   const el=document.getElementById(containerId);
   const div=document.createElement('div');div.className='chat-msg '+type;div.innerHTML=msg;
   el.appendChild(div);el.scrollTop=el.scrollHeight;
+}
+
+// ── CULTURE CREDITS ──
+let _credits=parseInt(localStorage.getItem('d_credits')||'0');
+function updateCreditsDisplay(){
+  const el=document.getElementById('userCredits');
+  if(el)el.textContent=_credits.toLocaleString();
+  const earned=document.getElementById('creditsEarned');
+  if(earned)earned.textContent=localStorage.getItem('d_credits_earned')||'0';
+  const redeemed=document.getElementById('creditsRedeemed');
+  if(redeemed)redeemed.textContent=localStorage.getItem('d_credits_redeemed')||'0';
+}
+function addCredits(amount,reason){
+  _credits+=amount;
+  localStorage.setItem('d_credits',_credits);
+  const earned=parseInt(localStorage.getItem('d_credits_earned')||'0')+amount;
+  localStorage.setItem('d_credits_earned',earned);
+  updateCreditsDisplay();
+}
+
+// ── EVENTS ──
+const EVENTS=[
+  {name:'Dreamers Collective Gallery',type:'art',icon:'🎨',badge:'badge-pri',desc:'Local artists showcase digital and physical works. Live music, food trucks, community vibes.',location:'Downtown Arts District',date:'This Saturday',time:'6PM - 10PM'},
+  {name:'Open Mic Night',type:'music',icon:'🎤',badge:'badge-sec',desc:'Share your music, poetry, or spoken word. All genres welcome. Free entry.',location:'The Warehouse',date:'Friday',time:'8PM - 12AM'},
+  {name:'Digital Art Workshop',type:'workshop',icon:'💻',badge:'badge-acc',desc:'Learn AI art tools, create your first piece. Beginners welcome. Materials provided.',location:'Community Center',date:'Next Sunday',time:'2PM - 5PM'},
+  {name:'Dreamers Meetup',type:'meetup',icon:'🤝',badge:'badge-green',desc:'Connect with local creators. Share projects, find collaborators, build together.',location:'Coffee House',date:'Every Wednesday',time:'7PM - 9PM'}
+];
+function renderEvents(){
+  const el=document.getElementById('eventsList');if(!el)return;
+  el.innerHTML=EVENTS.map(e=>`
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">
+        <div>
+          <span class="badge ${e.badge}" style="margin-bottom:8px;display:inline-block">${e.type.toUpperCase()}</span>
+          <h3 style="font-weight:700;font-size:16px;color:#fff">${e.name}</h3>
+        </div>
+        <span style="font-size:24px">${e.icon}</span>
+      </div>
+      <p style="font-size:11px;color:var(--text-dim);margin-bottom:8px">${e.desc}</p>
+      <div style="display:flex;gap:16px;font-size:10px;color:var(--text-faint)">
+        <span>📍 ${e.location}</span>
+        <span>📅 ${e.date}</span>
+        <span>🕐 ${e.time}</span>
+      </div>
+      <button class="btn btn-outline" style="margin-top:12px;width:100%;justify-content:center" onclick="rsvpEvent('${e.name}')">RSVP · +15 Credits</button>
+    </div>`).join('');
+}
+function rsvpEvent(name){
+  addCredits(15,'Attended: '+name);
+  alert('RSVP confirmed! +15 Culture Credits earned.');
+}
+function findEvents(){
+  const loc=document.getElementById('eventLocation').value.trim();
+  if(!loc){alert('Enter a location to find events');return}
+  alert('Finding events near: '+loc+'\n\nFeature coming soon — events will load from the API.');
+}
+function showCreateEvent(){document.getElementById('createEventForm').style.display='block'}
+function hideCreateEvent(){document.getElementById('createEventForm').style.display='none'}
+function submitEvent(){
+  const name=document.getElementById('eventName').value.trim();
+  if(!name){alert('Enter an event name');return}
+  addCredits(25,'Created: '+name);
+  alert('Event published! +25 Culture Credits earned.');
+  hideCreateEvent();
+  document.getElementById('eventName').value='';
+  document.getElementById('eventDesc').value='';
 }
 
 // ── JOURNAL ──
@@ -1369,7 +1611,7 @@ function loadGame(src,btn){
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded',()=>{
-  initPiano();initChakraList();initChakraSvg();initZodiacWheel();initAgents();renderJournal();loadProfile();loadKeys();
+  initPiano();initChakraList();initChakraSvg();initZodiacWheel();initAgents();renderJournal();renderEvents();updateCreditsDisplay();loadProfile();loadKeys();
 });
 </script>
 </body>
