@@ -15,7 +15,10 @@
   --pri:#15BDB1;--pri-dim:#129e94;--sec:#9932cc;--acc:#f0a500;
   --green:#10b981;--red:#ff6e84;--orange:#f59e0b;
   --radius:12px;--radius-sm:8px;
+  /* theme accent overrides */
+  --theme-pri:#15BDB1;--theme-sec:#9932cc;--theme-acc:#f0a500;--theme-rose:#ff9ecf;--theme-iris:#16D3BA;
 }
+.theme-override{--pri:var(--theme-pri)!important;--pri-dim:color-mix(in srgb,var(--theme-pri) 80%,#000)!important;--sec:var(--theme-sec)!important;--acc:var(--theme-acc)!important}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;height:100vh}
 ::-webkit-scrollbar{width:4px}
@@ -58,6 +61,12 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;ove
 .hdr-btn{padding:6px 14px;border:1px solid var(--border);background:none;color:var(--text-dim);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;font-family:'DM Sans',sans-serif}
 .hdr-btn:hover{border-color:var(--pri);color:var(--pri)}
 .hdr-btn.active{background:var(--pri);color:var(--bg);border-color:var(--pri)}
+
+/* ── theme picker ── */
+.theme-sel{display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius-sm);color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.theme-sel .dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.2);flex-shrink:0}
+.theme-sel:hover{border-color:var(--dot);color:var(--text)}
+.theme-sel.active{border-color:var(--dot);color:#fff;box-shadow:0 0 16px color-mix(in srgb,var(--dot) 30%,transparent)}
 
 /* ── panels ── */
 .panel{display:none;padding:24px;animation:fadeUp .35s ease-out}
@@ -1119,6 +1128,17 @@ select.inp{cursor:pointer}
     </div>
     <button class="btn btn-pri" onclick="saveKeys()" style="width:100%;justify-content:center">Save Keys</button>
   </div>
+  <div class="card" style="max-width:600px;margin-top:16px">
+    <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:16px">UI THEME</h3>
+    <p style="font-size:11px;color:var(--text-dim);margin-bottom:16px">Select a color theme. Applied across landing page and dashboard.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap" id="themePicker">
+      <button onclick="setTheme('amethyst')" data-theme="amethyst" class="theme-sel" style="--dot:#b78bff"><span class="dot" style="background:#b78bff"></span>Amethyst</button>
+      <button onclick="setTheme('emerald')" data-theme="emerald" class="theme-sel" style="--dot:#3dd07a"><span class="dot" style="background:#3dd07a"></span>Emerald</button>
+      <button onclick="setTheme('cyber')" data-theme="cyber" class="theme-sel" style="--dot:#2db7f2"><span class="dot" style="background:#2db7f2"></span>Cyber</button>
+      <button onclick="setTheme('sunset')" data-theme="sunset" class="theme-sel" style="--dot:#ff9e5c"><span class="dot" style="background:#ff9e5c"></span>Sunset</button>
+      <button onclick="setTheme('og')" data-theme="og" class="theme-sel" style="--dot:#15BDB1"><span class="dot" style="background:#15BDB1"></span>OG Dreamers</button>
+    </div>
+  </div>
 </section>
 
 </div><!-- /main -->
@@ -1128,6 +1148,23 @@ select.inp{cursor:pointer}
 <!-- JS -->
 <!-- ═══════════════════════════════════════════════════════ -->
 <script>
+// ── THEME (unified with landing page) ──
+const THEMES={
+  amethyst:{'--theme-pri':'#b78bff','--theme-sec':'#8a5cf6','--theme-acc':'#f2cd8a','--theme-rose':'#ff9ecf','--theme-iris':'#84f4e2'},
+  emerald:{'--theme-pri':'#4fe0a0','--theme-sec':'#1fbf7a','--theme-acc':'#f2cd8a','--theme-rose':'#b6f5db','--theme-iris':'#84f4e2'},
+  cyber:{'--theme-pri':'#2db7f2','--theme-sec':'#0a84ff','--theme-acc':'#ffe08a','--theme-rose':'#ff5cf0','--theme-iris':'#9dffea'},
+  sunset:{'--theme-pri':'#ff9e5c','--theme-sec':'#ff5c7a','--theme-acc':'#ffd76a','--theme-rose':'#ffb37a','--theme-iris':'#ff8ac0'},
+  og:{'--theme-pri':'#15BDB1','--theme-sec':'#9932cc','--theme-acc':'#f0a500','--theme-rose':'#ff9ecf','--theme-iris':'#16D3BA'},
+};
+function setTheme(t){
+  const v=THEMES[t]||THEMES.amethyst;
+  for(const k in v) document.documentElement.style.setProperty(k,v[k]);
+  localStorage.setItem('d_theme',t);
+  document.querySelectorAll('.theme-sel').forEach(b=>b.classList.toggle('active',b.dataset.theme===t));
+  document.documentElement.classList.add('theme-override');
+}
+setTheme(localStorage.getItem('d_theme')||'amethyst');
+
 // ── NAV ──
 const titles={home:'HOME',music:'MUSIC',create:'STUDIO',astrology:'ASTROLOGY',game:'GAME',oracle:'ORACLE',turtle:'TURTLE',sanctuary:'SANCTUARY',journal:'JOURNAL',profile:'PROFILE',community:'COMMUNITY',settings:'SETTINGS'};
 function go(tab){
