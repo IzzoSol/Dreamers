@@ -177,6 +177,55 @@ select.inp{cursor:pointer}
 @keyframes meteorFall{0%{transform:translateY(-10vh) translateX(100px) rotate(315deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(110vh) translateX(-100px) rotate(315deg);opacity:0}}
 @keyframes meteorGlow{0%,100%{opacity:.7}50%{opacity:.3}}
 
+/* ── auth overlay ── */
+.auth-overlay{position:fixed;inset:0;z-index:10000;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.auth-overlay.hidden{display:none}
+.auth-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;width:100%;max-width:380px;margin:16px}
+.auth-box h2{font-family:'Oswald',sans-serif;font-weight:700;font-size:24px;color:#fff;margin-bottom:4px}
+.auth-box .sub{font-size:12px;color:var(--text-faint);margin-bottom:20px}
+.auth-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--bg);border-radius:var(--radius-sm);padding:3px}
+.auth-tab{flex:1;padding:8px;text-align:center;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;background:none;color:var(--text-dim);cursor:pointer;border-radius:6px;transition:all .15s;font-family:'DM Sans',sans-serif}
+.auth-tab.active{background:var(--pri);color:var(--bg)}
+.auth-form{display:none}
+.auth-form.active{display:block}
+.auth-form .field{margin-bottom:12px}
+.auth-form label{display:block;font-size:10px;font-weight:600;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.auth-form input{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;transition:border-color .2s}
+.auth-form input:focus{outline:none;border-color:var(--pri)}
+.auth-form .btn-submit{width:100%;padding:10px;background:var(--pri);color:var(--bg);border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:4px}
+.auth-form .btn-submit:hover{opacity:.9;transform:translateY(-1px)}
+.auth-form .error{font-size:11px;color:var(--red);margin-top:8px;display:none}
+.auth-form .error.show{display:block}
+.auth-user-pill{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px}
+.auth-user-pill .avatar{width:28px;height:28px;border-radius:50%;background:var(--pri);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.auth-user-pill .info{flex:1;overflow:hidden}
+.auth-user-pill .name{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.auth-user-pill .handle{font-size:10px;color:var(--text-faint)}
+.btn-logout{width:100%;padding:8px;background:none;border:1px solid var(--red);color:var(--red);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .15s}
+.btn-logout:hover{background:var(--red);color:var(--bg)}
+
+/* ── community chat ── */
+.comm-chat{display:flex;flex-direction:column;height:calc(100vh - 200px)}
+.comm-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px}
+.comm-msg{display:flex;gap:10px;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);transition:border-color .15s}
+.comm-msg:hover{border-color:var(--border-h)}
+.comm-msg .avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.comm-msg .body{flex:1;min-width:0}
+.comm-msg .head{display:flex;align-items:baseline;gap:8px;margin-bottom:2px}
+.comm-msg .uname{font-size:12px;font-weight:700;color:#fff}
+.comm-msg .time{font-size:9px;color:var(--text-faint)}
+.comm-msg .text{font-size:12px;color:var(--text-dim);line-height:1.5;word-break:break-word}
+.comm-input-bar{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--border)}
+.comm-input-bar .inp{flex:1}
+
+/* ── user profiles grid ── */
+.profile-card{cursor:pointer;transition:all .2s}
+.profile-card:hover{transform:translateY(-4px);border-color:var(--pri)}
+.profile-card .p-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;margin:0 auto 10px}
+.profile-card .p-name{font-size:13px;font-weight:700;color:#fff;text-align:center}
+.profile-card .p-bio{font-size:11px;color:var(--text-dim);text-align:center;margin-top:4px;line-height:1.4}
+.profile-card .p-joined{font-size:9px;color:var(--text-faint);text-align:center;margin-top:8px}
+
 /* ── stat card ── */
 .stat{text-align:center;padding:20px}
 .stat-num{font-family:'Epilogue',sans-serif;font-size:32px;font-weight:900;color:#fff}
@@ -200,6 +249,48 @@ select.inp{cursor:pointer}
 </head>
 <body>
 <div class="grain"></div>
+
+<!-- ═══════ AUTH OVERLAY ═══════ -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-box">
+    <h2>DREAMERS<span style="color:var(--pri)">.</span></h2>
+    <div class="sub">the platform for the culture of creation</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="authTab('login')">Sign In</button>
+      <button class="auth-tab" onclick="authTab('signup')">Create Account</button>
+    </div>
+    <!-- Login -->
+    <form class="auth-form active" id="authLogin" onsubmit="return doLogin(event)">
+      <div class="field">
+        <label>Username</label>
+        <input id="loginUser" type="text" placeholder="your username" required autocomplete="username"/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="loginPass" type="password" placeholder="your password" required autocomplete="current-password"/>
+      </div>
+      <button class="btn-submit" type="submit">Sign In</button>
+      <div class="error" id="loginError"></div>
+    </form>
+    <!-- Signup -->
+    <form class="auth-form" id="authSignup" onsubmit="return doSignup(event)">
+      <div class="field">
+        <label>Username</label>
+        <input id="signupUser" type="text" placeholder="choose a username" required minlength="3" maxlength="20" autocomplete="username"/>
+      </div>
+      <div class="field">
+        <label>Display Name</label>
+        <input id="signupName" type="text" placeholder="your display name" required maxlength="30"/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="signupPass" type="password" placeholder="min 6 characters" required minlength="6" autocomplete="new-password"/>
+      </div>
+      <button class="btn-submit" type="submit">Create Account</button>
+      <div class="error" id="signupError"></div>
+    </form>
+  </div>
+</div>
 
 <div class="app">
 <!-- ═══════ SIDEBAR ═══════ -->
@@ -241,10 +332,19 @@ select.inp{cursor:pointer}
     <div class="sb-section">
       <div class="sb-label">System</div>
       <button class="sb-tab" data-tab="settings" onclick="go('settings')"><span class="material-symbols-outlined icon">settings</span>Settings</button>
+      <a class="sb-tab" href="dreampaper.html" target="_blank" style="text-decoration:none"><span class="material-symbols-outlined icon">description</span>Dreampaper</a>
     </div>
   </nav>
   <div class="sb-footer">
+    <div class="auth-user-pill" id="userPill" style="display:none">
+      <div class="avatar" id="userAvatar"></div>
+      <div class="info">
+        <div class="name" id="userName"></div>
+        <div class="handle" id="userHandle"></div>
+      </div>
+    </div>
     <button class="sb-footer-btn" onclick="go('home')">DREAMERS ECO</button>
+    <button class="btn-logout" id="logoutBtn" style="display:none;margin-top:8px" onclick="doLogout()">Sign Out</button>
   </div>
 </aside>
 
@@ -1090,22 +1190,34 @@ select.inp{cursor:pointer}
 
 <!-- ══════ PROFILE ══════ -->
 <section class="panel" id="panel-profile">
-  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:20px">PROFILE</h1>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;margin-bottom:20px">PROFILE</h1>
   <div class="card" style="max-width:500px">
     <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--sec));display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;color:var(--bg);margin-bottom:16px" id="profileAvatar">?</div>
+    <div style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px" id="profileUsername"></div>
     <input class="inp" id="profileName" placeholder="Display Name" style="margin-bottom:12px">
-    <input class="inp" id="profileEmail" placeholder="Email" style="margin-bottom:12px">
+    <textarea class="inp" id="profileBio" placeholder="Tell the community about yourself..." rows="3" style="margin-bottom:12px;resize:vertical"></textarea>
     <button class="btn btn-pri" onclick="saveProfile()" style="width:100%;justify-content:center">Save Profile</button>
   </div>
 </section>
 
 <!-- ══════ COMMUNITY ══════ -->
 <section class="panel" id="panel-community">
-  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:20px">COMMUNITY</h1>
-  <div class="card" style="text-align:center;padding:60px">
-    <span class="material-symbols-outlined" style="font-size:48px;color:var(--text-faint)">groups</span>
-    <h3 style="font-weight:700;font-size:16px;color:#fff;margin-top:12px">Coming Soon</h3>
-    <p style="font-size:11px;color:var(--text-dim);margin-top:8px">Connect with other creators in the Dreamers collective</p>
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;margin-bottom:16px">COMMUNITY</h1>
+  <div class="pill-bar" id="commPills">
+    <button class="pill active" onclick="setCommTab('chat')">Chat</button>
+    <button class="pill" onclick="setCommTab('members')">Members</button>
+  </div>
+  <!-- Chat Tab -->
+  <div id="commChat" class="comm-chat">
+    <div class="comm-messages" id="commMessages"></div>
+    <div class="comm-input-bar">
+      <input class="inp" id="commInput" placeholder="Say something to the community..." onkeydown="if(event.key==='Enter')sendCommMsg()"/>
+      <button class="btn btn-pri" onclick="sendCommMsg()" style="padding:8px 16px">Send</button>
+    </div>
+  </div>
+  <!-- Members Tab -->
+  <div id="commMembers" style="display:none">
+    <div class="grid-3" id="membersGrid" style="margin-top:8px"></div>
   </div>
 </section>
 
@@ -1165,13 +1277,200 @@ function setTheme(t){
 }
 setTheme(localStorage.getItem('d_theme')||'amethyst');
 
-// ── NAV ──
-const titles={home:'HOME',music:'MUSIC',create:'STUDIO',astrology:'ASTROLOGY',game:'GAME',oracle:'ORACLE',turtle:'TURTLE',sanctuary:'SANCTUARY',journal:'JOURNAL',profile:'PROFILE',community:'COMMUNITY',settings:'SETTINGS'};
+// ═══════════════════════════════════════════════════════
+// AUTH SYSTEM — per-user data isolation
+// ═══════════════════════════════════════════════════════
+let _currentUser=null;
+
+// User DB: {users:{username:{id,hash,name,avatar,bio,created}}}
+function _getUserDB(){return JSON.parse(localStorage.getItem('d_users')||'{"users":{}}');}
+function _saveUserDB(db){localStorage.setItem('d_users',JSON.stringify(db));}
+
+async function _hash(str){
+  const buf=new TextEncoder().encode(str);
+  const hash=await crypto.subtle.digest('SHA-256',buf);
+  return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function _userKey(key){return _currentUser?'d_'+_currentUser.id+'_'+key:key;}
+
+// Scoped data access — replaces raw localStorage for user data
+function getUserData(key,fallback){
+  const k=_userKey(key);
+  try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(fallback));}
+  catch(e){return fallback;}
+}
+function setUserData(key,val){localStorage.setItem(_userKey(key),JSON.stringify(val));}
+
+function authTab(tab){
+  document.querySelectorAll('.auth-tab').forEach((b,i)=>{
+    b.classList.toggle('active',i===(tab==='login'?0:1));
+  });
+  document.getElementById('authLogin').classList.toggle('active',tab==='login');
+  document.getElementById('authSignup').classList.toggle('active',tab==='signup');
+  document.querySelectorAll('.auth-form .error').forEach(e=>e.classList.remove('show'));
+}
+
+async function doSignup(e){
+  e.preventDefault();
+  const username=document.getElementById('signupUser').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g,'');
+  const name=document.getElementById('signupName').value.trim();
+  const pass=document.getElementById('signupPass').value;
+  const err=document.getElementById('signupError');
+  if(username.length<3){err.textContent='Username must be at least 3 characters';err.classList.add('show');return false;}
+  if(pass.length<6){err.textContent='Password must be at least 6 characters';err.classList.add('show');return false;}
+  const db=_getUserDB();
+  if(db.users[username]){err.textContent='Username already taken';err.classList.add('show');return false;}
+  const id='u_'+username+'_'+Date.now();
+  const hash=await _hash(pass);
+  const colors=['#b78bff','#15BDB1','#f0a500','#ff9ecf','#16D3BA','#9932cc','#2db7f2','#ff9e5c'];
+  db.users[username]={id,hash,name,avatar:colors[Math.floor(Math.random()*colors.length)],bio:'',created:Date.now()};
+  _saveUserDB(db);
+  _loginAs(username,db.users[username]);
+  return false;
+}
+
+async function doLogin(e){
+  e.preventDefault();
+  const username=document.getElementById('loginUser').value.trim().toLowerCase();
+  const pass=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginError');
+  const db=_getUserDB();
+  const user=db.users[username];
+  if(!user){err.textContent='Account not found';err.classList.add('show');return false;}
+  const hash=await _hash(pass);
+  if(hash!==user.hash){err.textContent='Wrong password';err.classList.add('show');return false;}
+  _loginAs(username,user);
+  return false;
+}
+
+function _loginAs(username,user){
+  _currentUser={...user,username};
+  localStorage.setItem('d_current_user',username);
+  document.getElementById('authOverlay').classList.add('hidden');
+  _showUserUI();
+  _initAllData();
+}
+
+function _showUserUI(){
+  const pill=document.getElementById('userPill');
+  const av=document.getElementById('userAvatar');
+  const nm=document.getElementById('userName');
+  const hl=document.getElementById('userHandle');
+  const btn=document.getElementById('logoutBtn');
+  pill.style.display='flex';
+  btn.style.display='block';
+  av.style.background=_currentUser.avatar;
+  av.textContent=_currentUser.name[0].toUpperCase();
+  nm.textContent=_currentUser.name;
+  hl.textContent='@'+_currentUser.username;
+}
+
+function doLogout(){
+  _currentUser=null;
+  localStorage.removeItem('d_current_user');
+  document.getElementById('authOverlay').classList.remove('hidden');
+  document.getElementById('userPill').classList.remove('show');
+  document.getElementById('userPill').style.display='none';
+  document.getElementById('logoutBtn').style.display='none';
+  document.querySelectorAll('.auth-form input').forEach(i=>i.value='');
+}
+
+// ── On load: check session ──
+function _checkAuth(){
+  const saved=localStorage.getItem('d_current_user');
+  if(saved){
+    const db=_getUserDB();
+    if(db.users[saved]){
+      _loginAs(saved,db.users[saved]);
+      return;
+    }
+  }
+  document.getElementById('authOverlay').classList.remove('hidden');
+}
+
+// ═══════════════════════════════════════════════════════
+// COMMUNITY — shared chat + member directory
+// ═══════════════════════════════════════════════════════
+function _getCommMessages(){return JSON.parse(localStorage.getItem('d_community_chat')||'[]');}
+function _saveCommMessages(msgs){localStorage.setItem('d_community_chat',JSON.stringify(msgs.slice(-200)));}
+
+function sendCommMsg(){
+  if(!_currentUser)return;
+  const inp=document.getElementById('commInput');
+  const text=inp.value.trim();if(!text)return;
+  const msgs=_getCommMessages();
+  msgs.push({user:_currentUser.username,name:_currentUser.name,avatar:_currentUser.avatar,text,time:Date.now()});
+  _saveCommMessages(msgs);
+  inp.value='';
+  renderCommMessages();
+}
+
+function renderCommMessages(){
+  const el=document.getElementById('commMessages');if(!el)return;
+  const msgs=_getCommMessages();
+  if(!msgs.length){el.innerHTML='<div style="text-align:center;padding:40px"><span class="material-symbols-outlined" style="font-size:36px;color:var(--text-faint)">chat</span><p style="font-size:12px;color:var(--text-faint);margin-top:8px">No messages yet. Say hello!</p></div>';return}
+  el.innerHTML=msgs.map(m=>{
+    const ago=_timeAgo(m.time);
+    return `<div class="comm-msg">
+      <div class="avatar" style="background:${m.avatar||'var(--pri)'};color:var(--bg)">${(m.name||m.user||'?')[0].toUpperCase()}</div>
+      <div class="body">
+        <div class="head"><span class="uname">${m.name||m.user}</span><span class="time">${ago}</span></div>
+        <div class="text">${_escHTML(m.text)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  el.scrollTop=el.scrollHeight;
+}
+
+function _timeAgo(ts){
+  const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60)return 'just now';
+  if(s<3600)return Math.floor(s/60)+'m ago';
+  if(s<86400)return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
+function _escHTML(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function setCommTab(tab){
+  document.getElementById('commChat').style.display=tab==='chat'?'flex':'none';
+  document.getElementById('commMembers').style.display=tab==='members'?'block':'none';
+  document.querySelectorAll('#commPills .pill').forEach((p,i)=>p.classList.toggle('active',i===(tab==='chat'?0:1)));
+  if(tab==='members')renderMembers();
+}
+
+function renderMembers(){
+  const grid=document.getElementById('membersGrid');if(!grid)return;
+  const db=_getUserDB();
+  const users=Object.entries(db.users);
+  if(!users.length){grid.innerHTML='<p style="font-size:12px;color:var(--text-faint);text-align:center;grid-column:1/-1;padding:40px">No members yet</p>';return}
+  grid.innerHTML=users.map(([uname,u])=>{
+    const joined=new Date(u.created).toLocaleDateString('en-US',{month:'short',year:'numeric'});
+    return `<div class="card profile-card" onclick="viewProfile('${uname}')">
+      <div class="p-avatar" style="background:${u.avatar};color:var(--bg)">${u.name[0].toUpperCase()}</div>
+      <div class="p-name">${u.name}</div>
+      <div class="p-bio">${u.bio||'Dreamer'}</div>
+      <div class="p-joined">Joined ${joined}</div>
+    </div>`;
+  }).join('');
+}
+
+function viewProfile(uname){
+  const db=_getUserDB();const u=db.users[uname];if(!u)return;
+  const joined=new Date(u.created).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  alert(`${u.name}\n@${uname}\n\nBio: ${u.bio||'No bio yet'}\nJoined: ${joined}`);
+}
+
+// ═══════════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════════
+const titles={home:'HOME',music:'MUSIC',create:'STUDIO',astrology:'ASTROLOGY',game:'GAME',oracle:'ORACLE',turtle:'TURTLE',sanctuary:'SANCTUARY',journal:'JOURNAL',profile:'PROFILE',community:'COMMUNITY',settings:'SETTINGS',spaces:'SPACES',nfts:'NFTS',events:'EVENTS',dreamworld:'DREAM WORLD'};
 function go(tab){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+tab)?.classList.add('active');
   document.querySelectorAll('.sb-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
   document.getElementById('mainArea').scrollTop=0;
+  if(tab==='community')renderCommMessages();
 }
 
 // ── MUSIC SUB-TABS ──
@@ -1689,7 +1988,7 @@ function addChatMsg(containerId,msg,type){
 }
 
 // ── SPACES ──
-const SPACES=JSON.parse(localStorage.getItem('d_spaces')||'[]');
+const SPACES=getUserData('spaces',[]);
 function showCreateSpace(){document.getElementById('createSpaceForm').style.display='block'}
 function hideCreateSpace(){document.getElementById('createSpaceForm').style.display='display'}
 function createSpace(type){
@@ -1704,7 +2003,7 @@ function submitSpace(){
   const icons={gallery:'🎨',music:'🎵',shop:'🛍️',podcast:'🎙️',show:'🎭',studio:'🎬'};
   const space={name,type,desc,icon:icons[type]||'✨',created:new Date().toISOString(),id:Date.now()};
   SPACES.push(space);
-  localStorage.setItem('d_spaces',JSON.stringify(SPACES));
+  setUserData('spaces',SPACES);
   hideCreateSpace();
   document.getElementById('spaceName').value='';
   document.getElementById('spaceDesc').value='';
@@ -1731,21 +2030,21 @@ function renderSpaces(){
     </div>`).join('');
 }
 
-// ── CULTURE CREDITS ──
-let _credits=parseInt(localStorage.getItem('d_credits')||'0');
+// ── CULTURE CREDITS (user-scoped) ──
+let _credits=getUserData('credits',0);
 function updateCreditsDisplay(){
   const el=document.getElementById('userCredits');
   if(el)el.textContent=_credits.toLocaleString();
   const earned=document.getElementById('creditsEarned');
-  if(earned)earned.textContent=localStorage.getItem('d_credits_earned')||'0';
+  if(earned)earned.textContent=getUserData('credits_earned','0');
   const redeemed=document.getElementById('creditsRedeemed');
-  if(redeemed)redeemed.textContent=localStorage.getItem('d_credits_redeemed')||'0';
+  if(redeemed)redeemed.textContent=getUserData('credits_redeemed','0');
 }
 function addCredits(amount,reason){
   _credits+=amount;
-  localStorage.setItem('d_credits',_credits);
-  const earned=parseInt(localStorage.getItem('d_credits_earned')||'0')+amount;
-  localStorage.setItem('d_credits_earned',earned);
+  setUserData('credits',_credits);
+  const earned=parseInt(getUserData('credits_earned','0'))+amount;
+  setUserData('credits_earned',String(earned));
   updateCreditsDisplay();
 }
 
@@ -1806,14 +2105,14 @@ function setJournalType(btn,type){
 }
 function saveJournal(){
   const text=document.getElementById('journalEntry').value.trim();if(!text)return;
-  const entries=JSON.parse(localStorage.getItem('d_journal')||'[]');
+  const entries=getUserData('journal',[]);
   entries.unshift({type:_journalType,text,date:new Date().toISOString()});
-  localStorage.setItem('d_journal',JSON.stringify(entries));
+  setUserData('journal',entries);
   document.getElementById('journalEntry').value='';
   renderJournal();
 }
 function renderJournal(){
-  const entries=JSON.parse(localStorage.getItem('d_journal')||'[]');
+  const entries=getUserData('journal',[]);
   const el=document.getElementById('journalList');
   if(!entries.length){el.innerHTML='<p style="font-size:11px;color:var(--text-faint);text-align:center;padding:20px">No entries yet</p>';return}
   el.innerHTML=entries.map(e=>`
@@ -1826,30 +2125,43 @@ function renderJournal(){
     </div>`).join('');
 }
 
-// ── PROFILE ──
+// ── PROFILE (user-scoped) ──
 function saveProfile(){
   const name=document.getElementById('profileName').value;
-  localStorage.setItem('d_profile',JSON.stringify({name}));
+  const bio=document.getElementById('profileBio')?.value||'';
+  setUserData('profile',{name,bio});
+  if(_currentUser){
+    const db=_getUserDB();
+    if(db.users[_currentUser.username]){db.users[_currentUser.username].name=name;db.users[_currentUser.username].bio=bio;_saveUserDB(db);_currentUser.name=name;_currentUser.bio=bio;_showUserUI();}
+  }
   if(name){document.getElementById('profileAvatar').textContent=name[0].toUpperCase()}
 }
 function loadProfile(){
-  const p=JSON.parse(localStorage.getItem('d_profile')||'{}');
+  const p=getUserData('profile',{name:_currentUser?.name||'',bio:_currentUser?.bio||''});
   if(p.name){document.getElementById('profileName').value=p.name;document.getElementById('profileAvatar').textContent=p.name[0].toUpperCase()}
+  if(p.bio&&document.getElementById('profileBio'))document.getElementById('profileBio').value=p.bio;
+  if(_currentUser&&document.getElementById('profileUsername'))document.getElementById('profileUsername').textContent='@'+_currentUser.username;
 }
 
-// ── SETTINGS ──
+// ── SETTINGS (user-scoped API keys) ──
 function saveKeys(){
-  localStorage.setItem('d_keys',JSON.stringify({
+  setUserData('keys',{
     openrouter:document.getElementById('keyOpenRouter').value,
     hf:document.getElementById('keyHF').value,
     fal:document.getElementById('keyFal').value
-  }));
+  });
 }
 function loadKeys(){
-  const k=JSON.parse(localStorage.getItem('d_keys')||'{}');
+  const k=getUserData('keys',{});
   if(k.openrouter)document.getElementById('keyOpenRouter').value=k.openrouter;
   if(k.hf)document.getElementById('keyHF').value=k.hf;
   if(k.fal)document.getElementById('keyFal').value=k.fal;
+}
+
+// ── INIT ALL USER DATA ──
+function _initAllData(){
+  _credits=getUserData('credits',0);
+  updateCreditsDisplay();renderJournal();renderEvents();renderSpaces();loadProfile();loadKeys();renderCommMessages();
 }
 
 // ── GAME PICKER ──
@@ -1862,7 +2174,8 @@ function loadGame(src,btn){
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded',()=>{
-  initPiano();initChakraList();initChakraSvg();initZodiacWheel();initAgents();renderJournal();renderEvents();renderSpaces();updateCreditsDisplay();loadProfile();loadKeys();
+  _checkAuth();
+  initPiano();initChakraList();initChakraSvg();initZodiacWheel();initAgents();
 });
 </script>
 </body>
