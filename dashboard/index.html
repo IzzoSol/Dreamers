@@ -259,6 +259,27 @@
   .themer button:hover{transform:scale(1.25)}
   @media(max-width:600px){.themer{opacity:.75}}
 
+  /* ── spaces calendar ── */
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:16px}
+  .cal-head{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);text-align:center;padding:6px 0}
+  .cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;font-size:12px;color:var(--dim);background:rgba(255,255,255,.02);border:1px solid transparent;transition:all .2s;cursor:default;position:relative}
+  .cal-day.today{border-color:var(--amethyst);color:var(--amethyst);font-weight:700}
+  .cal-day.has-event{background:rgba(21,189,177,.08);border-color:rgba(21,189,177,.25)}
+  .cal-day.has-event::after{content:'';position:absolute;bottom:4px;width:4px;height:4px;border-radius:50%;background:var(--amethyst)}
+  .cal-day.past{opacity:.3}
+  .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .cal-nav button{background:none;border:1px solid var(--line);color:var(--dim);font-family:var(--mono);font-size:11px;padding:4px 12px;border-radius:999px;cursor:pointer;transition:all .2s}
+  .cal-nav button:hover{border-color:var(--amethyst);color:var(--amethyst)}
+  .cal-title{font-family:var(--display);font-size:16px;font-weight:600;color:var(--ink)}
+  .event-list{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+  .event-card{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--void2);border:1px solid var(--line);border-radius:8px;transition:all .2s}
+  .event-card:hover{border-color:var(--amethyst);transform:translateX(4px)}
+  .event-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .event-info{flex:1}
+  .event-name{font-family:var(--display);font-size:13px;font-weight:600;color:var(--ink)}
+  .event-meta{font-size:10px;color:var(--faint);margin-top:2px}
+  .event-tag{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid;white-space:nowrap}
+
   /* ── meteor shower ── */
   .meteor-shower{position:absolute;top:0;right:0;width:100%;height:100%;overflow:hidden;pointer-events:none;z-index:1}
   .meteor{position:absolute;width:2px;height:2px;background:var(--gold);border-radius:50%;box-shadow:0 0 4px 2px rgba(240,165,0,.6);animation:meteorFall linear infinite,meteorGlow linear infinite}
@@ -432,6 +453,7 @@
     <a href="#sessions">Sessions</a>
     <a href="#books">Books</a>
     <a href="#world">Game</a>
+    <a href="dreampaper.html">Dreampaper</a>
     <a href="dreamer-dashboard-v7.0.html">Enter ↗</a>
   </div>
 </nav>
@@ -705,6 +727,33 @@
     </div>
   </section>
 
+  <!-- SPACES CALENDAR -->
+  <section class="blk" id="calendar">
+    <div class="reveal-up" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div>
+        <div class="kick">spaces calendar</div>
+        <h2 class="h2">Upcoming <em class="glitch" data-text="Events">Events</em>.</h2>
+        <p class="lead" style="margin-top:8px">Space openings, drops, and community events. Never miss a moment.</p>
+      </div>
+    </div>
+    <div class="reveal-up" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px">
+      <!-- Calendar -->
+      <div style="background:var(--void2);border:1px solid var(--line);border-radius:12px;padding:20px">
+        <div class="cal-nav">
+          <button onclick="calNav(-1)">← Prev</button>
+          <div class="cal-title" id="calTitle"></div>
+          <button onclick="calNav(1)">Next →</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+      <!-- Upcoming Events -->
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:12px">Next Events</div>
+        <div class="event-list" id="eventList"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- ROADMAP -->
   <section class="blk" id="roadmap">
     <div class="reveal-up" style="text-align:center;margin-bottom:40px">
@@ -891,6 +940,77 @@ function buildRing(list){
   addEventListener('pointerup',()=>{_ringDrag=false;});
   ring.addEventListener('click',e=>{ const a=e.target.closest('.m'); if(!a)return; if(_ringMoved>6){e.preventDefault();return;} window.location.href=a.getAttribute('data-buy'); });
 }
+
+// ── SPACES CALENDAR ──
+let _calMonth=new Date().getMonth(), _calYear=new Date().getFullYear();
+const CAL_EVENTS=[
+  {date:'2026-09-01',name:'Dream World Alpha Launch',type:'launch',color:'var(--amethyst)'},
+  {date:'2026-09-05',name:'OG Dreamers NFT Mint',type:'nft',color:'var(--gold)'},
+  {date:'2026-09-10',name:'Music Space Open Call',type:'space',color:'var(--amethyst-2)'},
+  {date:'2026-09-15',name:'Community AMA — Izzo',type:'event',color:'var(--iris)'},
+  {date:'2026-09-20',name:'Gallery Space Drop',type:'space',color:'var(--amethyst)'},
+  {date:'2026-09-25',name:'REFI Integration Testnet',type:'launch',color:'var(--gold)'},
+  {date:'2026-10-01',name:'$DREAM Token Preview',type:'launch',color:'var(--amethyst)'},
+  {date:'2026-10-10',name:'Artist Spotlight Week',type:'event',color:'var(--iris)'},
+  {date:'2026-10-15',name:'Tokenized Song Beta',type:'nft',color:'var(--gold)'},
+  {date:'2026-10-20',name:'Dream World Grand Opening',type:'launch',color:'var(--amethyst)'},
+];
+const _MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const _DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function _calDateStr(y,m,d){return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
+function _calHasEvent(y,m,d){const ds=_calDateStr(y,m,d);return CAL_EVENTS.filter(e=>e.date===ds);}
+
+function renderCal(){
+  const grid=document.getElementById('calGrid');const title=document.getElementById('calTitle');
+  if(!grid||!title)return;
+  title.textContent=_MONTHS[_calMonth]+' '+_calYear;
+  const first=new Date(_calYear,_calMonth,1).getDay();
+  const daysInMonth=new Date(_calYear,_calMonth+1,0).getDate();
+  const today=new Date();
+  let html=_DAYS.map(d=>`<div class="cal-head">${d}</div>`).join('');
+  for(let i=0;i<first;i++) html+=`<div class="cal-day" style="opacity:0"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const evts=_calHasEvent(_calYear,_calMonth,d);
+    const isToday=d===today.getDate()&&_calMonth===today.getMonth()&&_calYear===today.getFullYear();
+    const isPast=new Date(_calYear,_calMonth,d)<new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    let cls='cal-day';
+    if(isToday) cls+=' today';
+    if(evts.length) cls+=' has-event';
+    if(isPast&&!isToday) cls+=' past';
+    const tip=evts.map(e=>e.name).join(', ');
+    html+=`<div class="${cls}" title="${tip}" style="cursor:${evts.length?'pointer':'default'}">${d}</div>`;
+  }
+  grid.innerHTML=html;
+}
+
+function renderEventList(){
+  const el=document.getElementById('eventList');if(!el)return;
+  const now=new Date();
+  const upcoming=CAL_EVENTS.filter(e=>new Date(e.date)>=new Date(now.getFullYear(),now.getMonth(),now.getDate()))
+    .sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,6);
+  if(!upcoming.length){el.innerHTML='<p style="font-size:12px;color:var(--faint);text-align:center;padding:20px">No upcoming events</p>';return}
+  el.innerHTML=upcoming.map(e=>{
+    const d=new Date(e.date+'T12:00:00');
+    const dayStr=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const tagCls=e.type==='launch'?'border:1px solid var(--amethyst);color:var(--amethyst)':
+      e.type==='nft'?'border:1px solid var(--gold);color:var(--gold)':
+      e.type==='space'?'border:1px solid var(--amethyst-2);color:var(--amethyst-2)':
+      'border:1px solid var(--iris);color:var(--iris)';
+    return `<div class="event-card">
+      <div class="event-dot" style="background:${e.color}"></div>
+      <div class="event-info">
+        <div class="event-name">${e.name}</div>
+        <div class="event-meta">${dayStr}</div>
+      </div>
+      <span class="event-tag" style="${tagCls}">${e.type}</span>
+    </div>`;
+  }).join('');
+}
+
+function calNav(dir){_calMonth+=dir;if(_calMonth>11){_calMonth=0;_calYear++;}if(_calMonth<0){_calMonth=11;_calYear--;}_syncCal();}
+function _syncCal(){renderCal();renderEventList();}
+_syncCal();
 
 // scroll reveals
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.15});
