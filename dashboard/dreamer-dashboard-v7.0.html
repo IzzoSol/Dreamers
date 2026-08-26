@@ -209,7 +209,7 @@ select.inp{cursor:pointer}
     <div class="sb-section">
       <div class="sb-label">Create</div>
       <button class="sb-tab" data-tab="music" onclick="go('music')"><span class="material-symbols-outlined icon">graphic_eq</span>Music</button>
-      <button class="sb-tab" data-tab="create" onclick="go('create')"><span class="material-symbols-outlined icon">palette</span>Studio</button>
+      <button class="sb-tab" data-tab="spaces" onclick="go('spaces')"><span class="material-symbols-outlined icon">storefront</span>Spaces</button>
       <button class="sb-tab" data-tab="nfts" onclick="go('nfts')"><span class="material-symbols-outlined icon">token</span>NFTs</button>
     </div>
     <div class="sb-section">
@@ -264,20 +264,20 @@ select.inp{cursor:pointer}
       <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Dream World</h3>
       <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Portal · 3D Universe</p>
     </div>
+    <div class="card card-sm" style="cursor:pointer" onclick="go('spaces')">
+      <span class="material-symbols-outlined" style="color:var(--acc);font-size:28px">storefront</span>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">My Space</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Showcase · Sell · Perform</p>
+    </div>
     <div class="card card-sm" style="cursor:pointer" onclick="go('nfts')">
-      <span class="material-symbols-outlined" style="color:var(--acc);font-size:28px">token</span>
+      <span class="material-symbols-outlined" style="color:var(--sec);font-size:28px">token</span>
       <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">NFTs & Credits</h3>
       <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Culture · Own · Earn</p>
     </div>
     <div class="card card-sm" style="cursor:pointer" onclick="go('music')">
-      <span class="material-symbols-outlined" style="color:var(--sec);font-size:28px">graphic_eq</span>
+      <span class="material-symbols-outlined" style="color:var(--green);font-size:28px">graphic_eq</span>
       <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Music Studio</h3>
       <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Beats · Binaural · AI</p>
-    </div>
-    <div class="card card-sm" style="cursor:pointer" onclick="go('events')">
-      <span class="material-symbols-outlined" style="color:var(--green);font-size:28px">event</span>
-      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Events</h3>
-      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Find · Create · Connect</p>
     </div>
   </div>
 
@@ -309,6 +309,130 @@ select.inp{cursor:pointer}
   <!-- Agent Grid -->
   <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:18px;color:#fff;;margin-bottom:16px">Your Guides</h2>
   <div class="grid-2" id="agentGrid"></div>
+</section>
+
+<!-- ══════ SPACES ══════ -->
+<section class="panel" id="panel-spaces">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:32px">
+    <div>
+      <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">SPACES</h1>
+      <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase">Showcase · Sell · Perform · Connect</p>
+    </div>
+    <button class="btn btn-pri" onclick="showCreateSpace()">
+      <span class="material-symbols-outlined" style="font-size:16px">add</span>Create Space
+    </button>
+  </div>
+
+  <!-- How It Works -->
+  <div class="card" style="margin-bottom:24px;text-align:center;padding:32px 24px;border:2px solid var(--pri)">
+    <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;color:#fff;margin-bottom:16px">3 Steps. That's It.</h2>
+    <div style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap">
+      <div style="flex:1;min-width:160px;max-width:220px">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--pri);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;margin:0 auto 12px">1</div>
+        <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:4px">Choose Type</div>
+        <div style="font-size:11px;color:var(--text-dim)">Gallery, Music, Shop, Podcast, Show</div>
+      </div>
+      <div style="flex:1;min-width:160px;max-width:220px">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--acc);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;margin:0 auto 12px">2</div>
+        <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:4px">Drop Content</div>
+        <div style="font-size:11px;color:var(--text-dim)">Drag images, MP3s, 3D models</div>
+      </div>
+      <div style="flex:1;min-width:160px;max-width:220px">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--green);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;margin:0 auto 12px">3</div>
+        <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:4px">Share Link</div>
+        <div style="font-size:11px;color:var(--text-dim)">One URL. You're live.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Space Types -->
+  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;color:#fff;margin-bottom:16px">CHOOSE YOUR SPACE</h2>
+  <div class="grid-3" style="margin-bottom:32px">
+    <div class="card" style="cursor:pointer;text-align:center" onclick="createSpace('gallery')">
+      <span style="font-size:40px">🎨</span>
+      <h3 style="font-weight:700;font-size:14px;color:#fff;margin-top:12px">Gallery</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Display art, photography, digital work</p>
+      <div style="margin-top:12px;padding:6px 14px;background:var(--pri);color:var(--bg);border-radius:999px;font-size:10px;font-weight:700;display:inline-block">FREE</div>
+    </div>
+    <div class="card" style="cursor:pointer;text-align:center" onclick="createSpace('music')">
+      <span style="font-size:40px">🎵</span>
+      <h3 style="font-weight:700;font-size:14px;color:#fff;margin-top:12px">Music</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Live concerts, listening rooms, DJ sets</p>
+      <div style="margin-top:12px;padding:6px 14px;background:var(--acc);color:var(--bg);border-radius:999px;font-size:10px;font-weight:700;display:inline-block">0.1 SOL</div>
+    </div>
+    <div class="card" style="cursor:pointer;text-align:center" onclick="createSpace('shop')">
+      <span style="font-size:40px">🛍️</span>
+      <h3 style="font-weight:700;font-size:14px;color:#fff;margin-top:12px">Shop</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Sell merch, NFTs, digital products</p>
+      <div style="margin-top:12px;padding:6px 14px;background:var(--acc);color:var(--bg);border-radius:999px;font-size:10px;font-weight:700;display:inline-block">0.1 SOL</div>
+    </div>
+    <div class="card" style="cursor:pointer;text-align:center" onclick="createSpace('podcast')">
+      <span style="font-size:40px">🎙️</span>
+      <h3 style="font-weight:700;font-size:14px;color:#fff;margin-top:12px">Podcast</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">VR podcasts, interviews, panels</p>
+      <div style="margin-top:12px;padding:6px 14px;background:var(--sec);color:var(--bg);border-radius:999px;font-size:10px;font-weight:700;display:inline-block">FREE</div>
+    </div>
+    <div class="card" style="cursor:pointer;text-align:center" onclick="createSpace('show')">
+      <span style="font-size:40px">🎭</span>
+      <h3 style="font-weight:700;font-size:14px;color:#fff;margin-top:12px">Show</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Live performances, fashion shows</p>
+      <div style="margin-top:12px;padding:6px 14px;background:var(--acc);color:var(--bg);border-radius:999px;font-size:10px;font-weight:700;display:inline-block">0.1 SOL</div>
+    </div>
+    <div class="card" style="cursor:pointer;text-align:center" onclick="createSpace('studio')">
+      <span style="font-size:40px">🎬</span>
+      <h3 style="font-weight:700;font-size:14px;color:#fff;margin-top:12px">Studio</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Behind-the-scenes, tutorials, process</p>
+      <div style="margin-top:12px;padding:6px 14px;background:var(--pri);color:var(--bg);border-radius:999px;font-size:10px;font-weight:700;display:inline-block">FREE</div>
+    </div>
+  </div>
+
+  <!-- Create Space Form (hidden) -->
+  <div class="card" id="createSpaceForm" style="display:none;border-left:4px solid var(--acc)">
+    <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;color:#fff;margin-bottom:16px">CREATE YOUR SPACE</h2>
+    <div class="grid-2">
+      <div>
+        <label style="font-size:10px;color:var(--text-dim);display:block;margin-bottom:4px">SPACE NAME</label>
+        <input class="inp" id="spaceName" placeholder="My Creative Space">
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--text-dim);display:block;margin-bottom:4px">SPACE TYPE</label>
+        <select class="inp" id="spaceType">
+          <option value="gallery">Gallery</option>
+          <option value="music">Music</option>
+          <option value="shop">Shop</option>
+          <option value="podcast">Podcast</option>
+          <option value="show">Show</option>
+          <option value="studio">Studio</option>
+        </select>
+      </div>
+      <div style="grid-column:span 2">
+        <label style="font-size:10px;color:var(--text-dim);display:block;margin-bottom:4px">DESCRIPTION</label>
+        <textarea class="inp" id="spaceDesc" rows="2" placeholder="What's your space about?"></textarea>
+      </div>
+      <div style="grid-column:span 2">
+        <label style="font-size:10px;color:var(--text-dim);display:block;margin-bottom:4px">UPLOAD CONTENT</label>
+        <div style="border:2px dashed var(--border);border-radius:var(--radius-sm);padding:32px;text-align:center;cursor:pointer" onclick="document.getElementById('spaceUpload').click()">
+          <span class="material-symbols-outlined" style="color:var(--text-dim);font-size:32px">cloud_upload</span>
+          <div style="font-size:12px;color:var(--text-dim);margin-top:8px">Drop images, MP3s, or 3D models</div>
+          <div style="font-size:10px;color:var(--text-faint);margin-top:4px">or click to browse</div>
+        </div>
+        <input type="file" id="spaceUpload" multiple accept="image/*,audio/*,.glb,.gltf" style="display:none">
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="btn btn-pri" onclick="submitSpace()" style="flex:1;justify-content:center">Publish Space</button>
+      <button class="btn btn-outline" onclick="hideCreateSpace()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- My Spaces -->
+  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;color:#fff;margin-bottom:16px">MY SPACES</h2>
+  <div class="grid-2" id="mySpaces">
+    <div class="card" style="text-align:center;padding:32px">
+      <span style="font-size:32px">✨</span>
+      <p style="font-size:12px;color:var(--text-dim);margin-top:8px">No spaces yet — create your first one!</p>
+    </div>
+  </div>
 </section>
 
 <!-- ══════ MUSIC ══════ -->
@@ -1527,6 +1651,49 @@ function addChatMsg(containerId,msg,type){
   el.appendChild(div);el.scrollTop=el.scrollHeight;
 }
 
+// ── SPACES ──
+const SPACES=JSON.parse(localStorage.getItem('d_spaces')||'[]');
+function showCreateSpace(){document.getElementById('createSpaceForm').style.display='block'}
+function hideCreateSpace(){document.getElementById('createSpaceForm').style.display='display'}
+function createSpace(type){
+  document.getElementById('spaceType').value=type;
+  showCreateSpace();
+}
+function submitSpace(){
+  const name=document.getElementById('spaceName').value.trim();
+  if(!name){alert('Enter a space name');return}
+  const type=document.getElementById('spaceType').value;
+  const desc=document.getElementById('spaceDesc').value.trim();
+  const icons={gallery:'🎨',music:'🎵',shop:'🛍️',podcast:'🎙️',show:'🎭',studio:'🎬'};
+  const space={name,type,desc,icon:icons[type]||'✨',created:new Date().toISOString(),id:Date.now()};
+  SPACES.push(space);
+  localStorage.setItem('d_spaces',JSON.stringify(SPACES));
+  hideCreateSpace();
+  document.getElementById('spaceName').value='';
+  document.getElementById('spaceDesc').value='';
+  renderSpaces();
+  addCredits(10,'Created Space: '+name);
+}
+function renderSpaces(){
+  const el=document.getElementById('mySpaces');if(!el)return;
+  if(!SPACES.length){el.innerHTML='<div class="card" style="text-align:center;padding:32px"><span style="font-size:32px">✨</span><p style="font-size:12px;color:var(--text-dim);margin-top:8px">No spaces yet — create your first one!</p></div>';return}
+  el.innerHTML=SPACES.map(s=>`
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <span style="font-size:32px">${s.icon}</span>
+        <div>
+          <h3 style="font-weight:700;font-size:14px;color:#fff">${s.name}</h3>
+          <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase">${s.type}</div>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--text-dim);margin-bottom:12px">${s.desc||'No description'}</p>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-outline" style="flex:1;justify-content:center;font-size:10px">Edit</button>
+        <button class="btn btn-pri" style="flex:1;justify-content:center;font-size:10px">Open</button>
+      </div>
+    </div>`).join('');
+}
+
 // ── CULTURE CREDITS ──
 let _credits=parseInt(localStorage.getItem('d_credits')||'0');
 function updateCreditsDisplay(){
@@ -1658,7 +1825,7 @@ function loadGame(src,btn){
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded',()=>{
-  initPiano();initChakraList();initChakraSvg();initZodiacWheel();initAgents();renderJournal();renderEvents();updateCreditsDisplay();loadProfile();loadKeys();
+  initPiano();initChakraList();initChakraSvg();initZodiacWheel();initAgents();renderJournal();renderEvents();renderSpaces();updateCreditsDisplay();loadProfile();loadKeys();
 });
 </script>
 </body>
