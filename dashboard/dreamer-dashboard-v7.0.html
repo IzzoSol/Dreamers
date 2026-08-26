@@ -607,15 +607,28 @@ select.inp{cursor:pointer}
 <section class="panel" id="panel-game">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
     <div>
-      <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">DREAMERS CLIMB</h1>
-      <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase">Tower climbing adventure</p>
+      <h1 style="font-family:'Epilogue',sans-serif;font-weight:900;font-size:28px;color:#fff;font-style:italic;margin-bottom:4px">GAMES</h1>
+      <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase">Pick a game to play</p>
     </div>
-    <a href="game/dreamers-climb-v31.0.html" target="_blank" class="btn btn-outline">
+    <a id="gameFullscreen" href="#" target="_blank" class="btn btn-outline">
       <span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>Full Screen
     </a>
   </div>
+
+  <!-- Game Picker -->
+  <div class="pill-bar" id="gamePills">
+    <button class="pill active" onclick="loadGame('game/dreamers-climb-v31.0.html',this)">Climb v31</button>
+    <button class="pill" onclick="loadGame('game/dreamers-climb-v28.88.html',this)">Climb v28.88</button>
+    <button class="pill" onclick="loadGame('game/dreamers-climb-v25.html',this)">Climb v25</button>
+    <button class="pill" onclick="loadGame('game/dreamers-climb-v24.0.html',this)">Climb v24</button>
+    <button class="pill" onclick="loadGame('game/dreamers-climb-v22.html',this)">Climb v22</button>
+    <button class="pill" onclick="loadGame('game/dreamers-climb-v15.html',this)">Climb v15</button>
+    <button class="pill" onclick="loadGame('game/dream-world.html',this)">Dream World</button>
+  </div>
+
+  <!-- Game Frame -->
   <div style="border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);background:#000">
-    <iframe src="game/dreamers-climb-v31.0.html" style="width:100%;height:calc(100vh - 180px);border:none" allow="autoplay"></iframe>
+    <iframe id="gameFrame" src="game/dreamers-climb-v31.0.html" style="width:100%;height:calc(100vh - 220px);border:none" allow="autoplay"></iframe>
   </div>
 </section>
 
@@ -1355,6 +1368,14 @@ function loadKeys(){
   if(k.openrouter)document.getElementById('keyOpenRouter').value=k.openrouter;
   if(k.hf)document.getElementById('keyHF').value=k.hf;
   if(k.fal)document.getElementById('keyFal').value=k.fal;
+}
+
+// ── GAME PICKER ──
+function loadGame(src,btn){
+  document.getElementById('gameFrame').src=src;
+  document.getElementById('gameFullscreen').href=src;
+  document.querySelectorAll('#gamePills .pill').forEach(p=>p.classList.remove('active'));
+  if(btn)btn.classList.add('active');
 }
 
 // ── INIT ──
