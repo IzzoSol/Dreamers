@@ -203,6 +203,8 @@ select.inp{cursor:pointer}
 .auth-user-pill .handle{font-size:10px;color:var(--text-faint)}
 .btn-logout{width:100%;padding:8px;background:none;border:1px solid var(--red);color:var(--red);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .15s}
 .btn-logout:hover{background:var(--red);color:var(--bg)}
+.admin-fab{position:fixed;bottom:20px;right:20px;z-index:10001;width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--text-faint);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 4px 16px #00000040}
+.admin-fab:hover{border-color:var(--acc);color:var(--acc);transform:scale(1.1)}
 
 /* ── community chat ── */
 .comm-chat{display:flex;flex-direction:column;height:calc(100vh - 200px)}
@@ -289,8 +291,18 @@ select.inp{cursor:pointer}
       <button class="btn-submit" type="submit">Create Account</button>
       <div class="error" id="signupError"></div>
     </form>
+    <!-- Divider -->
+    <div style="text-align:center;margin:16px 0 12px;position:relative">
+      <div style="position:absolute;left:0;right:0;top:50%;height:1px;background:var(--border)"></div>
+      <span style="position:relative;background:var(--surface);padding:0 12px;font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase">or</span>
+    </div>
+    <!-- Guest + Admin -->
+    <button class="btn-submit" style="background:var(--card);color:var(--text);border:1px solid var(--border);margin-bottom:8px" onclick="enterAsGuest()">Browse as Guest</button>
+    <button class="btn-submit" style="background:none;color:var(--text-faint);border:1px solid var(--border);font-size:10px;padding:8px" onclick="adminPrompt()">Admin Access</button>
   </div>
 </div>
+
+<button class="admin-fab" onclick="adminPrompt()" title="Admin Access">⚡</button>
 
 <div class="app">
 <!-- ═══════ SIDEBAR ═══════ -->
@@ -311,6 +323,11 @@ select.inp{cursor:pointer}
       <button class="sb-tab" data-tab="music" onclick="go('music')"><span class="material-symbols-outlined icon">graphic_eq</span>Music</button>
       <button class="sb-tab" data-tab="spaces" onclick="go('spaces')"><span class="material-symbols-outlined icon">storefront</span>Spaces</button>
       <button class="sb-tab" data-tab="nfts" onclick="go('nfts')"><span class="material-symbols-outlined icon">token</span>NFTs</button>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Spend</div>
+      <button class="sb-tab" data-tab="spend" onclick="go('spend')"><span class="material-symbols-outlined icon">shopping_bag</span>Spend</button>
+      <button class="sb-tab" data-tab="hire" onclick="go('hire')"><span class="material-symbols-outlined icon">work</span>Hire</button>
     </div>
     <div class="sb-section">
       <div class="sb-label">Discover</div>
@@ -1247,6 +1264,186 @@ select.inp{cursor:pointer}
   </div>
 </section>
 
+<!-- ══════ SPEND ══════ -->
+<section class="panel" id="panel-spend">
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;margin-bottom:4px">SPEND</h1>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">Gift Cards · eSIM · Top-Ups · RWA · Virtual Cards</p>
+  <p style="font-size:12px;color:var(--text-faint);margin-bottom:20px;max-width:60ch">Use your SOL, $DREAM, or tokens to buy real-world things. No bank. No ID. No account needed.</p>
+
+  <!-- Sub-tabs -->
+  <div class="pill-bar" id="spendPills">
+    <button class="pill active" onclick="setSpendTab('giftcards')">Gift Cards</button>
+    <button class="pill" onclick="setSpendTab('esim')">eSIM</button>
+    <button class="pill" onclick="setSpendTab('topups')">Top-Ups</button>
+    <button class="pill" onclick="setSpendTab('rwa')">RWA</button>
+    <button class="pill" onclick="setSpendTab('virtual')">Virtual Cards</button>
+  </div>
+
+  <!-- Gift Cards -->
+  <div id="st-giftcards" class="spend-tab">
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <input class="inp" id="gcSearch" placeholder="Search brands..." style="max-width:300px" oninput="filterGiftCards()"/>
+      <select class="inp" id="gcCategory" style="max-width:180px" onchange="filterGiftCards()">
+        <option value="">All Categories</option>
+        <option value="food">Food & Drink</option>
+        <option value="shopping">Shopping</option>
+        <option value="gaming">Gaming</option>
+        <option value="streaming">Streaming</option>
+        <option value="travel">Travel</option>
+        <option value="crypto">Crypto</option>
+      </select>
+    </div>
+    <div class="grid-4" id="gcGrid"></div>
+  </div>
+
+  <!-- eSIM -->
+  <div id="st-esim" class="spend-tab" style="display:none">
+    <div class="card" style="max-width:500px">
+      <h3 style="font-weight:700;font-size:14px;color:#fff;margin-bottom:12px">eSIM Data Plans</h3>
+      <p style="font-size:11px;color:var(--text-dim);margin-bottom:16px">Get mobile data worldwide. Pay with SOL or $DREAM. No phone number needed.</p>
+      <div style="margin-bottom:12px">
+        <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Region</label>
+        <select class="inp" id="esimRegion">
+          <option value="global">Global (200+ countries)</option>
+          <option value="us">United States</option>
+          <option value="eu">Europe</option>
+          <option value="asia">Asia Pacific</option>
+          <option value="latam">Latin America</option>
+          <option value="africa">Africa</option>
+        </select>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Data</label>
+        <select class="inp" id="esimData">
+          <option value="1gb">1 GB — 7 days</option>
+          <option value="3gb">3 GB — 30 days</option>
+          <option value="5gb">5 GB — 30 days</option>
+          <option value="10gb">10 GB — 30 days</option>
+          <option value="unlimited">Unlimited — 30 days</option>
+        </select>
+      </div>
+      <div style="background:var(--surface);border-radius:var(--radius-sm);padding:12px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--text-dim)">Price</span><span style="font-size:14px;font-weight:700;color:var(--acc)" id="esimPrice">0.15 SOL</span></div>
+      </div>
+      <button class="btn btn-pri" style="width:100%;justify-content:center" onclick="alert('eSIM purchase coming soon!')">Buy eSIM with SOL</button>
+    </div>
+  </div>
+
+  <!-- Top-Ups -->
+  <div id="st-topups" class="spend-tab" style="display:none">
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <input class="inp" id="topupSearch" placeholder="Search services..." style="max-width:300px" oninput="filterTopUps()"/>
+    </div>
+    <div class="grid-4" id="topupGrid"></div>
+  </div>
+
+  <!-- RWA -->
+  <div id="st-rwa" class="spend-tab" style="display:none">
+    <div class="grid-3" id="rwaGrid"></div>
+    <div class="card" style="margin-top:16px;text-align:center;padding:24px">
+      <p style="font-size:12px;color:var(--text-dim)">RWA assets are backed by real-world value. Prices update via Pyth oracle. Buy fractional shares with SOL or $DREAM.</p>
+    </div>
+  </div>
+
+  <!-- Virtual Cards -->
+  <div id="st-virtual" class="spend-tab" style="display:none">
+    <div class="card" style="max-width:500px">
+      <h3 style="font-weight:700;font-size:14px;color:#fff;margin-bottom:12px">Virtual Visa Cards</h3>
+      <p style="font-size:11px;color:var(--text-dim);margin-bottom:16px">Generate a disposable virtual card. Load with SOL. Use anywhere Visa is accepted online. No bank. No ID.</p>
+      <div style="margin-bottom:12px">
+        <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Load Amount</label>
+        <select class="inp" id="vcAmount">
+          <option value="10">$10 — 0.06 SOL</option>
+          <option value="25">$25 — 0.15 SOL</option>
+          <option value="50">$50 — 0.30 SOL</option>
+          <option value="100">$100 — 0.60 SOL</option>
+          <option value="250">$250 — 1.50 SOL</option>
+        </select>
+      </div>
+      <div style="background:var(--surface);border-radius:var(--radius-sm);padding:12px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--text-dim)">Service Fee</span><span style="font-size:12px;color:var(--text-faint)">2%</span></div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px"><span style="font-size:11px;color:var(--text-dim)">Total</span><span style="font-size:14px;font-weight:700;color:var(--acc)" id="vcTotal">0.061 SOL</span></div>
+      </div>
+      <button class="btn btn-pri" style="width:100%;justify-content:center" onclick="alert('Virtual card coming soon!')">Generate Card with SOL</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ HIRE ══════ -->
+<section class="panel" id="panel-hire">
+  <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;margin-bottom:4px">HIRE</h1>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">Freelance Marketplace · Pay with Tokens · Gift Cards · SOL</p>
+
+  <div class="pill-bar" id="hirePills">
+    <button class="pill active" onclick="setHireTab('browse')">Browse</button>
+    <button class="pill" onclick="setHireTab('post')">Post Job</button>
+    <button class="pill" onclick="setHireTab('myjobs')">My Jobs</button>
+  </div>
+
+  <!-- Browse Jobs -->
+  <div id="ht-browse" class="hire-tab">
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <input class="inp" id="jobSearch" placeholder="Search jobs or skills..." style="max-width:300px" oninput="filterJobs()"/>
+      <select class="inp" id="jobCategory" style="max-width:180px" onchange="filterJobs()">
+        <option value="">All Categories</option>
+        <option value="music">Music Production</option>
+        <option value="art">Art & Design</option>
+        <option value="code">Development</option>
+        <option value="video">Video & Animation</option>
+        <option value="writing">Writing</option>
+        <option value="marketing">Marketing</option>
+      </select>
+    </div>
+    <div id="jobList"></div>
+  </div>
+
+  <!-- Post Job -->
+  <div id="ht-post" class="hire-tab" style="display:none">
+    <div class="card" style="max-width:600px">
+      <h3 style="font-weight:700;font-size:14px;color:#fff;margin-bottom:16px">POST A JOB</h3>
+      <div style="margin-bottom:12px">
+        <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Job Title</label>
+        <input class="inp" id="jobTitle" placeholder="e.g. Mix and master my EP"/>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Description</label>
+        <textarea class="inp" id="jobDesc" rows="4" placeholder="Describe what you need done..."></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div>
+          <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Budget</label>
+          <input class="inp" id="jobBudget" placeholder="e.g. 2 SOL"/>
+        </div>
+        <div>
+          <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Pay With</label>
+          <select class="inp" id="jobPayMethod">
+            <option value="sol">SOL</option>
+            <option value="dream">$DREAM</option>
+            <option value="giftcard">Gift Card</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">Category</label>
+        <select class="inp" id="jobCat">
+          <option value="music">Music Production</option>
+          <option value="art">Art & Design</option>
+          <option value="code">Development</option>
+          <option value="video">Video & Animation</option>
+          <option value="writing">Writing</option>
+          <option value="marketing">Marketing</option>
+        </select>
+      </div>
+      <button class="btn btn-pri" style="width:100%;justify-content:center" onclick="postJob()">Post Job</button>
+    </div>
+  </div>
+
+  <!-- My Jobs -->
+  <div id="ht-myjobs" class="hire-tab" style="display:none">
+    <div id="myJobsList"></div>
+  </div>
+</section>
+
 <!-- ══════ SETTINGS ══════ -->
 <section class="panel" id="panel-settings">
   <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:20px">SETTINGS</h1>
@@ -1402,6 +1599,35 @@ function doLogout(){
   document.querySelectorAll('.auth-form input').forEach(i=>i.value='');
 }
 
+function enterAsGuest(){
+  _currentUser={id:'guest_'+Date.now(),username:'guest',name:'Guest',avatar:'#5a7878',bio:'Browsing the dream',created:Date.now()};
+  document.getElementById('authOverlay').classList.add('hidden');
+  document.getElementById('userPill').style.display='flex';
+  document.getElementById('userAvatar').style.background='#5a7878';
+  document.getElementById('userAvatar').textContent='G';
+  document.getElementById('userName').textContent='Guest';
+  document.getElementById('userHandle').textContent='@guest';
+  document.getElementById('logoutBtn').style.display='none';
+  _initAllData();
+}
+
+function adminPrompt(){
+  const code=prompt('Enter admin code:');
+  if(code==='4444'){
+    _currentUser={id:'admin',username:'admin',name:'Admin',avatar:'var(--acc)',bio:'Dreamers Admin',created:Date.now()};
+    document.getElementById('authOverlay').classList.add('hidden');
+    document.getElementById('userPill').style.display='flex';
+    document.getElementById('userAvatar').style.background='var(--acc)';
+    document.getElementById('userAvatar').textContent='A';
+    document.getElementById('userName').textContent='Admin';
+    document.getElementById('userHandle').textContent='@admin';
+    document.getElementById('logoutBtn').style.display='block';
+    _initAllData();
+  } else if(code!==null){
+    alert('Invalid admin code');
+  }
+}
+
 // ── On load: check session ──
 function _checkAuth(){
   const saved=localStorage.getItem('d_current_user');
@@ -1490,7 +1716,7 @@ function viewProfile(uname){
 // ═══════════════════════════════════════════════════════
 // NAV
 // ═══════════════════════════════════════════════════════
-const titles={home:'HOME',music:'MUSIC',create:'STUDIO',astrology:'ASTROLOGY',game:'GAME',oracle:'ORACLE',turtle:'TURTLE',quill:'QUILL',sanctuary:'SANCTUARY',journal:'JOURNAL',profile:'PROFILE',community:'COMMUNITY',settings:'SETTINGS',spaces:'SPACES',nfts:'NFTS',events:'EVENTS',dreamworld:'DREAM WORLD'};
+const titles={home:'HOME',music:'MUSIC',create:'STUDIO',astrology:'ASTROLOGY',game:'GAME',oracle:'ORACLE',turtle:'TURTLE',quill:'QUILL',sanctuary:'SANCTUARY',journal:'JOURNAL',profile:'PROFILE',community:'COMMUNITY',settings:'SETTINGS',spaces:'SPACES',nfts:'NFTS',events:'EVENTS',dreamworld:'DREAM WORLD',spend:'SPEND',hire:'HIRE'};
 function go(tab){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+tab)?.classList.add('active');
@@ -2202,6 +2428,170 @@ function loadKeys(){
 function _initAllData(){
   _credits=getUserData('credits',0);
   updateCreditsDisplay();renderJournal();renderEvents();renderSpaces();loadProfile();loadKeys();renderCommMessages();
+}
+
+// ── SPEND TABS ──
+function setSpendTab(id){
+  document.querySelectorAll('.spend-tab').forEach(t=>t.style.display='none');
+  document.getElementById('st-'+id).style.display='block';
+  document.querySelectorAll('#spendPills .pill').forEach((p,i)=>{
+    const tabs=['giftcards','esim','topups','rwa','virtual'];
+    p.classList.toggle('active',tabs[i]===id);
+  });
+}
+
+const GIFTCARDS=[
+  {name:'Amazon',cat:'shopping',brand:'AMZN',color:'#ff9900',min:10,max:500},
+  {name:'Apple',cat:'shopping',brand:'AAPL',color:'#555',min:10,max:500},
+  {name:'Nike',cat:'shopping',brand:'NKE',color:'#111',min:10,max:250},
+  {name:'Target',cat:'shopping',brand:'TGT',color:'#cc0000',min:10,max:200},
+  {name:'Walmart',cat:'shopping',brand:'WMT',color:'#0071dc',min:10,max:500},
+  {name:'Best Buy',cat:'shopping',brand:'BBY',color:'#0046be',min:10,max:500},
+  {name:'Starbucks',cat:'food',brand:'SBUX',color:'#00704a',min:5,max:100},
+  {name:'DoorDash',cat:'food',brand:'DASH',color:'#ff3008',min:10,max:200},
+  {name:'Uber Eats',cat:'food',brand:'UBER',color:'#06c167',min:10,max:200},
+  {name:'Netflix',cat:'streaming',brand:'NFLX',color:'#e50914',min:10,max:200},
+  {name:'Spotify',cat:'streaming',brand:'SPOT',color:'#1db954',min:10,max:100},
+  {name:'YouTube Premium',cat:'streaming',brand:'YT',color:'#ff0000',min:10,max:100},
+  {name:'Steam',cat:'gaming',brand:'STEAM',color:'#1b2838',min:10,max:500},
+  {name:'PlayStation',cat:'gaming',brand:'PS',color:'#003087',min:10,max:500},
+  {name:'Xbox',cat:'gaming',brand:'XBOX',color:'#107c10',min:10,max:500},
+  {name:'Nintendo',cat:'gaming',brand:'NINTENDO',color:'#e60012',min:10,max:200},
+  {name:'Airbnb',cat:'travel',brand:'ABNB',color:'#ff5a5f',min:25,max:500},
+  {name:'Delta Airlines',cat:'travel',brand:'DAL',color:'#003366',min:50,max:1000},
+  {name:'Visa Prepaid',cat:'crypto',brand:'VISA',color:'#1a1f71',min:10,max:500},
+  {name:'Mastercard',cat:'crypto',brand:'MC',color:'#eb001b',min:10,max:500},
+];
+
+function renderGiftCards(list){
+  const grid=document.getElementById('gcGrid');if(!grid)return;
+  grid.innerHTML=list.map(g=>`<div class="card card-sm" style="cursor:pointer" onclick="alert('${g.name} gift card — coming soon! Load with SOL or \$DREAM.')">
+    <div style="width:100%;aspect-ratio:16/9;background:${g.color};border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+      <span style="color:#fff;font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;letter-spacing:2px">${g.name.toUpperCase()}</span>
+    </div>
+    <div style="font-size:12px;font-weight:700;color:#fff">${g.name}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+      <span style="font-size:10px;color:var(--text-faint)">$${g.min}–$${g.max}</span>
+      <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;border:1px solid var(--pri);border-radius:999px;color:var(--pri)">SOL</span>
+    </div>
+  </div>`).join('');
+}
+function filterGiftCards(){
+  const q=(document.getElementById('gcSearch')?.value||'').toLowerCase();
+  const cat=document.getElementById('gcCategory')?.value||'';
+  renderGiftCards(GIFTCARDS.filter(g=>(!cat||g.cat===cat)&&(!q||g.name.toLowerCase().includes(q))));
+}
+renderGiftCards(GIFTCARDS);
+
+const TOPUPS=[
+  {name:'AT&T',cat:'phone',color:'#009fdb',icon:'📱'},
+  {name:'T-Mobile',cat:'phone',color:'#e20074',icon:'📱'},
+  {name:'Verizon',cat:'phone',color:'#cd040b',icon:'📱'},
+  {name:'Steam Wallet',cat:'gaming',color:'#1b2838',icon:'🎮'},
+  {name:'PlayStation Stars',cat:'gaming',color:'#003087',icon:'🎮'},
+  {name:'Google Play',cat:'apps',color:'#01875f',icon:'📲'},
+  {name:'Apple iTunes',cat:'apps',color:'#555',icon:'🍎'},
+  {name:'Amazon Reload',cat:'shopping',color:'#ff9900',icon:'📦'},
+  {name:'Xfinity',cat:'internet',color:'#e30613',icon:'🌐'},
+  {name:'Spectrum',cat:'internet',color:'#0078d4',icon:'🌐'},
+  {name:'LinkedIn Premium',cat:'pro',color:'#0077b5',icon:'💼'},
+  {name:'ChatGPT Plus',cat:'pro',color:'#10a37f',icon:'🤖'},
+];
+function renderTopUps(list){
+  const grid=document.getElementById('topupGrid');if(!grid)return;
+  grid.innerHTML=list.map(t=>`<div class="card card-sm" style="cursor:pointer;text-align:center" onclick="alert('${t.name} top-up — coming soon! Pay with SOL.')">
+    <div style="font-size:28px;margin-bottom:8px">${t.icon}</div>
+    <div style="font-size:12px;font-weight:700;color:#fff">${t.name}</div>
+    <div style="font-size:10px;color:var(--text-faint);margin-top:4px">Top-up with SOL</div>
+  </div>`).join('');
+}
+function filterTopUps(){
+  const q=(document.getElementById('topupSearch')?.value||'').toLowerCase();
+  renderTopUps(TOPUPS.filter(t=>!q||t.name.toLowerCase().includes(q)));
+}
+renderTopUps(TOPUPS);
+
+const RWA_ASSETS=[
+  {name:'Gold (Fractional)',ticker:'PAXG',price:'58.2 SOL',change:'+2.1%',color:'#f0a500',icon:'🥇'},
+  {name:'S&P 500 (Tokenized)',ticker:'SPY',price:'12.4 SOL',change:'+0.8%',color:'#003087',icon:'📊'},
+  {name:'Apple Stock (Fractional)',ticker:'AAPL',price:'3.1 SOL',change:'+1.5%',color:'#555',icon:'🍎'},
+  {name:'Tesla Stock (Fractional)',ticker:'TSLA',price:'4.7 SOL',change:'-0.3%',color:'#cc0000',icon:'⚡'},
+  {name:'Carbon Credit (TREEGENS)',ticker:'TREE',price:'0.8 SOL',change:'+5.2%',color:'#10b981',icon:'🌳'},
+  {name:'Real Estate Fund',ticker:'REIT',price:'15.0 SOL',change:'+1.2%',color:'#9932cc',icon:'🏠'},
+];
+function renderRWA(){
+  const grid=document.getElementById('rwaGrid');if(!grid)return;
+  grid.innerHTML=RWA_ASSETS.map(a=>`<div class="card card-sm" style="cursor:pointer" onclick="alert('${a.name} — fractional RWA purchase coming soon!')">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="width:40px;height:40px;border-radius:8px;background:${a.color}20;display:flex;align-items:center;justify-content:center;font-size:20px">${a.icon}</div>
+      <div><div style="font-size:12px;font-weight:700;color:#fff">${a.name}</div><div style="font-family:var(--mono);font-size:10px;color:var(--text-faint)">${a.ticker}</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:14px;font-weight:700;color:var(--acc)">${a.price}</span>
+      <span style="font-size:10px;color:${a.change.startsWith('+')?'var(--green)':'var(--red)'}">${a.change}</span>
+    </div>
+  </div>`).join('');
+}
+renderRWA();
+
+// ── HIRE TABS ──
+function setHireTab(id){
+  document.querySelectorAll('.hire-tab').forEach(t=>t.style.display='none');
+  document.getElementById('ht-'+id).style.display='block';
+  document.querySelectorAll('#hirePills .pill').forEach((p,i)=>{
+    const tabs=['browse','post','myjobs'];
+    p.classList.toggle('active',tabs[i]===id);
+  });
+}
+
+const JOBS=[
+  {title:'Mix & Master My EP',cat:'music',budget:'2 SOL',pay:'sol',poster:'beatmaker.sol',desc:'Need someone to mix and master 5 tracks. Lo-fi hip-hop style. Reference tracks provided.',posted:'2h ago'},
+  {title:'Album Cover Art',cat:'art',budget:'1.5 SOL',pay:'sol',poster:'vibes.sol',desc:'Looking for a dreamy, surreal album cover. Purple/teal palette. Good Samaritan vibes.',posted:'5h ago'},
+  {title:'Build a Landing Page',cat:'code',budget:'50 $DREAM',pay:'dream',poster:'builder.sol',desc:'Simple one-page landing for a music project. HTML/CSS/JS. Mobile responsive.',posted:'1d ago'},
+  {title:'Music Video Edit',cat:'video',budget:'3 SOL',pay:'sol',poster:'visuals.sol',desc:'Edit a 3-minute music video. Synthwave aesthetics. 4K output. Green screen footage provided.',posted:'3h ago'},
+  {title:'Write Artist Bio',cat:'writing',budget:'25 $DREAM',pay:'dream',poster:'words.sol',desc:'Need a compelling 200-word bio for a hip-hop artist. Include vibe, story, and style.',posted:'6h ago'},
+  {title:'Social Media Strategy',cat:'marketing',budget:'1.5 SOL',pay:'sol',poster:'growth.sol',desc:'Create a 30-day content calendar for an emerging artist. Twitter, IG, TikTok focus.',posted:'12h ago'},
+  {title:'Beat Production',cat:'music',budget:'4 SOL',pay:'sol',poster:'dreamer.sol',desc:'Produce 3 trap beats. 140 BPM. Dark melodic. Similar to Future x Metro.',posted:'8h ago'},
+  {title:'Logo Design',cat:'art',budget:'30 $DREAM + Amazon GC',pay:'giftcard',poster:'brand.sol',desc:'Design a logo for a music label. Minimal, modern. Pay: tokens + $50 Amazon gift card.',posted:'1d ago'},
+];
+function renderJobs(list){
+  const el=document.getElementById('jobList');if(!el)return;
+  if(!list.length){el.innerHTML='<p style="font-size:12px;color:var(--text-faint);text-align:center;padding:40px">No jobs found</p>';return}
+  el.innerHTML=list.map(j=>`<div class="card" style="margin-bottom:12px;cursor:pointer" onclick="alert('Job: ${j.title}\\nBudget: ${j.budget}\\n\\nConnect with ${j.poster} to get started.')">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">${j.title}</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.5">${j.desc}</div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;border:1px solid var(--pri);border-radius:999px;color:var(--pri)">${j.pay==='sol'?'SOL':j.pay==='dream'?'$DREAM':'GIFT CARD'}</span>
+          <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;border:1px solid var(--border);border-radius:999px;color:var(--text-faint)">${j.cat}</span>
+        </div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:14px;font-weight:700;color:var(--acc)">${j.budget}</div>
+        <div style="font-size:9px;color:var(--text-faint);margin-top:2px">${j.posted}</div>
+      </div>
+    </div>
+  </div>`).join('');
+}
+function filterJobs(){
+  const q=(document.getElementById('jobSearch')?.value||'').toLowerCase();
+  const cat=document.getElementById('jobCategory')?.value||'';
+  renderJobs(JOBS.filter(j=>(!cat||j.cat===cat)&&(!q||j.title.toLowerCase().includes(q)||j.desc.toLowerCase().includes(q))));
+}
+renderJobs(JOBS);
+
+function postJob(){
+  const title=document.getElementById('jobTitle').value.trim();
+  const desc=document.getElementById('jobDesc').value.trim();
+  const budget=document.getElementById('jobBudget').value.trim();
+  if(!title||!desc||!budget){alert('Fill in all fields');return}
+  addCredits(15,'Posted a job');
+  alert('Job posted! +15 Culture Credits earned.');
+  document.getElementById('jobTitle').value='';
+  document.getElementById('jobDesc').value='';
+  document.getElementById('jobBudget').value='';
+  setHireTab('browse');
 }
 
 // ── GAME PICKER ──
