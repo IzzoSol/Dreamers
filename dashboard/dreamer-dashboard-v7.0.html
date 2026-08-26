@@ -216,6 +216,7 @@ select.inp{cursor:pointer}
       <div class="sb-label">Discover</div>
       <button class="sb-tab" data-tab="astrology" onclick="go('astrology')"><span class="material-symbols-outlined icon">auto_awesome</span>Astrology</button>
       <button class="sb-tab" data-tab="events" onclick="go('events')"><span class="material-symbols-outlined icon">event</span>Events</button>
+      <button class="sb-tab" data-tab="dreamworld" onclick="go('dreamworld')"><span class="material-symbols-outlined icon">language</span>Dream World</button>
       <button class="sb-tab" data-tab="game" onclick="go('game')"><span class="material-symbols-outlined icon">sports_esports</span>Game</button>
     </div>
     <div class="sb-section">
@@ -258,25 +259,25 @@ select.inp{cursor:pointer}
 
   <!-- Quick Access Grid -->
   <div class="grid-4" style="margin-bottom:32px">
-    <div class="card card-sm" style="cursor:pointer" onclick="go('music')">
-      <span class="material-symbols-outlined" style="color:var(--pri);font-size:28px">graphic_eq</span>
-      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Music Studio</h3>
-      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Beats · Binaural · AI</p>
+    <div class="card card-sm" style="cursor:pointer" onclick="go('dreamworld')">
+      <span class="material-symbols-outlined" style="color:var(--pri);font-size:28px">language</span>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Dream World</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Portal · 3D Universe</p>
     </div>
     <div class="card card-sm" style="cursor:pointer" onclick="go('nfts')">
       <span class="material-symbols-outlined" style="color:var(--acc);font-size:28px">token</span>
       <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">NFTs & Credits</h3>
       <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Culture · Own · Earn</p>
     </div>
+    <div class="card card-sm" style="cursor:pointer" onclick="go('music')">
+      <span class="material-symbols-outlined" style="color:var(--sec);font-size:28px">graphic_eq</span>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Music Studio</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Beats · Binaural · AI</p>
+    </div>
     <div class="card card-sm" style="cursor:pointer" onclick="go('events')">
-      <span class="material-symbols-outlined" style="color:var(--sec);font-size:28px">event</span>
+      <span class="material-symbols-outlined" style="color:var(--green);font-size:28px">event</span>
       <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Events</h3>
       <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Find · Create · Connect</p>
-    </div>
-    <div class="card card-sm" style="cursor:pointer" onclick="go('astrology')">
-      <span class="material-symbols-outlined" style="color:var(--green);font-size:28px">auto_awesome</span>
-      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Astrology</h3>
-      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Birth Chart · Zodiac</p>
     </div>
   </div>
 
@@ -604,6 +605,52 @@ select.inp{cursor:pointer}
     <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">DAILY HOROSCOPE</h3>
     <div id="horoscopeText" style="font-size:13px;color:var(--text-dim);line-height:1.6">
       <p>Select your sign above to see today's reading</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ DREAM WORLD ══════ -->
+<section class="panel" id="panel-dreamworld">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:32px">
+    <div>
+      <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;;margin-bottom:4px">DREAM WORLD</h1>
+      <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase">The Portal · The Gateway · The Universe</p>
+    </div>
+    <a href="game/dream-world.html" target="_blank" class="btn btn-pri">
+      <span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>Enter Dream World
+    </a>
+  </div>
+
+  <!-- Portal Preview -->
+  <div class="card" style="margin-bottom:24px;text-align:center;padding:48px 24px;border:2px solid var(--pri);position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(21,189,177,.08),rgba(153,50,204,.08));z-index:0"></div>
+    <div style="position:relative;z-index:1">
+      <div style="font-size:64px;margin-bottom:16px">🌌</div>
+      <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:24px;color:#fff;margin-bottom:8px">Enter the Dream</h2>
+      <p style="color:var(--text-dim);font-size:13px;max-width:48ch;margin:0 auto 24px">A 3D immersive portal connecting you to agents, quests, artifacts, events, and the entire Dreamers universe.</p>
+      <a href="game/dream-world.html" target="_blank" class="btn btn-pri" style="display:inline-flex">
+        <span class="material-symbols-outlined" style="font-size:16px">rocket_launch</span>Launch Portal
+      </a>
+    </div>
+  </div>
+
+  <!-- What's Inside -->
+  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;color:#fff;margin-bottom:16px">WHAT'S INSIDE</h2>
+  <div class="grid-3">
+    <div class="card card-sm" style="cursor:pointer" onclick="go('oracle')">
+      <span style="font-size:32px">🔮</span>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Agent Booths</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Chat with Oracle & Turtle in 3D</p>
+    </div>
+    <div class="card card-sm" style="cursor:pointer" onclick="go('nfts')">
+      <span style="font-size:32px">📦</span>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">NFT Gallery</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">View your collected artifacts</p>
+    </div>
+    <div class="card card-sm" style="cursor:pointer" onclick="go('events')">
+      <span style="font-size:32px">🗺️</span>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-top:10px">Event Map</h3>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px">Discover nearby creative events</p>
     </div>
   </div>
 </section>
