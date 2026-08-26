@@ -323,6 +323,72 @@
   .m.noimg img{display:none}
   .m.noimg{background:linear-gradient(160deg,rgba(183,139,255,.42),rgba(6,4,12,.9))}
   .m.noimg .tag{opacity:1;inset:0;bottom:auto;height:100%;background:none;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;letter-spacing:.04em;line-height:1.35}
+
+  /* ---------- album showcase ---------- */
+  .album-hero{display:flex;gap:clamp(28px,4vw,48px);flex-wrap:wrap;align-items:flex-start;max-width:960px;margin:0 auto}
+  .album-art-wrap{position:relative;flex:0 0 auto;width:clamp(220px,30vw,320px);height:clamp(220px,30vw,320px)}
+  .album-art{width:100%;height:100%;object-fit:cover;border-radius:12px;box-shadow:0 32px 80px rgba(0,0,0,.6);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+  .album-art-wrap:hover .album-art{transform:scale(1.03)}
+  .album-art-wrap.playing .album-art{animation:vinylSpin 8s linear infinite}
+  @keyframes vinylSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  .album-art-glow{position:absolute;inset:-20px;border-radius:20px;background:radial-gradient(60% 60% at 50% 50%,rgba(183,139,255,.25),transparent 70%);z-index:-1;filter:blur(30px);opacity:0;transition:opacity .6s}
+  .album-art-wrap.playing .album-art-glow{opacity:1}
+  .album-info{flex:1;min-width:280px;display:flex;flex-direction:column;gap:12px}
+  .album-info .kick{margin-bottom:4px}
+  .album-info .album-title-lg{font-family:var(--display);font-weight:300;font-size:clamp(32px,5vw,52px);line-height:1}
+  .album-info .album-meta{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);display:flex;flex-wrap:wrap;gap:6px 18px}
+  .album-info .album-meta span{color:var(--amethyst)}
+  .album-info .album-desc{color:var(--dim);font-size:15px;font-weight:300;line-height:1.6;max-width:42ch}
+  .album-stream{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .album-stream a{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:10px 18px;border:1px solid var(--line);border-radius:999px;color:var(--dim);transition:border-color .3s,color .3s,background .3s}
+  .album-stream a:hover{border-color:var(--amethyst);color:var(--ink);background:rgba(138,92,246,.12)}
+
+  /* tracklist */
+  .tl{margin-top:40px;max-width:720px}
+  .tl-row{display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;cursor:pointer;transition:background .25s,color .25s;color:var(--dim);border:1px solid transparent}
+  .tl-row:hover{background:rgba(255,255,255,.03);color:var(--ink);border-color:var(--line)}
+  .tl-row.active{color:var(--iris);background:rgba(132,244,226,.06);border-color:rgba(132,244,226,.15)}
+  .tl-num{font-family:var(--mono);font-size:12px;color:var(--faint);text-align:center}
+  .tl-row.active .tl-num{color:var(--iris)}
+  .tl-name{font-family:var(--body);font-size:15px;font-weight:400}
+  .tl-feat{font-size:12px;color:var(--faint);margin-left:6px}
+  .tl-dur{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.08em}
+  .tl-bars{display:none;gap:2px;align-items:flex-end;height:14px}
+  .tl-row.active .tl-bars{display:flex}
+  .tl-row.active .tl-num-text{display:none}
+  .tl-bar{width:3px;background:var(--iris);border-radius:1px;animation:tlBar .8s ease-in-out infinite alternate}
+  .tl-bar:nth-child(1){height:40%;animation-delay:0s}
+  .tl-bar:nth-child(2){height:70%;animation-delay:.15s}
+  .tl-bar:nth-child(3){height:50%;animation-delay:.3s}
+  @keyframes tlBar{0%{height:20%}100%{height:100%}}
+
+  /* sticky player bar */
+  .player-bar{position:fixed;bottom:0;left:0;right:0;z-index:55;padding:12px clamp(20px,5vw,64px);
+    background:rgba(8,6,15,.92);backdrop-filter:blur(16px);border-top:1px solid var(--line);
+    display:flex;align-items:center;gap:16px;transform:translateY(100%);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+  .player-bar.on{transform:translateY(0)}
+  .pb-play{width:40px;height:40px;border-radius:50%;background:var(--amethyst);color:var(--void);border:0;cursor:pointer;display:grid;place-items:center;flex:0 0 auto;transition:transform .2s,box-shadow .2s}
+  .pb-play:hover{transform:scale(1.08);box-shadow:0 0 24px rgba(138,92,246,.5)}
+  .pb-info{flex:1;min-width:0}
+  .pb-title{font-family:var(--display);font-size:15px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pb-artist{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .pb-bar{flex:2;height:4px;background:rgba(255,255,255,.08);border-radius:3px;cursor:pointer;overflow:hidden;position:relative}
+  .pb-fill{height:100%;background:linear-gradient(90deg,var(--amethyst),var(--iris));width:0;border-radius:3px;transition:width .1s linear}
+  .pb-time{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.08em;white-space:nowrap}
+  .pb-viz{display:flex;gap:2px;align-items:flex-end;height:18px;flex:0 0 auto}
+  .pb-viz span{width:3px;background:var(--amethyst);border-radius:1px;animation:vizBar .6s ease-in-out infinite alternate}
+  .pb-viz span:nth-child(1){animation-delay:0s}
+  .pb-viz span:nth-child(2){animation-delay:.1s}
+  .pb-viz span:nth-child(3){animation-delay:.2s}
+  .pb-viz span:nth-child(4){animation-delay:.05s}
+  .pb-viz span:nth-child(5){animation-delay:.15s}
+  @keyframes vizBar{0%{height:15%}100%{height:100%}}
+  @media(max-width:640px){.pb-bar{display:none}.pb-time{display:none}}
+
+  /* vinyl groove overlay */
+  .vinyl-overlay{position:absolute;inset:0;border-radius:12px;pointer-events:none;opacity:0;transition:opacity .5s;
+    background:repeating-radial-gradient(circle at 50% 50%,transparent 0 3px,rgba(0,0,0,.08) 3px 4px)}
+  .album-art-wrap.playing .vinyl-overlay{opacity:.4}
 </style>
 </head>
 <body>
@@ -352,6 +418,7 @@
   <div class="brand"><span class="dot"></span>DREAMERS</div>
   <div class="navlinks">
     <a href="#studio">Music</a>
+    <a href="#album">Album</a>
     <a href="#art">Art</a>
     <a href="#threed">3D</a>
     <a href="#shop">Shop</a>
@@ -456,17 +523,60 @@
     </div>
   </section>
 
-  <!-- GOOD PERSON — video framed by merch -->
-  <section class="blk" id="goodperson">
-    <div class="reveal-up" style="text-align:center">
-      <div class="kick" style="display:inline-block">good person</div>
-      <h2 class="h2" style="margin:6px auto 0">Wear the <em class="glitch" data-text="video">video</em>.</h2>
-      <p class="lead" style="margin:20px auto 0">The Good Person collection — straight out of the music video.</p>
+  <!-- THE GOOD SAMARITAN — ALBUM SHOWCASE -->
+  <section class="blk" id="album">
+    <div class="reveal-up" style="text-align:center;margin-bottom:20px">
+      <div class="kick" style="display:inline-block">cloudzncrownz presents</div>
     </div>
-    <div class="gp-video reveal-up"><iframe src="https://www.youtube.com/embed/LTimVwcYFtE?rel=0" title="Good Person" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+    <div class="album-hero reveal-up">
+      <div class="album-art-wrap" id="albumArtWrap">
+        <div class="album-art-glow"></div>
+        <img class="album-art" src="assets/brand/dreamers-og-cover.png" alt="The Good Samaritan — Izzo" loading="lazy">
+        <div class="vinyl-overlay"></div>
+      </div>
+      <div class="album-info">
+        <h2 class="album-title-lg">The Good Samaritan</h2>
+        <div class="album-meta">
+          <span>Izzo</span> · Sep 22, 2022 · <span>CloudzNCrownz</span> · Hip-Hop/Rap
+        </div>
+        <p class="album-desc">Ten tracks of introspective hip-hop — blending raw vulnerability with features from Locco and Dano Detroit. The debut album that started the Dreamers movement.</p>
+        <div class="album-stream">
+          <a href="https://music.apple.com/album/the-good-samaritan/1646448498" target="_blank" rel="noopener">Apple Music ↗</a>
+          <a href="https://open.spotify.com/album/the-good-samaritan" target="_blank" rel="noopener">Spotify ↗</a>
+          <a href="https://qobuz.com/album/the-good-samaritan" target="_blank" rel="noopener">Qobuz ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- tracklist -->
+    <div class="tl reveal-up" id="tracklist"></div>
+
+    <!-- Good Person music video -->
+    <div class="reveal-up" style="text-align:center;margin-top:48px">
+      <div class="kick" style="display:inline-block">featured video</div>
+    </div>
+    <div class="gp-video reveal-up"><iframe src="https://www.youtube.com/embed/LTimVwcYFtE?rel=0" title="Good Person — Izzo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+
+    <!-- merch ring -->
+    <div class="reveal-up" style="text-align:center;margin-top:40px">
+      <div class="kick" style="display:inline-block">good person collection</div>
+      <p style="color:var(--dim);font-size:14px;margin-top:8px">Wear the movement — straight out of the music video.</p>
+    </div>
     <div class="ring-stage reveal-up" id="ring-stage"><div class="ring" id="merch-ring"></div></div>
     <div class="ring-hint">drag to spin · tap a piece to order</div>
   </section>
+
+  <!-- sticky player bar -->
+  <div class="player-bar" id="playerBar">
+    <button class="pb-play" id="pbPlay" aria-label="Play/Pause">▶</button>
+    <div class="pb-info">
+      <div class="pb-title" id="pbTitle">Select a track</div>
+      <div class="pb-artist">Izzo — The Good Samaritan</div>
+    </div>
+    <div class="pb-bar" id="pbBar"><div class="pb-fill" id="pbFill"></div></div>
+    <div class="pb-time" id="pbTime">0:00</div>
+    <div class="pb-viz"><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
 
   <!-- SHOP -->
   <section class="blk" id="shop">
@@ -642,8 +752,8 @@ fetch('assets/shop/products.json').then(r=>r.json()).then(items=>{
   if(!Array.isArray(items))return;
   const rail=document.getElementById('shop-rail');
   if(rail) rail.innerHTML=items.map(p=>{const nm=(p.name||'').replace(/"/g,'&quot;');return `<div class="shop-item"><div class="ph">${p.img?`<img src="${p.img}" alt="${nm}" loading="lazy">`:''}</div><div class="info"><div class="nm">${p.name||''}</div>${p.price?`<div class="pr">$${p.price}</div>`:''}<a class="buy" href="${_orderHref(p.name)}">Order →</a></div></div>`;}).join('');
-  // 3D merch ring — Good Person + Dreamers
-  buildRing(items.filter(p=>p.img&&/(good person|dreamer)/i.test(p.name||'')).slice(0,22));
+  // 3D merch ring — Good Samaritan + Good Person + Dreamers
+  buildRing(items.filter(p=>p.img&&/(good person|good samaritan|izzo|dreamer)/i.test(p.name||'')).slice(0,22));
 }).catch(()=>{});
 // 3D rotating merch ring
 let _ringDeg=0,_ringVel=.05,_ringDrag=false,_ringMoved=0,_lastX=0;
@@ -725,6 +835,85 @@ const THREED=[
   rail.addEventListener('mousemove',e=>{const it=e.target.closest('.gal-item');if(!it)return;const r=it.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;it.style.transform=`translateY(-6px) rotateX(${(-py*7).toFixed(2)}deg) rotateY(${(px*7).toFixed(2)}deg)`;});
   rail.addEventListener('mouseleave',()=>rail.querySelectorAll('.gal-item').forEach(el=>el.style.transform=''));
 })();
+
+// ========== ALBUM PLAYER ==========
+const ALBUM_tracks=[
+  {n:'Good Person', file:'assets/audio/GoodPeopleMix1.mp3'},
+  {n:'Dreamers', file:'assets/audio/Dreamers.mp3'},
+  {n:'Forever', file:'assets/audio/Forever.mp3'},
+  {n:'Remedy', file:'assets/audio/Remedy.mp3'},
+  {n:'The Light (Interlude)', file:'assets/audio/TheLight.mp3'},
+  {n:'No Reason', feat:'Locco', file:'assets/audio/NoReason.mp3'},
+  {n:'Gone', file:'assets/audio/Gone.mp3'},
+  {n:'We', file:'assets/audio/We.mp3'},
+  {n:'Possible', file:'assets/audio/Possible.mp3'},
+  {n:'Sun', feat:'Dano Detroit', file:'assets/audio/Sun.mp3'},
+];
+let _audio=null, _curTrack=-1, _playing=false;
+
+(function renderTracklist(){
+  const el=document.getElementById('tracklist'); if(!el) return;
+  el.innerHTML=ALBUM_tracks.map((t,i)=>{
+    const feat=t.feat ? `<span class="tl-feat">feat. ${t.feat}</span>` : '';
+    return `<div class="tl-row" data-i="${i}" onclick="playTrack(${i})">
+      <div class="tl-num"><span class="tl-num-text">${String(i+1).padStart(2,'0')}</span><div class="tl-bars"><span></span><span></span><span></span></div></div>
+      <div class="tl-name">${t.n}${feat}</div>
+      <div class="tl-dur">—</div>
+    </div>`;
+  }).join('');
+})();
+
+function playTrack(i){
+  if(!_audio){_audio=new Audio();_audio.addEventListener('timeupdate',_onTime);_audio.addEventListener('ended',_onEnd);_audio.addEventListener('loadedmetadata',_onMeta);}
+  if(_curTrack===i && _playing){_audio.pause();_playing=false;_updateUI();return;}
+  if(_curTrack!==i){_audio.src=ALBUM_tracks[i].file;_curTrack=i;}
+  _audio.play().then(()=>{_playing=true;_updateUI();}).catch(()=>{});
+}
+
+function _onTime(){
+  const pct=_audio.duration ? (_audio.currentTime/_audio.duration*100) : 0;
+  document.getElementById('pbFill').style.width=pct+'%';
+  document.getElementById('pbTime').textContent=_fmt(_audio.currentTime);
+}
+function _onMeta(){
+  const dur=_audio.duration;
+  const rows=document.querySelectorAll('.tl-row');
+  if(rows[_curTrack]) rows[_curTrack].querySelector('.tl-dur').textContent=_fmt(dur);
+}
+function _onEnd(){
+  const next=_curTrack+1;
+  if(next<ALBUM_tracks.length) playTrack(next);
+  else{_playing=false;_updateUI();}
+}
+function _fmt(s){const m=Math.floor(s/60),sec=Math.floor(s%60);return m+':'+String(sec).padStart(2,'0');}
+
+function _updateUI(){
+  const bar=document.getElementById('playerBar');
+  const title=document.getElementById('pbTitle');
+  const playBtn=document.getElementById('pbPlay');
+  const artWrap=document.getElementById('albumArtWrap');
+  const rows=document.querySelectorAll('.tl-row');
+
+  if(_curTrack>=0){
+    bar.classList.add('on');
+    const t=ALBUM_tracks[_curTrack];
+    title.textContent=t.n + (t.feat ? ' feat. '+t.feat : '');
+    rows.forEach((r,j)=>r.classList.toggle('active',j===_curTrack));
+  }
+  playBtn.textContent=_playing ? '❚❚' : '▶';
+  if(artWrap) artWrap.classList.toggle('playing',_playing);
+}
+
+document.getElementById('pbPlay').addEventListener('click',()=>{
+  if(_curTrack<0) return playTrack(0);
+  playTrack(_curTrack);
+});
+
+document.getElementById('pbBar').addEventListener('click',e=>{
+  if(!_audio||!_audio.duration) return;
+  const r=e.currentTarget.getBoundingClientRect();
+  _audio.currentTime=((e.clientX-r.left)/r.width)*_audio.duration;
+});
 </script>
 </body>
 </html>
