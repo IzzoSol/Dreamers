@@ -369,6 +369,58 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 .health-card .h-tag{display:inline-block;font-family:var(--mono);font-size:9px;padding:3px 8px;border:1px solid var(--border);border-radius:999px;color:var(--text-faint);margin-top:8px;letter-spacing:.1em}
 .shop-modal-close{position:absolute;top:10px;right:14px;background:none;border:none;color:var(--text-faint);font-size:24px;cursor:pointer;padding:4px;line-height:1}
 .shop-modal-close:hover{color:var(--text)}
+
+/* ── FINAL MOBILE POLISH ── */
+@media(max-width:600px){
+  .shop-card{flex:0 0 88vw;min-height:auto}
+  .shop-img{aspect-ratio:4/3}
+  .shop-meta{padding:14px}
+  .shop-name{font-size:17px}
+  .shop-price{font-size:20px}
+  .shop-btn{padding:8px 12px;font-size:9px}
+  .shop-rail{gap:10px;padding:0 12px 12px;scroll-padding:0 12px}
+  .shop-badge{top:8px;right:8px;font-size:8px;padding:3px 8px}
+  .shop-modal-box{padding:20px 16px;margin:12px}
+  .herb-card .herb-benefits{font-size:10px}
+  .herb-card .herb-usage{font-size:9px}
+  .health-card .h-tip{font-size:10px}
+  #st-affirmations .card{padding:20px 16px}
+  #affirmationText{font-size:18px!important}
+  .comm-msg .text{font-size:11px}
+  .comm-msg .avatar{width:28px;height:28px;font-size:11px}
+  .chat-msg{font-size:12px;padding:10px 12px;max-width:85%}
+  .agent-card{padding:14px}
+  .agent-card .avatar{width:44px;height:44px;font-size:20px}
+  .badge{font-size:8px;padding:3px 8px}
+  .stat-num{font-size:22px}
+  .stat-label{font-size:9px}
+  .mood-btn{padding:10px 12px!important;font-size:20px!important;min-width:56px!important}
+  .empty-state{padding:32px 16px}
+  .empty-state .icon{font-size:36px}
+  .empty-state .title{font-size:16px}
+  .toast{font-size:11px;padding:10px 16px;bottom:16px;max-width:90vw}
+}
+/* ── LANDSCAPE PHONE ── */
+@media(max-height:500px) and (orientation:landscape){
+  .panel{padding:12px 16px}
+  .chat-box{height:calc(100vh - 120px)}
+  .comm-chat{height:calc(100vh - 120px)}
+  .shop-img{aspect-ratio:16/9}
+  .shop-card{flex:0 0 260px}
+}
+/* ── TABLET TWEAKS ── */
+@media(min-width:601px) and (max-width:900px){
+  .grid-3{grid-template-columns:repeat(2,1fr)}
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .shop-card{flex:0 0 280px}
+}
+/* ── TOUCH FRIENDLY ── */
+@media(hover:none) and (pointer:coarse){
+  .card:hover{transform:none;box-shadow:none}
+  .sb-tab:hover{transform:none}
+  .shop-card:hover{transform:none;box-shadow:none}
+  .shop-btn:hover{background:transparent;color:var(--acc)}
+}
 </style>
 </head>
 <body>
@@ -3127,6 +3179,19 @@ function showToast(msg,type='success'){
   t.textContent=msg;t.className='toast '+type+' show';
   setTimeout(()=>t.classList.remove('show'),2500);
 }
+// ── SERVICE WORKER (optional PWA) ──
+if('serviceWorker' in navigator){
+  // Ready for future SW registration
+}
+// ── PERFORMANCE: lazy load images ──
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('img[data-src]').forEach(img=>{
+    const obs=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{if(e.isIntersecting){img.src=img.dataset.src;obs.unobserve(img)}});
+    },{threshold:0.1});
+    obs.observe(img);
+  });
+});
 </script>
 </body>
 </html>
