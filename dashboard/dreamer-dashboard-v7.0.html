@@ -82,6 +82,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;ove
 .panel{display:none;padding:24px;animation:fadeUp .35s ease-out}
 .panel.active{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── cards ── */
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:all .2s}
@@ -183,7 +184,8 @@ select.inp{cursor:pointer}
 
 /* ── meteors ── */
 .meteor-box{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.meteor{position:absolute;width:2px;height:2px;background:var(--acc);border-radius:50%;box-shadow:0 0 4px 2px rgba(255,215,0,.5);animation:meteorFall linear infinite,meteorGlow linear infinite}
+.meteor{position:absolute;width:2px;height:2px;background:var(--acc);border-radius:50%;animation:meteorFall linear infinite,meteorGlow linear infinite}
+.meteor::before{content:'';position:absolute;inset:-6px;border-radius:50%;background:radial-gradient(circle,rgba(255,215,0,.6),transparent 70%)}
 @keyframes meteorFall{0%{transform:translateY(-10vh) translateX(100px) rotate(315deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(110vh) translateX(-100px) rotate(315deg);opacity:0}}
 @keyframes meteorGlow{0%,100%{opacity:.7}50%{opacity:.3}}
 
@@ -306,8 +308,8 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 @media(max-width:900px){
   .sidebar{position:fixed;left:0;top:0;bottom:0;z-index:100;transform:translateX(-100%);transition:transform .3s ease}
   .sidebar.open{transform:translateX(0)}
-  .mobile-toggle{display:flex!important}
-  .main{width:100%}
+  .mobile-header{display:flex}
+  .main{width:100%;padding-top:56px}
   .panel{padding:16px}
   .grid-4{grid-template-columns:repeat(2,1fr)}
   .grid-3{grid-template-columns:repeat(2,1fr)}
@@ -335,7 +337,9 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
   .sb-tab{padding:12px;font-size:13px;min-height:44px}
   .stat-num{font-size:24px}
 }
-.mobile-toggle{display:none;position:fixed;top:12px;left:12px;z-index:110;width:44px;height:44px;border-radius:10px;background:var(--surface);border:1px solid var(--border);color:var(--text);align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px #00000040}
+.mobile-header{display:none;position:fixed;top:0;left:0;right:0;z-index:110;height:56px;align-items:center;gap:10px;padding:8px 12px;background:rgba(8,6,16,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.mobile-toggle{width:40px;height:40px;border-radius:10px;background:var(--surface);border:1px solid var(--border);color:var(--text);align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px #00000030;flex-shrink:0}
+.mobile-title{font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;color:#fff;letter-spacing:1px;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding-top:max(0px,env(safe-area-inset-top))}
 .mobile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
 .mobile-overlay.show{display:block}
 
@@ -343,7 +347,8 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 @supports(padding:env(safe-area-inset-top)){
   .sidebar{padding-top:env(safe-area-inset-top)}
   .hdr{padding-top:max(12px,env(safe-area-inset-top))}
-  .panel{padding-bottom:env(safe-area-inset-bottom)}
+  .panel{padding-bottom:calc(env(safe-area-inset-bottom) + 12px)}
+  .player-bar{padding-bottom:max(0px,env(safe-area-inset-bottom));height:calc(60px + env(safe-area-inset-bottom))}
 }
 
 /* ── DASHBOARD SHOP ── */
@@ -479,7 +484,10 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 
 <button class="admin-fab" onclick="adminPrompt()" title="Admin Access">⚡</button>
 
-<button class="mobile-toggle" onclick="toggleMobileSidebar()"><span class="material-symbols-outlined">menu</span></button>
+<div class="mobile-header">
+  <button class="mobile-toggle" onclick="toggleMobileSidebar()"><span class="material-symbols-outlined">menu</span></button>
+  <div class="mobile-title" id="mobileTitle">DREAMERS</div>
+</div>
 <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileSidebar()"></div>
 <div class="app">
 <!-- ═══════ SIDEBAR ═══════ -->
@@ -844,8 +852,8 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
   <!-- AI MUSIC -->
   <div class="music-tab" id="mt-aimusic" style="display:none">
     <div class="card">
-      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:12px">AI MUSIC GENERATOR</h3>
-      <p style="font-size:11px;color:var(--text-dim);margin-bottom:16px">Describe a song and let AI generate it</p>
+      <h3 style="font-weight:700;font-size:13px;color:#fff;margin-bottom:4px">AI MUSIC GENERATOR</h3>
+      <p style="font-size:11px;color:var(--text-dim);margin-bottom:16px">Describe a song and let AI generate it. Add a HuggingFace token in <button class="pill" style="border:none;background:var(--card);color:var(--pri);padding:2px 10px;cursor:pointer;border-radius:6px" onclick="go('settings')">Settings</button> for generation.</p>
       <textarea class="inp" id="aiMusicPrompt" rows="3" placeholder="A dreamy lo-fi hip hop beat with soft piano, rain sounds, and vinyl crackle..."></textarea>
       <div style="display:flex;gap:8px;margin-top:12px">
         <button class="btn btn-pri" onclick="generateAIMusic()" id="aiMusicBtn">
@@ -1991,11 +1999,13 @@ function viewProfile(uname){
 // NAV
 // ═══════════════════════════════════════════════════════
 const titles={home:'HOME',music:'MUSIC',create:'STUDIO',astrology:'ASTROLOGY',game:'GAME',oracle:'ORACLE',turtle:'TURTLE',quill:'QUILL',sanctuary:'SANCTUARY',journal:'JOURNAL',profile:'PROFILE',community:'COMMUNITY',settings:'SETTINGS',spaces:'SPACES',nfts:'NFTS',events:'EVENTS',dreamworld:'DREAM WORLD',spend:'SPEND',hire:'HIRE',shop:'MERCH'};
+const _TAB_TITLES={home:'Home',profile:'Profile',community:'Community',music:'Music',spaces:'Spaces',nfts:'NFTs',shop:'Merch',spend:'Spend',hire:'Hire',astrology:'Astrology',events:'Events',dreamworld:'Dream World',game:'Game',oracle:'Oracle',turtle:'Turtle',quill:'Quill',sanctuary:'Sanctuary',journal:'Journal',settings:'Settings',create:'Studio'};
 function go(tab){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+tab)?.classList.add('active');
   document.querySelectorAll('.sb-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
   document.getElementById('mainArea').scrollTop=0;
+  const mt=document.getElementById('mobileTitle');if(mt)mt.textContent=_TAB_TITLES[tab]||tab.toUpperCase();
   if(tab==='community')renderCommMessages();
 }
 
@@ -2168,15 +2178,22 @@ function playChakraTone(freq){
 // AI Music
 async function generateAIMusic(){
   const prompt=document.getElementById('aiMusicPrompt').value.trim();
-  if(!prompt)return;
+  const out=document.getElementById('aiMusicOutput');
+  if(!prompt){out.innerHTML='<p style="color:var(--orange);font-size:11px">Describe a song first to generate it.</p>';return;}
   const btn=document.getElementById('aiMusicBtn');
-  btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined" style="font-size:16px;animation:spin 1s linear infinite">refresh</span>Generating...';
+  btn.disabled=true;btn.classList.add('disabled');btn.style.opacity=.7;btn.innerHTML='<span class="material-symbols-outlined" style="font-size:16px;animation:spin 1s linear infinite">refresh</span>Generating…';
+  out.innerHTML='<div style="display:flex;align-items:center;gap:10px;color:var(--text-dim);font-size:12px"><span style="width:16px;height:16px;border:2px solid var(--pri);border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite"></span>Composing your song…</div>';
   try{
     const res=await fetch('https://shaddai-g81x.onrender.com/api/media-gen/music',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
     const data=await res.json();
-    document.getElementById('aiMusicOutput').innerHTML=data.url?`<audio controls src="${data.url}" style="width:100%"></audio>`:`<p style="color:var(--red);font-size:11px">Generation complete. Check output.</p>`;
-  }catch(e){document.getElementById('aiMusicOutput').innerHTML=`<p style="color:var(--red);font-size:11px">Error: ${e.message}</p>`}
-  btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined" style="font-size:16px">auto_awesome</span>Generate';
+    if(!res.ok){throw new Error((data&&data.error)||('Request failed ('+res.status+')'));}
+    out.innerHTML=data.url
+      ?`<audio controls src="${data.url}" style="width:100%;border-radius:8px"></audio><p style="color:var(--text-faint);font-size:10px;margin-top:8px;letter-spacing:1px;text-transform:uppercase">Drag the prompt below to remix — then Generate again</p>`
+      :`<p style="color:var(--text-dim);font-size:11px">Generation complete. Nothing returned.</p>`;
+  }catch(e){
+    out.innerHTML=`<div style="padding:12px;border:1px solid var(--red);border-radius:8px;background:var(--red)12"><p style="color:var(--red);font-size:11px;font-weight:600">Generation failed</p><p style="color:var(--text-dim);font-size:11px;margin-top:4px">${e.message}. Check the HuggingFace token in Settings, then try again.</p></div>`;
+  }
+  btn.disabled=false;btn.classList.remove('disabled');btn.style.opacity='';btn.innerHTML='<span class="material-symbols-outlined" style="font-size:16px">auto_awesome</span>Generate';
 }
 
 // ── IMAGE → MUSIC ──

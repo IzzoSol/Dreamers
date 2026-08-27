@@ -40,22 +40,28 @@
 
   /* ---------- atmosphere layers ---------- */
   #dream{position:fixed;inset:0;z-index:0;display:block}
-  .aurora{position:fixed;inset:-20%;z-index:0;pointer-events:none;filter:blur(90px);opacity:.55;mix-blend-mode:screen}
-  .aurora.a1{background:radial-gradient(40% 50% at 30% 30%, #15BDB1 0%, transparent 60%);animation:drift1 26s ease-in-out infinite}
-  .aurora.a2{background:radial-gradient(38% 46% at 72% 40%, #9932cc 0%, transparent 60%);animation:drift2 32s ease-in-out infinite;opacity:.4}
-  .aurora.a3{background:radial-gradient(36% 44% at 55% 78%, #f0a500 0%, transparent 62%);animation:drift3 38s ease-in-out infinite;opacity:.3}
+  .aurora{position:fixed;inset:-20%;z-index:0;pointer-events:none;filter:blur(70px);opacity:.5;mix-blend-mode:screen;will-change:transform;transform:translateZ(0)}
+  .aurora.a1{background:radial-gradient(40% 50% at 30% 30%, var(--amethyst) 0%, transparent 60%);animation:drift1 26s ease-in-out infinite}
+  .aurora.a2{background:radial-gradient(38% 46% at 72% 40%, var(--amethyst-2) 0%, transparent 60%);animation:drift2 32s ease-in-out infinite;opacity:.38}
+  .aurora.a3{background:radial-gradient(36% 44% at 55% 78%, var(--gold) 0%, transparent 62%);animation:drift3 38s ease-in-out infinite;opacity:.28}
   @keyframes drift1{50%{transform:translate(6%,4%) scale(1.15)}}
   @keyframes drift2{50%{transform:translate(-7%,5%) scale(1.2)}}
   @keyframes drift3{50%{transform:translate(4%,-6%) scale(1.1)}}
-  .grain{position:fixed;inset:0;z-index:40;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  .grain{position:fixed;inset:0;z-index:40;pointer-events:none;opacity:.04;mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  @media(max-width:900px){
+    .aurora{filter:blur(45px);opacity:.32}
+    .aurora.a1,.aurora.a2,.aurora.a3{animation:none}
+    .grain{opacity:.025}
+  }
   .vignette{position:fixed;inset:0;z-index:30;pointer-events:none;
     background:radial-gradient(120% 90% at 50% 30%, transparent 40%, rgba(4,3,8,.55) 100%)}
 
   /* ---------- shell ---------- */
   .wrap{position:relative;z-index:20}
   nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
-    padding:22px clamp(20px,5vw,64px);mix-blend-mode:normal}
+    padding:22px clamp(20px,5vw,64px);mix-blend-mode:normal;transition:background .35s,box-shadow .35s,padding .35s}
+  nav.scrolled{background:rgba(8,6,15,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding-top:14px;padding-bottom:14px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
   .brand{font-family:var(--mono);font-size:13px;letter-spacing:.42em;text-transform:uppercase;
     display:flex;align-items:center;gap:12px}
   .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--amethyst);
@@ -296,7 +302,8 @@
 
   /* ── meteor shower ── */
   .meteor-shower{position:absolute;top:0;right:0;width:100%;height:100%;overflow:hidden;pointer-events:none;z-index:1}
-  .meteor{position:absolute;width:2px;height:2px;background:var(--gold);border-radius:50%;box-shadow:0 0 4px 2px rgba(240,165,0,.6);animation:meteorFall linear infinite,meteorGlow linear infinite}
+  .meteor{position:absolute;width:2px;height:2px;background:var(--gold);border-radius:50%;animation:meteorFall linear infinite,meteorGlow linear infinite}
+  .meteor::before{content:'';position:absolute;inset:-6px;border-radius:50%;background:radial-gradient(circle,rgba(240,165,0,.7),transparent 70%)}
   @keyframes meteorFall{0%{transform:translateY(-10vh) translateX(120px) rotate(315deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(110vh) translateX(-120px) rotate(315deg);opacity:0}}
   @keyframes meteorGlow{0%,100%{opacity:.7}50%{opacity:.3}}
 
@@ -446,7 +453,7 @@
     nav .navlinks{
       position:fixed;top:0;right:0;bottom:0;width:280px;max-width:80vw;
       background:var(--void2);border-left:1px solid var(--line);
-      flex-direction:column;padding:80px 24px 24px;gap:0;
+      flex-direction:column;padding:80px 24px calc(24px + env(safe-area-inset-bottom));gap:0;
       transform:translateX(100%);transition:transform .3s ease;z-index:200;
     }
     nav .navlinks.open{transform:translateX(0)}
@@ -496,6 +503,16 @@
 @keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 .shop-modal-close{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--faint);font-size:28px;cursor:pointer;line-height:1;padding:4px}
 .shop-modal-close:hover{color:#fff}
+
+/* ── PERFORMANCE: render off-screen sections lazily + reduced motion ── */
+section.blk{content-visibility:auto;contain-intrinsic-size:auto 800px;contain:paint}
+header.hero{contain:paint}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important;scroll-behavior:auto!important}
+  .aurora.a1,.aurora.a2,.aurora.a3{animation:none!important}
+  .reveal-up{opacity:1!important;transform:none!important}
+  html{scroll-behavior:auto}
+}
 </style>
 </head>
 <body>
@@ -1175,17 +1192,20 @@
   scene.add(dust);
 
   // --- interaction / parallax ---
-  let mx=0,my=0,tx=0,ty=0,scrollY=0;
-  addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5);my=(e.clientY/innerHeight-.5)});
-  addEventListener('scroll',()=>{scrollY=scrollObj();});
+  let mx=0,my=0,tx=0,ty=0,scrollY=0,_heroOn=true,_running=true;
+  addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5);my=(e.clientY/innerHeight-.5)},{passive:true});
+  const cw=innerHeight*1.4;
+  addEventListener('scroll',()=>{scrollY=scrollObj();const on=window.scrollY<cw;if(on!==_heroOn){_heroOn=on;if(on&&!_running){_running=true;loop();}}},{passive:true});
   function scrollObj(){return window.scrollY/Math.max(1,document.body.scrollHeight-innerHeight);}
   addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
   renderer.setSize(innerWidth,innerHeight);
 
   const clock=new THREE.Clock();
-  (function loop(){
+  function loop(){
+    if(!_running)return;
     requestAnimationFrame(loop);
-    if(document.hidden || window.scrollY>innerHeight*1.4) return;
+    if(document.hidden) return;
+    if(!_heroOn){_running=false;return;}
     const t=clock.getElapsedTime();
     shard.rotation.y=t*.18; shard.rotation.x=Math.sin(t*.25)*.24;
     shard.scale.setScalar(1+Math.sin(t*.9)*.02);
@@ -1195,7 +1215,8 @@
     camera.position.z=7 + scrollY*3.5;
     camera.lookAt(0, -scrollY*1.2, 0);
     renderer.render(scene,camera);
-  })();
+  }
+  loop();
 })();
 
 // sessions / word bank / spaces
@@ -1263,8 +1284,10 @@ function buildRing(list){
   const N=list.length, W=(innerWidth<820?110:150), r=Math.round((W/2)/Math.tan(Math.PI/N))+46;
   ring.innerHTML=list.map((p,i)=>`<a class="m" data-buy="${_orderHref(p.name)}" style="transform:rotateY(${(360/N*i).toFixed(2)}deg) translateZ(${r}px)"><img src="${p.img}" loading="lazy" alt="" onerror="this.closest('.m').classList.add('noimg')"><div class="tag">${(p.name||'').slice(0,26)} · $${p.price}</div></a>`).join('');
   const stage=document.getElementById('ring-stage');
-  let _ringVis=true; try{new IntersectionObserver(en=>{_ringVis=en[0].isIntersecting;}).observe(stage);}catch(_){}
-  (function loop(){ requestAnimationFrame(loop); if(!_ringVis||document.hidden)return; if(!_ringDrag){_ringDeg+=_ringVel; _ringVel+=(.05-_ringVel)*.03;} ring.style.transform='rotateY('+_ringDeg+'deg)'; })();
+  let _ringVis=true,_ringRun=true;
+  try{new IntersectionObserver(en=>{_ringVis=en[0].isIntersecting;if(_ringVis&&!_ringRun){_ringRun=true;ringLoop();}}).observe(stage);}catch(_){}
+  function ringLoop(){ if(!_ringRun)return; requestAnimationFrame(ringLoop); if(!_ringVis||document.hidden)return; if(!_ringDrag){_ringDeg+=_ringVel; _ringVel+=(.05-_ringVel)*.03;} ring.style.transform='rotateY('+_ringDeg+'deg)'; if(!_ringVis){_ringRun=false;} }
+  ringLoop();
   const px=e=>e.touches?e.touches[0].clientX:e.clientX;
   stage.addEventListener('pointerdown',e=>{_ringDrag=true;_ringMoved=0;_lastX=px(e);});
   addEventListener('pointermove',e=>{ if(!_ringDrag)return; const x=px(e),dx=x-_lastX;_lastX=x;_ringMoved+=Math.abs(dx);_ringDeg+=dx*.3;_ringVel=dx*.04; });
@@ -1354,7 +1377,11 @@ function showWorld(id){
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.15});
 document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));
 
+// scrolled nav state
+(function(){const nav=document.querySelector('nav');const on=()=>nav.classList.toggle('scrolled',window.scrollY>24);on();addEventListener('scroll',on,{passive:true});})();
+
 // gallery — curated collection (best pieces only)
+let _tiltRAF=null;
 const GALLERY=[
   {src:'assets/share/dreamers.png', series:'OG Dreamers', name:'Matrix'},
   {src:'assets/collection/synthesis-01.png', series:'Synthesis', name:'Prism I'},
@@ -1370,9 +1397,11 @@ const GALLERY=[
     <img src="${p.src}" alt="${p.name}" loading="lazy" style="image-rendering:pixelated">
     <div class="scan"></div>
     <div class="cap"><div class="t">${p.series} · ${String(i+1).padStart(2,'0')} / ${n}</div><h3>${p.name}</h3></div></a>`).join('');
-  // cursor tilt
-  rail.addEventListener('mousemove',e=>{const it=e.target.closest('.gal-item');if(!it)return;const r=it.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;it.style.transform=`translateY(-6px) rotateX(${(-py*7).toFixed(2)}deg) rotateY(${(px*7).toFixed(2)}deg)`;});
-  rail.addEventListener('mouseleave',()=>rail.querySelectorAll('.gal-item').forEach(el=>el.style.transform=''));
+  // cursor tilt (rAF-throttled to avoid layout thrash)
+  const tilt=e=>{const it=e.target.closest('.gal-item');if(!it)return;const r=it.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;it.style.transform=`translateY(-6px) rotateX(${(-py*7).toFixed(2)}deg) rotateY(${(px*7).toFixed(2)}deg)`;};
+  const onTilt=e=>{if(_tiltRAF)return;_tiltRAF=requestAnimationFrame(()=>{_tiltRAF=null;tilt(e);});};
+  rail.addEventListener('mousemove',onTilt);
+  rail.addEventListener('mouseleave',()=>{rail.querySelectorAll('.gal-item').forEach(el=>el.style.transform='');});
   rail.addEventListener('mouseout',e=>{const it=e.target.closest('.gal-item');if(it&&!it.contains(e.relatedTarget))it.style.transform='';});
 })();
 // immersive lightbox
@@ -1403,14 +1432,15 @@ const THREED=[
     <video src="${p.src}" autoplay muted loop playsinline preload="metadata"></video>
     <div class="scan"></div>
     <div class="cap"><div class="t">${p.series} · ${String(i+1).padStart(2,'0')} / ${n}</div><h3>${p.name}</h3></div></a>`).join('');
-  rail.addEventListener('mousemove',e=>{const it=e.target.closest('.gal-item');if(!it)return;const r=it.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;it.style.transform=`translateY(-6px) rotateX(${(-py*7).toFixed(2)}deg) rotateY(${(px*7).toFixed(2)}deg)`;});
+  rail.addEventListener('mousemove',e=>{if(_tiltRAF)return;_tiltRAF=requestAnimationFrame(()=>{_tiltRAF=null;const it=e.target.closest('.gal-item');if(!it)return;const r=it.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;it.style.transform=`translateY(-6px) rotateX(${(-py*7).toFixed(2)}deg) rotateY(${(px*7).toFixed(2)}deg)`;});});
   rail.addEventListener('mouseleave',()=>rail.querySelectorAll('.gal-item').forEach(el=>el.style.transform=''));
 })();
 
-// meteor shower — generates 12 gold meteors with random positions/timing
+// meteor shower — generates gold meteors with random positions/timing (fewer on mobile for FPS)
 (function initMeteors(){
   const box=document.getElementById('meteorShower'); if(!box) return;
-  for(let i=0;i<12;i++){
+  const n=innerWidth<640?5:12;
+  for(let i=0;i<n;i++){
     const m=document.createElement('div');
     m.className='meteor';
     const sz=1+Math.random()*3;
