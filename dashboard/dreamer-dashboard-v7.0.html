@@ -1498,14 +1498,22 @@ button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 <!-- ══════ SHOP ══════ -->
 <section class="panel" id="panel-shop">
   <h1 style="font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:#fff;margin-bottom:4px">MERCH</h1>
-  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Good People · Dreamers · TuFish Collections</p>
+  <p style="color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Wear the movement — straight out of the music video</p>
 
   <div class="pill-bar" id="shopPills">
     <button class="pill active" onclick="setShopTab('all')">All</button>
-    <button class="pill" onclick="setShopTab('apparel')">Apparel</button>
-    <button class="pill" onclick="setShopTab('music')">Music</button>
-    <button class="pill" onclick="setShopTab('art')">Art</button>
-    <button class="pill" onclick="setShopTab('bundles')">Bundles</button>
+    <button class="pill" onclick="setShopTab('t-shirts')">Tees</button>
+    <button class="pill" onclick="setShopTab('hoodies')">Hoodies</button>
+    <button class="pill" onclick="setShopTab('headwear')">Headwear</button>
+    <button class="pill" onclick="setShopTab('home')">Home</button>
+  </div>
+  <div class="pill-bar" style="margin-bottom:16px">
+    <button class="pill" onclick="filterByCollection('all')">All Lines</button>
+    <button class="pill" onclick="filterByCollection('CloudzNCrownz')">CloudzNCrownz</button>
+    <button class="pill" onclick="filterByCollection('Dreamers')">Dreamers</button>
+    <button class="pill" onclick="filterByCollection('Good Samaritan')">Good Samaritan</button>
+    <button class="pill" onclick="filterByCollection('Good Person')">Good Person</button>
+    <button class="pill" onclick="filterByCollection('TuFish')">TuFish</button>
   </div>
   <div id="shopGrid" class="grid-3"></div>
 
@@ -2870,14 +2878,14 @@ function loadGame(src,btn){
 
 // ── DASHBOARD SHOP ──
 const SHOP_ITEMS=[
-  {name:'Good People Tee',cat:'apparel',price:'1 SOL',color:'#15BDB1',collection:'Good People',svg:'<svg viewBox="0 0 80 80" width="48" height="48"><path d="M20 22 L14 30 L20 34 L20 62 L60 62 L60 34 L66 30 L60 22 L50 28 Q40 34 30 28 Z" fill="none" stroke="#15BDB1" stroke-width="2"/><text x="40" y="46" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#15BDB1">GOOD</text><text x="40" y="56" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#f0a500">PEOPLE</text></svg>',badge:'COLLECTION'},
-  {name:'Good Samaritan Vinyl',cat:'music',price:'1 SOL',color:'#16D3BA',collection:'Good People',svg:'<svg viewBox="0 0 80 80" width="48" height="48"><circle cx="40" cy="40" r="28" fill="none" stroke="#16D3BA" stroke-width="2"/><circle cx="40" cy="40" r="18" fill="none" stroke="#16D3BA" stroke-width="1" opacity=".4"/><circle cx="40" cy="40" r="4" fill="#f0a500"/></svg>',badge:'LIMITED'},
-  {name:'Dreamers Cap',cat:'apparel',price:'0.5 SOL',color:'#f0a500',collection:'Dreamers',svg:'<svg viewBox="0 0 80 80" width="48" height="48"><path d="M16 48 Q16 24 40 20 Q64 24 64 48 Z" fill="none" stroke="#f0a500" stroke-width="2"/><path d="M12 48 L68 48" stroke="#f0a500" stroke-width="1.5"/><text x="40" y="40" text-anchor="middle" font-family="Oswald" font-size="8" font-weight="700" fill="#f0a500">D</text></svg>'},
-  {name:'Dreamers Hoodie',cat:'apparel',price:'1 SOL',color:'#15BDB1',collection:'Dreamers',svg:'<svg viewBox="0 0 80 80" width="48" height="48"><path d="M24 28 L16 36 L24 40 L24 65 L56 65 L56 40 L64 36 L56 28 L46 33 Q40 36 34 33 Z" fill="none" stroke="#15BDB1" stroke-width="2"/><text x="40" y="55" text-anchor="middle" font-family="Oswald" font-size="7" fill="#15BDB1">DREAMERS</text></svg>'},
-  {name:'OG Dreamers Print',cat:'art',price:'0.5 SOL',color:'#9932cc',collection:'Dreamers',svg:'<svg viewBox="0 0 80 80" width="48" height="48"><rect x="14" y="10" width="52" height="52" rx="3" fill="none" stroke="#9932cc" stroke-width="2"/><circle cx="34" cy="32" r="5" fill="#f0a500" opacity=".6"/><circle cx="48" cy="36" r="3" fill="#15BDB1" opacity=".6"/></svg>'},
-  {name:'Good Samaritan Poster',cat:'art',price:'0.5 SOL',color:'#f0a500',collection:'Good People',svg:'<svg viewBox="0 0 80 80" width="48" height="48"><rect x="15" y="8" width="50" height="64" rx="2" fill="none" stroke="#f0a500" stroke-width="2"/><text x="40" y="36" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#f0a500">GOOD</text><text x="40" y="46" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#15BDB1">SAMARITAN</text></svg>'},
-  {name:'TuFish Beanie',cat:'apparel',price:'0.5 SOL',color:'#9932cc',collection:'TuFish',svg:'<svg viewBox="0 0 80 80" width="48" height="48"><path d="M20 48 Q20 20 40 16 Q60 20 60 48" fill="none" stroke="#9932cc" stroke-width="2"/><path d="M16 48 L64 48" stroke="#9932cc" stroke-width="1.5"/><circle cx="40" cy="14" r="3" fill="#f0a500"/><text x="40" y="38" text-anchor="middle" font-family="Oswald" font-size="7" font-weight="700" fill="#9932cc">TF</text></svg>',badge:'NEW'},
-  {name:'Culture Pack Bundle',cat:'bundles',price:'1 SOL',color:'#f0a500',collection:'Dreamers',svg:'<svg viewBox="0 0 80 80" width="48" height="48"><rect x="10" y="20" width="24" height="32" rx="2" fill="none" stroke="#15BDB1" stroke-width="1.5"/><rect x="28" y="14" width="24" height="38" rx="2" fill="none" stroke="#f0a500" stroke-width="1.5"/><rect x="46" y="24" width="24" height="28" rx="2" fill="none" stroke="#9932cc" stroke-width="1.5"/></svg>',badge:'BUNDLE'},
+  {name:'CloudzNCrownz Tee',cat:'t-shirts',price:'1 SOL',color:'#15BDB1',collection:'CloudzNCrownz',img:'https://files.cdn.printful.com/files/2a2/2a2768307ecaa9e881f7750816f1a44d_preview.png',badge:'FLAGSHIP'},
+  {name:'The Good Samaritan Hoodie',cat:'hoodies',price:'1 SOL',color:'#16D3BA',collection:'Good Samaritan',img:'https://files.cdn.printful.com/files/f19/f19ffc3d2390a2894add6971adacb341_preview.png',badge:'TOP SELLER'},
+  {name:'Dreamers Cereal Hoodie',cat:'hoodies',price:'1 SOL',color:'#f0a500',collection:'Dreamers',img:'https://files.cdn.printful.com/files/f36/f3660cbd6093c2529f293c2de9db02ff_preview.png'},
+  {name:'CNC Bucket Hat',cat:'headwear',price:'0.5 SOL',color:'#15BDB1',collection:'CloudzNCrownz',img:'https://files.cdn.printful.com/files/2a6/2a6ffbcb07f4f99a7126f9f6c184917a_preview.png'},
+  {name:'Good Samaritan Throw Blanket',cat:'home',price:'0.5 SOL',color:'#9932cc',collection:'Good Samaritan',img:'https://files.cdn.printful.com/files/2c8/2c88487885817925c6c52568aaebe3ce_preview.png'},
+  {name:'Good Person / CNC Sleeve Tee',cat:'t-shirts',price:'0.5 SOL',color:'#16D3BA',collection:'Good Person',img:'https://files.cdn.printful.com/files/83f/83f9451d871741b0f409dae51090d415_preview.png'},
+  {name:'TuFish Hoodie',cat:'hoodies',price:'1 SOL',color:'#9932cc',collection:'TuFish',img:'https://files.cdn.printful.com/files/ae5/ae5dd3a3dff61b0657bb41c357780434_preview.png',badge:'NEW'},
+  {name:'Dreamers Cereal Classic Tee',cat:'t-shirts',price:'0.5 SOL',color:'#f0a500',collection:'Dreamers',img:'https://files.cdn.printful.com/files/67f/67f7f1a974fe1bf2d09dbde41e288087_preview.png'},
 ];
 
 function filterByCollection(col){
@@ -2885,7 +2893,7 @@ function filterByCollection(col){
   const items=col==='all'?SHOP_ITEMS:SHOP_ITEMS.filter(i=>i.collection===col);
   grid.innerHTML=items.map(i=>`<div class="card" style="cursor:pointer;position:relative;overflow:hidden" onclick="openDashRequest('${i.name}','${i.price}')">
     ${i.badge?`<div style="position:absolute;top:10px;right:10px;z-index:2;padding:3px 8px;background:var(--acc);color:var(--bg);border-radius:999px;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.1em">${i.badge}</div>`:''}
-    <div style="width:100%;aspect-ratio:1;background:${i.color}15;display:flex;align-items:center;justify-content:center;border-radius:8px;margin-bottom:12px">${i.svg}</div>
+    <div style="width:100%;aspect-ratio:1;background:#0a1a1f80;display:flex;align-items:center;justify-content:center;border-radius:8px;margin-bottom:12px;overflow:hidden"><img src="${i.img}" alt="${i.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover"/></div>
     <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
       <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:1px solid ${i.color};border-radius:999px;color:${i.color};letter-spacing:.05em">${i.collection}</span>
       <span style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint)">${i.cat}</span>
@@ -2902,7 +2910,7 @@ function renderShopItems(cat){
   const items=cat&&cat!=='all'?SHOP_ITEMS.filter(i=>i.cat===cat):SHOP_ITEMS;
   grid.innerHTML=items.map(i=>`<div class="card" style="cursor:pointer;position:relative;overflow:hidden" onclick="openDashRequest('${i.name}','${i.price}')">
     ${i.badge?`<div style="position:absolute;top:10px;right:10px;z-index:2;padding:3px 8px;background:var(--acc);color:var(--bg);border-radius:999px;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.1em">${i.badge}</div>`:''}
-    <div style="width:100%;aspect-ratio:1;background:${i.color}15;display:flex;align-items:center;justify-content:center;border-radius:8px;margin-bottom:12px">${i.svg}</div>
+    <div style="width:100%;aspect-ratio:1;background:#0a1a1f80;display:flex;align-items:center;justify-content:center;border-radius:8px;margin-bottom:12px;overflow:hidden"><img src="${i.img}" alt="${i.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover"/></div>
     <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
       <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:1px solid ${i.color};border-radius:999px;color:${i.color};letter-spacing:.05em">${i.collection}</span>
       <span style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint)">${i.cat}</span>
