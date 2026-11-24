@@ -389,7 +389,6 @@ const HEALING_BUDDIES = [
     <button onclick="go('day-builder')" data-tab="day-builder" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">calendar_today</span>Day Builder</button>
     <button onclick="go('practices')" data-tab="practices" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">auto_awesome</span>Practices</button>
     <button onclick="go('workouts')" data-tab="workouts" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">fitness_center</span>Workouts</button>
-    <button onclick="go('healing-buddy')" data-tab="healing-buddy" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">favorite</span>Healing Buddy</button>
     <button onclick="go('shopping')" data-tab="shopping" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">shopping_cart</span>Shopping</button>
     <button onclick="go('herb-market')" data-tab="herb-market" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">eco</span>Herbs</button>
     <button onclick="go('calendar')" data-tab="calendar" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">calendar_month</span>Calendar</button>
@@ -398,9 +397,6 @@ const HEALING_BUDDIES = [
     <hr class="border-white/10 my-2"/>
     <div class="px-4 py-2 text-[9px] font-label font-bold text-on-surface/40 uppercase tracking-widest">MORE</div>
     <button onclick="go('about')" data-tab="about" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">info</span>About Me</button>
-    <button onclick="go('astrology')" data-tab="astrology" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">auto_awesome</span>Astrology</button>
-    <button onclick="go('turtle')" data-tab="turtle" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">smart_toy</span>AI Chat</button>
-    <button onclick="go('news')" data-tab="news" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">newspaper</span>News</button>
     <button onclick="go('settings')" data-tab="settings" class="nav-item w-full text-left px-4 py-2 pl-8 flex items-center gap-2 font-label font-bold text-xs uppercase tracking-widest text-on-surface/60 text-xs"><span class="material-symbols-outlined text-sm">settings</span>Settings</button>
   </nav>
 
@@ -418,6 +414,13 @@ const HEALING_BUDDIES = [
     <button id="wallet-btn" onclick="handleWalletBtn()" class="w-full py-3 bg-primary text-surface font-label font-black text-xs uppercase tracking-widest hover:bg-primary-dim transition-colors flex items-center justify-center gap-2">
       <span class="material-symbols-outlined text-sm">account_balance_wallet</span><span id="wallet-btn-text">CONNECT WALLET</span>
     </button>
+  </div>
+  <div class="p-4 border-t border-primary/15">
+    <button id="wallet-btn" onclick="handleWalletBtn()" class="w-full py-3 bg-primary/10 border border-primary/40 text-white font-label font-black text-xs uppercase tracking-widest hover:bg-primary/20 transition flex items-center justify-center gap-2">
+      <span id="hdr-wallet-dot" class="hidden w-2 h-2 rounded-full bg-success"></span>
+      <span class="material-symbols-outlined text-sm">account_balance_wallet</span><span id="wallet-btn-text">CONNECT WALLET</span>
+    </button>
+    <span id="hdr-wallet-label" class="hidden"></span>
   </div>
 </aside>
 
@@ -1227,7 +1230,7 @@ const HEALING_BUDDIES = [
     <div class="card p-6 text-center border-t-4 border-accent">
       <div class="text-4xl mb-4">🔄</div>
       <h3 class="font-headline font-bold text-white uppercase mb-2">Sustainable Flywheel</h3>
-      <p class="text-[10px] text-on-surface/50">4% token tax funds creator grants. Treasury grows to fund 100+ artists per year.</p>
+      <p class="text-[10px] text-on-surface/50">Marketplace fees fund creator grants. The creator pool supports 100+ artists per year.</p>
     </div>
   </div>
 
@@ -1308,26 +1311,26 @@ const HEALING_BUDDIES = [
 <!-- ──────────────────── TAB 6: FLYWHEEL ──────────────────── -->
 <section id="tab-flywheel" class="tab-panel p-6 md:p-10 space-y-10">
   <div>
-    <div class="inline-block bg-accent text-surface px-3 py-1 font-label font-black text-[10px] uppercase tracking-widest mb-3 sticker">TOKENOMICS ENGINE</div>
-    <h1 class="font-headline text-5xl md:text-6xl font-black text-accent italic uppercase leading-[.85] tracking-tighter neon-text-a">$DREAM <span class="text-white">FLYWHEEL</span></h1>
+    <div class="inline-block bg-accent text-surface px-3 py-1 font-label font-black text-[10px] uppercase tracking-widest mb-3 sticker">CREATOR ECONOMY</div>
+    <h1 class="font-headline text-5xl md:text-6xl font-black text-accent italic uppercase leading-[.85] tracking-tighter neon-text-a">CREATOR <span class="text-white">FLYWHEEL</span></h1>
   </div>
 
   <!-- Flow Diagram -->
   <div class="card p-6">
-    <h2 class="font-headline text-lg font-black text-white italic uppercase mb-6">BLOCKCHAIN FLOW</h2>
+    <h2 class="font-headline text-lg font-black text-white italic uppercase mb-6">HOW IT FLOWS</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div class="bg-surface p-4 text-center border-b-2 border-secondary"><p class="text-2xl mb-2">📤</p><h4 class="font-headline font-bold text-secondary text-xs uppercase">Upload</h4><p class="text-[10px] text-on-surface/40 mt-1">Artist submits + metrics</p></div>
-      <div class="bg-surface p-4 text-center border-b-2 border-primary"><p class="text-2xl mb-2">🔐</p><h4 class="font-headline font-bold text-primary text-xs uppercase">Smart Contract</h4><p class="text-[10px] text-on-surface/40 mt-1">Validates authenticity</p></div>
-      <div class="bg-surface p-4 text-center border-b-2 border-accent"><p class="text-2xl mb-2">✨</p><h4 class="font-headline font-bold text-accent text-xs uppercase">Mint NFT</h4><p class="text-[10px] text-on-surface/40 mt-1">Dynamic value credit</p></div>
-      <div class="bg-surface p-4 text-center border-b-2 border-success"><p class="text-2xl mb-2">💰</p><h4 class="font-headline font-bold text-success text-xs uppercase">Auto-Royalties</h4><p class="text-[10px] text-on-surface/40 mt-1">Perpetual payments</p></div>
+      <div class="bg-surface p-4 text-center border-b-2 border-primary"><p class="text-2xl mb-2">🔐</p><h4 class="font-headline font-bold text-primary text-xs uppercase">Verification</h4><p class="text-[10px] text-on-surface/40 mt-1">Authenticity checked</p></div>
+      <div class="bg-surface p-4 text-center border-b-2 border-accent"><p class="text-2xl mb-2">✨</p><h4 class="font-headline font-bold text-accent text-xs uppercase">Release</h4><p class="text-[10px] text-on-surface/40 mt-1">Published to the marketplace</p></div>
+      <div class="bg-surface p-4 text-center border-b-2 border-success"><p class="text-2xl mb-2">💰</p><h4 class="font-headline font-bold text-success text-xs uppercase">Auto-Royalties</h4><p class="text-[10px] text-on-surface/40 mt-1">Artists earn on every sale</p></div>
     </div>
   </div>
 
   <!-- Flywheel Visualization -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <div class="space-y-4">
-      <div class="card p-5 border-l-4 border-primary"><h3 class="font-headline font-bold text-primary text-sm mb-2">4% Token Tax</h3><p class="text-xs text-on-surface/60">Every $DREAM trade auto-funds the treasury</p></div>
-      <div class="card p-5 border-l-4 border-secondary"><h3 class="font-headline font-bold text-secondary text-sm mb-2">Treasury Grows</h3><p class="text-xs text-on-surface/60">$1M+ after 100M token volume</p></div>
+      <div class="card p-5 border-l-4 border-primary"><h3 class="font-headline font-bold text-primary text-sm mb-2">Sparks Circulation</h3><p class="text-xs text-on-surface/60">Sparks spent on platform services keep Dreamers running — 1 Spark = $1, fixed</p></div>
+      <div class="card p-5 border-l-4 border-secondary"><h3 class="font-headline font-bold text-secondary text-sm mb-2">Creator Pool</h3><p class="text-xs text-on-surface/60">Marketplace revenue is shared with the artists who make the work</p></div>
       <div class="card p-5 border-l-4 border-accent"><h3 class="font-headline font-bold text-accent text-sm mb-2">Fund 100 Artists</h3><p class="text-xs text-on-surface/60">Grants, residencies, equipment</p></div>
     </div>
 
@@ -1336,16 +1339,16 @@ const HEALING_BUDDIES = [
         <div class="absolute inset-0 rounded-full border-2 border-primary/20 animate-spin-slow"></div>
         <div class="absolute inset-3 rounded-full border-2 border-secondary/20 animate-spin-slow" style="animation-direction:reverse;animation-duration:25s"></div>
         <div class="absolute inset-6 rounded-full border-2 border-accent/20 animate-spin-slow" style="animation-duration:30s"></div>
-        <div class="absolute inset-16 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border-2 border-accent/40"><div class="text-center"><p class="font-headline text-xl font-black text-white">$DREAM</p><p class="text-[9px] text-on-surface/40 uppercase tracking-widest">Flywheel</p></div></div>
+        <div class="absolute inset-16 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border-2 border-accent/40"><div class="text-center"><p class="font-headline text-xl font-black text-white">SPARKS</p><p class="text-[9px] text-on-surface/40 uppercase tracking-widest">Flywheel</p></div></div>
         <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1"><span class="font-label text-[9px] text-primary font-bold uppercase">Fund</span></div>
         <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1"><span class="font-label text-[9px] text-accent font-bold uppercase">Grow</span></div>
-        <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1"><span class="font-label text-[9px] text-secondary font-bold uppercase">Mint</span></div>
+        <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1"><span class="font-label text-[9px] text-secondary font-bold uppercase">Create</span></div>
         <div class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1"><span class="font-label text-[9px] text-success font-bold uppercase">Sell</span></div>
       </div>
     </div>
 
     <div class="space-y-4">
-      <div class="card p-5 border-l-4 border-success"><h3 class="font-headline font-bold text-success text-sm mb-2">Mint 50K Credits</h3><p class="text-xs text-on-surface/60">Each creation verified on Solana</p></div>
+      <div class="card p-5 border-l-4 border-success"><h3 class="font-headline font-bold text-success text-sm mb-2">Creator Credits</h3><p class="text-xs text-on-surface/60">Impact Credits for published work</p></div>
       <div class="card p-5 border-l-4 border-error"><h3 class="font-headline font-bold text-error text-sm mb-2">Sell $5M to Corps</h3><p class="text-xs text-on-surface/60">ESG buyers purchase impact proof</p></div>
       <div class="card p-5 border-l-4 border-white/30"><h3 class="font-headline font-bold text-white text-sm mb-2">Fund 1,000 More</h3><p class="text-xs text-on-surface/60">Exponential creator flywheel</p></div>
     </div>
@@ -2602,123 +2605,7 @@ const HEALING_BUDDIES = [
   </div>
 </section>
 
-<!-- ──────────────────── TAB: ASTROLOGY ──────────────────── -->
-<section id="tab-astrology" class="tab-panel p-6 md:p-10 space-y-10">
-  <div>
-    <div class="inline-block bg-primary text-surface px-3 py-1 font-label font-black text-[10px] uppercase tracking-widest mb-3 sticker">CELESTIAL NAVIGATION</div>
-    <h1 class="font-headline text-5xl md:text-6xl font-black text-white italic uppercase leading-[.85] tracking-tighter">YOUR <span class="text-primary neon-text-p">COSMIC</span> BLUEPRINT</h1>
-    <p class="text-on-surface/50 font-label text-sm tracking-[.2em] uppercase mt-2">Vedic & Western Astrology • Birth Chart • Cosmic Alignment</p>
-  </div>
 
-  <!-- Astro Sub-Navigation -->
-  <div class="flex gap-2 border-b border-white/10">
-    <button onclick="showAstroTab('western')" class="astro-pill px-4 py-3 font-label font-bold text-xs uppercase tracking-widest border-b-2 border-primary text-primary transition" data-tab="western">Western Astrology</button>
-    <button onclick="showAstroTab('vedic')" class="astro-pill px-4 py-3 font-label font-bold text-xs uppercase tracking-widest border-b-2 border-transparent text-on-surface/60 hover:text-white transition" data-tab="vedic">Vedic Astrology</button>
-  </div>
-
-  <!-- Birth Info Form -->
-  <div class="card p-6 bg-gradient-to-r from-primary/10 via-surface to-secondary/10">
-    <h2 class="font-headline text-lg font-black text-white italic uppercase mb-4">Your Birth Information</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-      <div>
-        <label class="text-xs text-on-surface/60 font-label uppercase">Full Name</label>
-        <input type="text" id="astro-name" class="w-full mt-1 px-3 py-2 bg-surface border border-white/10 text-white focus:border-primary focus:ring-0" placeholder="Your name"/>
-      </div>
-      <div>
-        <label class="text-xs text-on-surface/60 font-label uppercase">Birth Date</label>
-        <input type="date" id="astro-date" class="w-full mt-1 px-3 py-2 bg-surface border border-white/10 text-white focus:border-primary focus:ring-0"/>
-      </div>
-      <div>
-        <label class="text-xs text-on-surface/60 font-label uppercase">Birth Time (Optional)</label>
-        <input type="time" id="astro-time" class="w-full mt-1 px-3 py-2 bg-surface border border-white/10 text-white focus:border-primary focus:ring-0"/>
-      </div>
-    </div>
-    <button onclick="saveAstroInfo()" class="w-full py-2 bg-primary text-surface font-label font-black text-xs uppercase tracking-widest hover:bg-primary-dim transition">Save Birth Information</button>
-  </div>
-
-  <!-- Western Tab Content -->
-  <div id="astro-western-content" class="astro-tab-content">
-    <div class="card p-6">
-      <h2 class="font-headline text-lg font-black text-white italic uppercase mb-4">Sun Sign • Moon Sign • Rising Sign</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="text-center p-6 bg-surface border-t-2 border-primary">
-          <div class="text-5xl mb-2" id="sun-emoji">♈</div>
-          <h3 class="font-label font-bold text-white text-sm mb-1">SUN SIGN</h3>
-          <p class="text-primary font-label font-black text-lg" id="sun-sign">Enter birth date</p>
-          <p class="text-[10px] text-on-surface/50 mt-2">Your core identity & life purpose</p>
-        </div>
-        <div class="text-center p-6 bg-surface border-t-2 border-secondary">
-          <div class="text-5xl mb-2">🌙</div>
-          <h3 class="font-label font-bold text-white text-sm mb-1">MOON SIGN</h3>
-          <p class="text-secondary font-label font-black text-lg">Coming soon</p>
-          <p class="text-[10px] text-on-surface/50 mt-2">Your emotional inner world</p>
-        </div>
-        <div class="text-center p-6 bg-surface border-t-2 border-accent">
-          <div class="text-5xl mb-2">⬆️</div>
-          <h3 class="font-label font-bold text-white text-sm mb-1">RISING SIGN</h3>
-          <p class="text-accent font-label font-black text-lg">Requires birth time</p>
-          <p class="text-[10px] text-on-surface/50 mt-2">How others perceive you</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Zodiac Wheel (Static SVG) -->
-    <div class="card p-6 text-center">
-      <h3 class="font-headline text-lg font-black text-white italic uppercase mb-4">Zodiac Wheel</h3>
-      <svg viewBox="0 0 300 300" class="w-full max-w-sm mx-auto">
-        <circle cx="150" cy="150" r="140" fill="none" stroke="#cc97ff40" stroke-width="2"/>
-        <circle cx="150" cy="150" r="120" fill="none" stroke="#ffffff10" stroke-width="1"/>
-        <text x="150" y="30" text-anchor="middle" class="font-label fill-primary font-bold text-sm" font-size="12">♈ Aries</text>
-        <text x="255" y="160" text-anchor="start" class="font-label fill-primary font-bold text-sm" font-size="12">♉ Taurus</text>
-        <text x="270" y="220" text-anchor="start" class="font-label fill-primary font-bold text-sm" font-size="12">♊ Gemini</text>
-        <text x="220" y="270" text-anchor="middle" class="font-label fill-primary font-bold text-sm" font-size="12">♋ Cancer</text>
-        <text x="150" y="285" text-anchor="middle" class="font-label fill-primary font-bold text-sm" font-size="12">♌ Leo</text>
-      </svg>
-    </div>
-  </div>
-
-  <!-- Vedic Tab Content -->
-  <div id="astro-vedic-content" class="astro-tab-content hidden">
-    <div class="card p-6">
-      <h2 class="font-headline text-lg font-black text-white italic uppercase mb-4">Vedic Chart • Nakshatra • Rashi</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="text-center p-6 bg-surface border-t-2 border-primary">
-          <div class="text-4xl mb-2">🌟</div>
-          <h3 class="font-label font-bold text-white text-sm mb-1">RASHI</h3>
-          <p class="text-primary font-label font-black text-lg" id="rashi-sign">Requires birth date</p>
-          <p class="text-[10px] text-on-surface/50 mt-2">Moon sign in Vedic system</p>
-        </div>
-        <div class="text-center p-6 bg-surface border-t-2 border-secondary">
-          <div class="text-4xl mb-2">✨</div>
-          <h3 class="font-label font-bold text-white text-sm mb-1">NAKSHATRA</h3>
-          <p class="text-secondary font-label font-black text-lg">Coming soon</p>
-          <p class="text-[10px] text-on-surface/50 mt-2">Birth lunar constellation</p>
-        </div>
-        <div class="text-center p-6 bg-surface border-t-2 border-accent">
-          <div class="text-4xl mb-2">🔮</div>
-          <h3 class="font-label font-bold text-white text-sm mb-1">DASHAS</h3>
-          <p class="text-accent font-label font-black text-lg">Timing system</p>
-          <p class="text-[10px] text-on-surface/50 mt-2">Life period cycles</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="card p-6 bg-gradient-to-r from-secondary/10 via-surface to-primary/10">
-      <h3 class="font-headline text-lg font-black text-white italic uppercase mb-3">27 Nakshatras (Lunar Mansions)</h3>
-      <div class="grid grid-cols-3 md:grid-cols-9 gap-2 text-center text-[10px]">
-        <div class="p-2 bg-surface border border-white/10">Ashwini</div>
-        <div class="p-2 bg-surface border border-white/10">Bharani</div>
-        <div class="p-2 bg-surface border border-white/10">Krittika</div>
-        <div class="p-2 bg-surface border border-white/10">Rohini</div>
-        <div class="p-2 bg-surface border border-white/10">Mrigasira</div>
-        <div class="p-2 bg-surface border border-white/10">Ardra</div>
-        <div class="p-2 bg-surface border border-white/10">Punarvasu</div>
-        <div class="p-2 bg-surface border border-white/10">Pushya</div>
-        <div class="p-2 bg-surface border border-white/10">Aslesha</div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ──────────────────── TAB: AI ASSISTANT (TURTLE) ──────────────────── -->
 <section id="tab-turtle" class="tab-panel p-6 md:p-10 space-y-10">
@@ -2755,64 +2642,7 @@ const HEALING_BUDDIES = [
   </div>
 </section>
 
-<!-- ──────────────────── TAB: NEWS ──────────────────── -->
-<section id="tab-news" class="tab-panel p-6 md:p-10 space-y-10">
-  <div>
-    <div class="inline-block bg-secondary text-surface px-3 py-1 font-label font-black text-[10px] uppercase tracking-widest mb-3 sticker">GLOBAL PULSE</div>
-    <h1 class="font-headline text-5xl md:text-6xl font-black text-white italic uppercase leading-[.85] tracking-tighter">NEWS <span class="text-secondary neon-text-p">FEED</span></h1>
-    <p class="text-on-surface/50 font-label text-sm tracking-[.2em] uppercase mt-2">Curated stories • Wellness • Crypto • Arts • Climate</p>
-  </div>
 
-  <!-- Category Filter -->
-  <div class="flex flex-wrap gap-2">
-    <button onclick="filterNews('all')" class="news-filter px-3 py-1.5 bg-primary text-surface font-label font-bold text-[10px] uppercase tracking-widest">All News</button>
-    <button onclick="filterNews('wellness')" class="news-filter px-3 py-1.5 bg-surface border border-success/30 text-success font-label font-bold text-[10px] uppercase tracking-widest hover:bg-success/10 transition">Wellness</button>
-    <button onclick="filterNews('crypto')" class="news-filter px-3 py-1.5 bg-surface border border-primary/30 text-primary font-label font-bold text-[10px] uppercase tracking-widest hover:bg-primary/10 transition">Crypto/Web3</button>
-    <button onclick="filterNews('spirituality')" class="news-filter px-3 py-1.5 bg-surface border border-accent/30 text-accent font-label font-bold text-[10px] uppercase tracking-widest hover:bg-accent/10 transition">Spirituality</button>
-    <button onclick="filterNews('arts')" class="news-filter px-3 py-1.5 bg-surface border border-secondary/30 text-secondary font-label font-bold text-[10px] uppercase tracking-widest hover:bg-secondary/10 transition">Arts</button>
-    <button onclick="filterNews('climate')" class="news-filter px-3 py-1.5 bg-surface border border-green-500/30 text-green-400 font-label font-bold text-[10px] uppercase tracking-widest hover:bg-green-500/10 transition">Climate</button>
-  </div>
-
-  <!-- News Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="news-grid">
-    <!-- Sample news cards -->
-    <div class="card p-4 news-card hover:border-secondary/60" data-category="wellness">
-      <div class="flex items-start gap-3 mb-3">
-        <div class="w-12 h-12 bg-success/20 flex items-center justify-center shrink-0 rounded">🍃</div>
-        <div class="flex-1 min-w-0">
-          <p class="font-label text-[10px] text-success uppercase tracking-widest">Wellness</p>
-          <h3 class="font-headline font-bold text-sm text-white truncate mt-1">Ancient Breathwork Reduces Anxiety by 67%</h3>
-        </div>
-      </div>
-      <p class="text-[10px] text-on-surface/50 mb-3 line-clamp-2">New study shows pranayama techniques lower cortisol more effectively than medication in some cases.</p>
-      <div class="flex items-center justify-between text-[9px]"><span class="text-on-surface/40">HealthToday</span><a href="#" class="text-secondary hover:underline">Read more →</a></div>
-    </div>
-
-    <div class="card p-4 news-card hover:border-primary/60" data-category="crypto">
-      <div class="flex items-start gap-3 mb-3">
-        <div class="w-12 h-12 bg-primary/20 flex items-center justify-center shrink-0 rounded">₿</div>
-        <div class="flex-1 min-w-0">
-          <p class="font-label text-[10px] text-primary uppercase tracking-widest">Crypto</p>
-          <h3 class="font-headline font-bold text-sm text-white truncate mt-1">Solana DApps Hit 10M Monthly Users</h3>
-        </div>
-      </div>
-      <p class="text-[10px] text-on-surface/50 mb-3 line-clamp-2">Creator ecosystem projects drive mainstream adoption of blockchain technology.</p>
-      <div class="flex items-center justify-between text-[9px]"><span class="text-on-surface/40">CryptoNews</span><a href="#" class="text-secondary hover:underline">Read more →</a></div>
-    </div>
-
-    <div class="card p-4 news-card hover:border-accent/60" data-category="arts">
-      <div class="flex items-start gap-3 mb-3">
-        <div class="w-12 h-12 bg-accent/20 flex items-center justify-center shrink-0 rounded">🎨</div>
-        <div class="flex-1 min-w-0">
-          <p class="font-label text-[10px] text-accent uppercase tracking-widest">Arts</p>
-          <h3 class="font-headline font-bold text-sm text-white truncate mt-1">Creator Economy Surpasses $100B Globally</h3>
-        </div>
-      </div>
-      <p class="text-[10px] text-on-surface/50 mb-3 line-clamp-2">Artists and creators now earn more from digital platforms than traditional media.</p>
-      <div class="flex items-center justify-between text-[9px]"><span class="text-on-surface/40">ArtsDaily</span><a href="#" class="text-secondary hover:underline">Read more →</a></div>
-    </div>
-  </div>
-</section>
 
 <!-- ──────────────────── TAB: SETTINGS ──────────────────── -->
 <section id="tab-settings" class="tab-panel p-6 md:p-10 space-y-10">
@@ -2936,13 +2766,7 @@ const HEALING_BUDDIES = [
         </div>
       </label>
 
-      <label class="flex items-center gap-3 p-3 bg-surface hover:bg-surface-lighter transition cursor-pointer">
-        <input type="checkbox" id="notif-moon" class="w-4 h-4 accent-primary"/>
-        <div class="flex-1">
-          <p class="font-label font-bold text-sm text-white">Moon Phase Updates</p>
-          <p class="text-[10px] text-on-surface/40">Notifications for new moons, full moons, equinoxes</p>
-        </div>
-      </label>
+      
 
       <label class="flex items-center gap-3 p-3 bg-surface hover:bg-surface-lighter transition cursor-pointer">
         <input type="checkbox" id="notif-news" class="w-4 h-4 accent-primary" checked/>
@@ -3060,15 +2884,7 @@ const HEALING_BUDDIES = [
   </div>
 </section>
 
-<!-- HEALING BUDDY TAB -->
-<section id="tab-healing-buddy" class="tab-panel p-6 md:p-10 space-y-10">
-  <div><div class="flex justify-between items-center"><h1 class="font-headline text-3xl font-black uppercase text-primary">Healing Buddy Marketplace</h1><p class="text-on-surface/60 text-sm">Connect with wellness practitioners</p></div>
-    <div class="card p-8 space-y-6"><div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="buddies-grid">
-        <!-- Luna Mae, Marcus, etc populated by JS -->
-      </div>
-    </div>
-  </div>
-</section>
+
 
 </main>
 
@@ -3087,7 +2903,7 @@ const HEALING_BUDDIES = [
    DREAMER ECO v3 — Application Logic + Solana Wallet Integration
    ═══════════════════════════════════════════════════════════════ */
 
-const titles={dashboard:'DASHBOARD',sanctuary:'THE SANCTUARY',credits:'IMPACT CREDITS',market:'MARKET DATA',creator:'CREATOR STUDIO',flywheel:'$DREAM FLYWHEEL',community:'THE COLLECTIVE',create:'CREATE STUDIO',writer:'DREAM WRITER',nft:'NFT CREATE',food:'FOOD SWITCH',marketplace:'MARKETPLACE',about:'ABOUT',astrology:'YOUR COSMIC BLUEPRINT',turtle:'TURTLE AI ASSISTANT',news:'NEWS FEED',settings:'SETTINGS & CONFIGURATION','day-builder':'DAY BUILDER',calendar:'CALENDAR',practices:'VIBRATIONAL PRACTICES',workouts:'WORKOUT LIBRARY','herb-market':'HERB MARKETPLACE',shopping:'SMART SHOPPING LIST','healing-buddy':'HEALING BUDDY MARKETPLACE'};
+const titles={dashboard:'DASHBOARD',sanctuary:'THE SANCTUARY',credits:'IMPACT CREDITS',market:'MARKET DATA',creator:'CREATOR STUDIO',flywheel:'CREATOR FLYWHEEL',community:'THE COLLECTIVE',create:'CREATE STUDIO',writer:'DREAM WRITER',nft:'NFT CREATE',food:'FOOD SWITCH',marketplace:'MARKETPLACE',about:'ABOUT',turtle:'TURTLE AI ASSISTANT',settings:'SETTINGS & CONFIGURATION','day-builder':'DAY BUILDER',calendar:'CALENDAR',practices:'VIBRATIONAL PRACTICES',workouts:'WORKOUT LIBRARY','herb-market':'HERB MARKETPLACE',shopping:'SMART SHOPPING LIST','shaddai-music':'MUSIC'};
 
 // ═══════════════════════════════════════════════════════════════
 // STORAGE QUOTA MANAGEMENT
@@ -3829,7 +3645,6 @@ function mintNFT(){
 
 const SOLANA_NETWORK = 'mainnet-beta';
 const SOLANA_RPC = 'https://api.mainnet-beta.solana.com';
-const DREAM_TOKEN_MINT = null; // Set when $DREAM token is deployed
 
 let walletState = {
   connected: false,
@@ -3837,7 +3652,6 @@ let walletState = {
   providerName: null,
   publicKey: null,
   balance: 0,
-  dreamBalance: 0,
   credits: 2450 // Local credits (mirrors dashboard)
 };
 
@@ -3966,7 +3780,6 @@ function disconnectWallet() {
   walletState.providerName = null;
   walletState.publicKey = null;
   walletState.balance = 0;
-  walletState.dreamBalance = 0;
   localStorage.removeItem('dreamer_wallet_provider');
   localStorage.removeItem('dreamer_wallet_connected');
   updateWalletUI();
@@ -3974,7 +3787,13 @@ function disconnectWallet() {
   showToast('Wallet Disconnected', 'Your wallet has been disconnected', null, 'info');
 }
 
-// Fetch SOL + token balances
+// Fetch SOL + wallet balances
+// Race any promise against a timeout so a slow/dead RPC can't hang the UI (audit fix)
+function withTimeout(promise, ms, label){
+  return Promise.race([promise, new Promise((_,rej)=>setTimeout(()=>rej(new Error((label||'request')+' timeout')), ms))]);
+}
+const SOLANA_RPCS = [SOLANA_RPC, 'https://rpc.ankr.com/solana', 'https://solana-api.projectserum.com'];
+
 async function fetchBalances() {
   if (!walletState.connected || !walletState.publicKey) return;
   try {
@@ -3989,21 +3808,9 @@ async function fetchBalances() {
     var solEl = document.getElementById('sol-balance');
     if(solEl) solEl.textContent = walletState.balance.toFixed(4);
 
-    // Fetch SPL token accounts (for $DREAM token when deployed)
-    if (DREAM_TOKEN_MINT) {
-      try {
-        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(pubKey, {
-          mint: new solanaWeb3.PublicKey(DREAM_TOKEN_MINT)
-        });
-        if (tokenAccounts.value.length > 0) {
-          walletState.dreamBalance = tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount;
-        }
-      } catch(e) { }
-    }
+    // Impact Credits live off-chain as Sparks — nothing else to fetch.
 
-    var dreamEl = document.getElementById('dream-balance');
     var credEl = document.getElementById('onchain-credits');
-    if(dreamEl) dreamEl.textContent = walletState.dreamBalance.toLocaleString();
     if(credEl) credEl.textContent = walletState.credits.toLocaleString();
 
   } catch (err) {
@@ -4013,6 +3820,8 @@ async function fetchBalances() {
 
 // Update all wallet UI elements
 function updateWalletUI() {
+  // Wallet UI: sidebar button + panel + modal (Solana). Guarded if markup is absent.
+  if (!document.getElementById('wallet-btn-text')) return;
   const connected = walletState.connected;
   const addr = walletState.publicKey?.toString() || '';
 
@@ -4043,7 +3852,6 @@ function updateWalletUI() {
   // Wallet detail panel
   document.getElementById('wallet-addr-display').textContent = connected ? addr : 'Not connected';
   document.getElementById('sol-balance').textContent = walletState.balance.toFixed(4);
-  document.getElementById('dream-balance').textContent = walletState.dreamBalance.toLocaleString();
   document.getElementById('onchain-credits').textContent = walletState.credits.toLocaleString();
 }
 
@@ -4071,11 +3879,10 @@ async function mintCredits() {
 
   // Simulate mint transaction
   setTimeout(() => {
-    const fakeTxSig = 'DRM' + Array.from({length:60}, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random()*62)]).join('');
     showToast(
-      'Credits Minted On-Chain',
-      `${walletState.credits.toLocaleString()} Impact Credits minted as NFTs`,
-      `https://solscan.io/tx/${fakeTxSig}`,
+      'Impact Credits',
+      `${walletState.credits.toLocaleString()} Impact Credits on your balance`,
+      null,
       'success'
     );
   }, 2000);
@@ -4083,7 +3890,7 @@ async function mintCredits() {
 
 async function stakeTokens() {
   if (!walletState.connected) { openWalletModal(); return; }
-  showToast('Staking', '$DREAM staking program launching soon — stay tuned!', null, 'info');
+  showToast('Sparks', 'Impact Credits are spent on platform services — there is nothing to stake.', null, 'info');
 }
 
 // ─── Toast Notifications ───
@@ -6371,7 +6178,6 @@ function saveSettingsAPI(){
 function saveSettingsNotifications(){
   const notifs={
     affirmation:document.getElementById('notif-affirmation')?.checked,
-    moon:document.getElementById('notif-moon')?.checked,
     news:document.getElementById('notif-news')?.checked,
     wellness:document.getElementById('notif-wellness')?.checked
   };
@@ -7009,5 +6815,31 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 </script>
 
+
+<div id="wallet-panel" class="hidden fixed left-4 bottom-4 z-[60] w-72 card p-5 space-y-3">
+  <p class="font-label text-[9px] uppercase tracking-widest text-on-surface/40">Solana Wallet</p>
+  <p id="wallet-addr-display" class="font-mono text-[11px] text-white break-all">Not connected</p>
+  <div class="flex justify-between text-xs"><span class="text-on-surface/50">SOL balance</span><span id="sol-balance" class="text-white font-bold">0.0000</span></div>
+  <div class="flex justify-between text-xs"><span class="text-on-surface/50">Impact Credits (Sparks)</span><span id="onchain-credits" class="text-white font-bold">0</span></div>
+  <button onclick="disconnectWallet();document.getElementById('wallet-panel').classList.add('hidden')" class="w-full py-2 border border-red-400/40 text-red-300 font-label font-bold text-[10px] uppercase tracking-widest hover:bg-red-400/10 transition">Disconnect</button>
+</div>
+<div id="wallet-modal" class="hidden fixed inset-0 z-[70] bg-black/70 backdrop-blur-sm items-center justify-center p-4">
+  <div class="card max-w-sm w-full p-6">
+    <div id="wallet-options">
+      <h3 class="font-headline text-lg font-black text-white uppercase italic mb-1">Connect Wallet</h3>
+      <p class="text-[11px] text-on-surface/50 mb-5">Solana mainnet. Your keys stay in your wallet — Dreamers never takes custody.</p>
+      <div class="space-y-3">
+        <button onclick="connectWallet('phantom')" class="w-full py-3 px-4 bg-surface border border-primary/30 hover:border-primary text-left flex items-center justify-between"><span class="font-label font-bold text-xs uppercase tracking-widest text-white">Phantom</span><span id="phantom-status" class="text-[10px] text-on-surface/40">Checking…</span></button>
+        <button onclick="connectWallet('solflare')" class="w-full py-3 px-4 bg-surface border border-primary/30 hover:border-primary text-left flex items-center justify-between"><span class="font-label font-bold text-xs uppercase tracking-widest text-white">Solflare</span><span id="solflare-status" class="text-[10px] text-on-surface/40">Checking…</span></button>
+        <button onclick="connectWallet('backpack')" class="w-full py-3 px-4 bg-surface border border-primary/30 hover:border-primary text-left flex items-center justify-between"><span class="font-label font-bold text-xs uppercase tracking-widest text-white">Backpack</span><span id="backpack-status" class="text-[10px] text-on-surface/40">Checking…</span></button>
+      </div>
+      <button onclick="closeWalletModal()" class="mt-5 w-full py-2 text-on-surface/40 font-label text-[10px] uppercase tracking-widest">Cancel</button>
+    </div>
+    <div id="wallet-connecting" class="hidden text-center py-8">
+      <p class="font-headline text-white font-black uppercase italic mb-2">Connecting…</p>
+      <p id="connect-status-text" class="text-[11px] text-on-surface/50">Approve the connection in your wallet.</p>
+    </div>
+  </div>
+</div>
 </body>
 </html>

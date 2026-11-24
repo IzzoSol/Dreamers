@@ -367,6 +367,12 @@
   .shop-item .pr{font-family:var(--mono);color:var(--iris);font-size:15px;margin-top:8px}
   .shop-item .buy{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:8px 14px;border:1px solid var(--line);border-radius:999px;transition:border-color .3s,background .3s}
   .shop-item .buy:hover{border-color:var(--amethyst);background:rgba(138,92,246,.14)}
+  .shop-item .src{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--iris);margin-top:10px}
+  .shop-item .buy.soon{color:var(--faint);border-style:dashed;cursor:default}
+  .shop-item .buy.soon:hover{border-color:var(--line);background:none}
+  a.book{text-decoration:none;color:inherit;cursor:pointer}
+  a.book:hover{border-color:var(--amethyst)}
+  .bundle{max-width:720px;margin:40px auto 0;border:1px solid var(--line);border-radius:10px;background:var(--void2);padding:28px 24px;text-align:center}
 
   /* good person — video + 3D rotating merch ring */
   .gp-video{max-width:720px;margin:40px auto 0;aspect-ratio:16/9;border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 20px 60px rgba(138,92,246,.32)}
@@ -559,17 +565,15 @@ header.hero{contain:paint}
   <div class="navlinks">
     <a href="#studio">Music</a>
     <a href="#album">Album</a>
+    <a href="turtle-music-bot.html">Turtle Music Bot</a>
     <a href="#art">Art</a>
-    <a href="#threed">3D</a>
-    <a href="#worlds">Worlds</a>
     <a href="#shop">Merch</a>
     <a href="#sessions">Sessions</a>
     <a href="#books">Books</a>
-    <a href="#world">Game</a>
     <a href="#spend">Spend</a>
     <a href="#hire">Hire</a>
     <a href="dreampaper.html">Dreampaper</a>
-    <a href="dreamer-dashboard-v7.0.html">Enter ↗</a>
+    <a href="dreamer-dashboard-v6.39.html">Enter ↗</a>
   </div>
   <div class="theme-wrap">
     <button class="theme-toggle" aria-label="Theme" onclick="event.stopPropagation();document.getElementById('landingThemePop').classList.toggle('open')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a7.35 7.35 0 0 1 4.9 12.5 3 3 0 0 0-2.4 5 2.9 2.9 0 0 1-2.5.5A8 8 0 0 1 12 2z"></path></svg></button>
@@ -591,10 +595,9 @@ header.hero{contain:paint}
   <header class="hero">
     <div class="eyebrow">the platform for the culture of creation</div>
     <h1 class="title"><span><i>DREAMERS</i></span></h1>
-    <p class="sub">A home for creators. Make <b>music, art, and worlds</b> with AI agents, a full studio, and a blockchain-powered metaverse — where you own your spaces, earn from your art, and build the future of digital culture.</p>
+    <p class="sub">A home for creators. Make <b>music and art</b> with AI agents, a full studio, and a community that creates together — learn, create, and earn from your art.</p>
     <div class="cta">
-      <a class="btn primary" href="dreamer-dashboard-v7.0.html">Enter the Dream</a>
-      <a class="btn ghost" href="game/dream-world.html">Explore Dream World</a>
+      <a class="btn primary" href="dreamer-dashboard-v6.39.html">Enter the Dream</a>
     </div>
     <div class="scrollcue"><span>scroll</span><span class="l"></span></div>
   </header>
@@ -628,87 +631,17 @@ header.hero{contain:paint}
     <div id="gallery-rail" class="gallery-rail reveal-up"></div>
   </section>
 
-  <!-- 3D ART GALLERY -->
-  <section class="blk" id="threed" style="position:relative;overflow:hidden">
-    <div class="meteor-shower" id="meteorShower"></div>
-    <div class="reveal-up" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;position:relative;z-index:2">
-      <div>
-        <div class="kick">03 — 3d art</div>
-        <h2 class="h2">In <em class="glitch" data-text="motion">motion</em>.</h2>
-      </div>
-      <div style="display:flex;gap:12px">
-        <button class="gal-arrow" onclick="galScroll(-1,'d3-rail')" aria-label="Previous">&lsaquo;</button>
-        <button class="gal-arrow" onclick="galScroll(1,'d3-rail')" aria-label="Next">&rsaquo;</button>
-      </div>
-    </div>
-    <div id="d3-rail" class="gallery-rail reveal-up" style="position:relative;z-index:2"></div>
-  </section>
 
-  <!-- AGENT WORLDS (tabbed) -->
-  <section class="blk" id="worlds">
-    <div class="reveal-up" style="text-align:center;margin-bottom:20px">
-      <div class="kick" style="display:inline-block">agent worlds</div>
-      <h2 class="h2">3D <em class="glitch" data-text="Worlds">Worlds</em>.</h2>
-      <p class="lead" style="margin:8px auto 0">Each agent has their own 3D world. Explore the Observatory, Library, and Museum.</p>
-    </div>
-    <div class="reveal-up">
-      <div class="world-tabs">
-        <button class="world-tab active" onclick="showWorld('observatory')">Observatory</button>
-        <button class="world-tab" onclick="showWorld('library')">Library</button>
-        <button class="world-tab" onclick="showWorld('museum')">Museum</button>
-      </div>
-      <!-- Observatory (Oracle) -->
-      <div class="world-panel active" id="world-observatory">
-        <div class="world-preview">
-          <div class="world-label">Oracle's Domain</div>
-          <div class="world-icon">🔭</div>
-          <div class="world-name">The Observatory</div>
-          <p style="font-size:12px;color:var(--faint);margin-top:8px">Stars, astrology, birth charts, and cosmic guidance. Oracle reads the sky and maps your path.</p>
-          <div style="margin-top:16px;display:flex;gap:8px;justify-content:center">
-            <span style="font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--faint)">STARS</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--faint)">ASTROLOGY</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--faint)">PSYCHOLOGY</span>
-          </div>
-        </div>
-      </div>
-      <!-- Library (Quill) -->
-      <div class="world-panel" id="world-library">
-        <div class="world-preview">
-          <div class="world-label">Quill's Domain</div>
-          <div class="world-icon">📚</div>
-          <div class="world-name">The Library</div>
-          <p style="font-size:12px;color:var(--faint);margin-top:8px">Books, writing, documentation, and knowledge. Quill crafts words that move culture.</p>
-          <div style="margin-top:16px;display:flex;gap:8px;justify-content:center">
-            <span style="font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--faint)">WRITING</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--faint)">DOCS</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--faint)">COPY</span>
-          </div>
-        </div>
-      </div>
-      <!-- Museum (Turtle) -->
-      <div class="world-panel" id="world-museum">
-        <div class="world-preview">
-          <div class="world-label">Turtle's Domain</div>
-          <div class="world-icon">🎨</div>
-          <div class="world-name">The Museum</div>
-          <p style="font-size:12px;color:var(--faint);margin-top:8px">Art, health, nutrition, and creative design. Turtle nurtures body and soul through art.</p>
-          <div style="margin-top:16px;display:flex;gap:8px;justify-content:center">
-            <span style="font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--faint)">ART</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--faint)">HEALTH</span>
-            <span style="font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--faint)">DESIGN</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+
+
 
 
   <!-- SESSIONS / WORD BANK / SPACES -->
   <section class="blk" id="sessions">
     <div class="reveal-up">
-      <div class="kick">04 — dreamers sessions</div>
+      <div class="kick">03 — dreamers sessions</div>
       <h2 class="h2">Build the <em class="glitch" data-text="song">song</em> with us.</h2>
-      <p class="lead">Each week, drop 3 words and an instrumental. We pull from the bank and cover it — written live on X Spaces. Every Space becomes a tab.</p>
+      <p class="lead">Written live on X Spaces — every Space becomes a tab here. Join the list below for the invite.</p>
     </div>
     <div class="sesh-grid reveal-up">
       <div class="sesh-card">
@@ -720,17 +653,7 @@ header.hero{contain:paint}
         </form>
         <div class="sesh-msg" id="joinMsg"></div>
       </div>
-      <div class="sesh-card">
-        <h3>This week's word bank</h3>
-        <p>Add 3 words + an instrumental link.</p>
-        <form onsubmit="return submitWords(event)">
-          <div class="words3"><input class="sesh-in" id="w1" placeholder="word" maxlength="24" required><input class="sesh-in" id="w2" placeholder="word" maxlength="24" required><input class="sesh-in" id="w3" placeholder="word" maxlength="24" required></div>
-          <input class="sesh-in" id="instru" type="url" placeholder="instrumental YouTube link (optional)">
-          <button class="btn primary" type="submit">Add to the bank →</button>
-        </form>
-        <div class="sesh-msg" id="wordMsg"></div>
-        <div class="bank" id="bankList"></div>
-      </div>
+      
     </div>
     <div class="reveal-up" style="margin-top:56px">
       <h3 style="font-family:var(--display);font-weight:300;font-size:clamp(22px,3vw,34px)">Dreamers Spaces</h3>
@@ -757,15 +680,26 @@ header.hero{contain:paint}
         </div>
         <p class="album-desc">Ten tracks of introspective hip-hop — blending raw vulnerability with features from Locco and Dano Detroit. The debut album that started the Dreamers movement.</p>
         <div class="album-stream">
-          <a href="https://music.apple.com/album/the-good-samaritan/1646448498" target="_blank" rel="noopener">Apple Music ↗</a>
-          <a href="https://open.spotify.com/album/the-good-samaritan" target="_blank" rel="noopener">Spotify ↗</a>
-          <a href="https://qobuz.com/album/the-good-samaritan" target="_blank" rel="noopener">Qobuz ↗</a>
+          <a href="https://music.apple.com/us/search?term=Izzo%20The%20Good%20Samaritan" target="_blank" rel="noopener">Apple Music ↗</a>
+          <a href="https://open.spotify.com/search/Izzo%20The%20Good%20Samaritan" target="_blank" rel="noopener">Spotify ↗</a>
+          <a href="https://www.qobuz.com/us-en/search?q=Izzo+The+Good+Samaritan" target="_blank" rel="noopener">Qobuz ↗</a>
         </div>
       </div>
     </div>
 
     <!-- tracklist -->
     <div class="tl reveal-up" id="tracklist"></div>
+
+    <!-- music bundle (sold through the Gumroad store once the last masters are in) -->
+    <div class="bundle reveal-up">
+      <div class="kick" style="display:inline-block">the complete bundle</div>
+      <div style="font-family:var(--display);font-size:clamp(20px,3vw,26px);font-weight:300">The Good Samaritan + features — the complete bundle</div>
+      <p style="color:var(--dim);font-size:14px;margin-top:10px">The full album plus the finished features, in one download — sold through the IzzoSol Gumroad store.</p>
+      <div style="margin-top:16px;display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap">
+        <span style="font-family:var(--mono);font-size:10px;padding:5px 12px;border:1px dashed var(--line);border-radius:999px;color:var(--faint);letter-spacing:.1em">COMING SOON</span>
+        <a href="https://izzosol.gumroad.com" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--amethyst)">IZZOSOL ON GUMROAD ↗</a>
+      </div>
+    </div>
 
     <!-- Good Person music video -->
     <div class="reveal-up" style="text-align:center;margin-top:48px">
@@ -779,7 +713,7 @@ header.hero{contain:paint}
       <p style="color:var(--dim);font-size:14px;margin-top:8px">Wear the movement — straight out of the music video.</p>
     </div>
     <div class="ring-stage reveal-up" id="ring-stage"><div class="ring" id="merch-ring"></div></div>
-    <div class="ring-hint">drag to spin · tap a piece to order</div>
+    <div class="ring-hint">drag to spin · store opening soon</div>
   </section>
 
   <!-- sticky player bar -->
@@ -799,12 +733,20 @@ header.hero{contain:paint}
     <div class="reveal-up" style="text-align:center;margin-bottom:40px">
       <div class="kick" style="display:inline-block">the merch</div>
       <h2 class="h2" style="margin:0 auto"><em class="glitch" data-text="merch">Wear the movement</em>.</h2>
-      <p class="lead" style="margin:16px auto 0;text-align:center">Real merch straight out of the music video. CloudzNCrownz, Dreamers, Good Samaritan, TuFish & Good Person. Every item 0.5 or 1 SOL. Request a drop — get notified.</p>
+      <p class="lead" style="margin:16px auto 0;text-align:center">Real merch straight out of the music video. CloudzNCrownz, Dreamers, Good Samaritan, TuFish & Good Person. Priced in USD, printed on demand by Printful. Request a drop — get notified.</p>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap">
-        <span style="font-family:var(--mono);font-size:10px;padding:5px 12px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);letter-spacing:.1em">NO BANK NEEDED</span>
-        <span style="font-family:var(--mono);font-size:10px;padding:5px 12px;border:1px solid var(--amethyst);border-radius:999px;color:var(--amethyst);letter-spacing:.1em">SOL ONLY</span>
+        <span style="font-family:var(--mono);font-size:10px;padding:5px 12px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);letter-spacing:.1em">74 DESIGNS</span>
+        <span style="font-family:var(--mono);font-size:10px;padding:5px 12px;border:1px solid var(--amethyst);border-radius:999px;color:var(--amethyst);letter-spacing:.1em">PRINT ON DEMAND</span>
         <span style="font-family:var(--mono);font-size:10px;padding:5px 12px;border:1px solid var(--iris);border-radius:999px;color:var(--iris);letter-spacing:.1em">WORLDWIDE</span>
       </div>
+    </div>
+
+    <!-- Storefront links — TODO-ISRAEL-LOGIN: replace each href="#" with the real store URL once that store is created (Printful Quick Store / Printify Pop-Up Store), then remove the onclick guard. Steps: revenue-inventory-2026-11-19/STOREFRONT-LAUNCH.md -->
+    <div class="reveal-up" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:30px">
+      <!-- TODO-ISRAEL-LOGIN: Printful Quick Store URL goes here -->
+      <a class="btn ghost" href="#" onclick="return false">Printful store — opening soon</a>
+      <!-- TODO-ISRAEL-LOGIN: Printify Pop-Up Store URL goes here -->
+      <a class="btn ghost" href="#" onclick="return false">Printify store — opening soon</a>
     </div>
 
     <!-- Horizontal Swipe Carousel -->
@@ -819,8 +761,8 @@ header.hero{contain:paint}
           <h3 class="shop-name">CloudzNCrownz Tee</h3>
           <p class="shop-desc">Straight out of the music video. CloudzNCrownz unisex short-sleeve tee.</p>
           <div class="shop-bottom">
-            <span class="shop-price">1 SOL</span>
-            <button class="shop-btn" onclick="openRequestModal('CloudzNCrownz Tee','1 SOL')">REQUEST DROP</button>
+            <span class="shop-price">$19.99</span>
+            <button class="shop-btn" onclick="openRequestModal('CloudzNCrownz Tee','$19.99')">REQUEST DROP</button>
           </div>
         </div>
       </div>
@@ -835,8 +777,8 @@ header.hero{contain:paint}
           <h3 class="shop-name">The Good Samaritan Hoodie</h3>
           <p class="shop-desc">Unisex pullover hoodie from The Good Samaritan album. Heavyweight comfort.</p>
           <div class="shop-bottom">
-            <span class="shop-price">1 SOL</span>
-            <button class="shop-btn" onclick="openRequestModal('The Good Samaritan Hoodie','1 SOL')">REQUEST DROP</button>
+            <span class="shop-price">$39.99</span>
+            <button class="shop-btn" onclick="openRequestModal('The Good Samaritan Hoodie','$39.99')">REQUEST DROP</button>
           </div>
         </div>
       </div>
@@ -850,8 +792,8 @@ header.hero{contain:paint}
           <h3 class="shop-name">Dreamers Cereal Hoodie</h3>
           <p class="shop-desc">Dreamers Cereal unisex hoodie. The iconic box art on premium fleece.</p>
           <div class="shop-bottom">
-            <span class="shop-price">1 SOL</span>
-            <button class="shop-btn" onclick="openRequestModal('Dreamers Cereal Hoodie','1 SOL')">REQUEST DROP</button>
+            <span class="shop-price">$39.99</span>
+            <button class="shop-btn" onclick="openRequestModal('Dreamers Cereal Hoodie','$39.99')">REQUEST DROP</button>
           </div>
         </div>
       </div>
@@ -865,8 +807,8 @@ header.hero{contain:paint}
           <h3 class="shop-name">CNC Bucket Hat</h3>
           <p class="shop-desc">CloudzNCrownz bucket hat. Everyday headwear from the movement.</p>
           <div class="shop-bottom">
-            <span class="shop-price">0.5 SOL</span>
-            <button class="shop-btn" onclick="openRequestModal('CNC Bucket Hat','0.5 SOL')">REQUEST DROP</button>
+            <span class="shop-price">$24.99</span>
+            <button class="shop-btn" onclick="openRequestModal('CNC Bucket Hat','$24.99')">REQUEST DROP</button>
           </div>
         </div>
       </div>
@@ -880,8 +822,8 @@ header.hero{contain:paint}
           <h3 class="shop-name">Good Samaritan Throw Blanket</h3>
           <p class="shop-desc">Cozy throw blanket with Good Samaritan artwork. The full album cover, all-over print.</p>
           <div class="shop-bottom">
-            <span class="shop-price">0.5 SOL</span>
-            <button class="shop-btn" onclick="openRequestModal('Good Samaritan Throw Blanket','0.5 SOL')">REQUEST DROP</button>
+            <span class="shop-price">$33.33</span>
+            <button class="shop-btn" onclick="openRequestModal('Good Samaritan Throw Blanket','$33.33')">REQUEST DROP</button>
           </div>
         </div>
       </div>
@@ -895,8 +837,8 @@ header.hero{contain:paint}
           <h3 class="shop-name">Good Person / CNC Sleeve Tee</h3>
           <p class="shop-desc">Organic embroidered tee. Good Person x CloudzNCrownz sleeve detail.</p>
           <div class="shop-bottom">
-            <span class="shop-price">0.5 SOL</span>
-            <button class="shop-btn" onclick="openRequestModal('Good Person Sleeve Tee','0.5 SOL')">REQUEST DROP</button>
+            <span class="shop-price">$24.99</span>
+            <button class="shop-btn" onclick="openRequestModal('Good Person Sleeve Tee','$24.99')">REQUEST DROP</button>
           </div>
         </div>
       </div>
@@ -911,8 +853,8 @@ header.hero{contain:paint}
           <h3 class="shop-name">TuFish Hoodie</h3>
           <p class="shop-desc">TuFish unisex hoodie. The fish that dreams. Premium fleece, relaxed fit.</p>
           <div class="shop-bottom">
-            <span class="shop-price">1 SOL</span>
-            <button class="shop-btn" onclick="openRequestModal('TuFish Hoodie','1 SOL')">REQUEST DROP</button>
+            <span class="shop-price">$36</span>
+            <button class="shop-btn" onclick="openRequestModal('TuFish Hoodie','$36')">REQUEST DROP</button>
           </div>
         </div>
       </div>
@@ -926,8 +868,8 @@ header.hero{contain:paint}
           <h3 class="shop-name">Dreamers Cereal Classic Tee</h3>
           <p class="shop-desc">Dreamers Cereal short-sleeve tee. The classic. Cotton, everyday fit.</p>
           <div class="shop-bottom">
-            <span class="shop-price">0.5 SOL</span>
-            <button class="shop-btn" onclick="openRequestModal('Dreamers Cereal Classic Tee','0.5 SOL')">REQUEST DROP</button>
+            <span class="shop-price">$22.22</span>
+            <button class="shop-btn" onclick="openRequestModal('Dreamers Cereal Classic Tee','$22.22')">REQUEST DROP</button>
           </div>
         </div>
       </div>
@@ -972,6 +914,12 @@ header.hero{contain:paint}
         <button onclick="submitRequest()" style="width:100%;padding:14px;background:var(--amethyst);color:var(--void);border:none;border-radius:8px;font-family:var(--display);font-size:14px;font-weight:700;letter-spacing:.1em;cursor:pointer;transition:all .2s">SUBMIT REQUEST</button>
       </div>
     </div>
+    <!-- Full catalog — Printful (products.json snapshot; rendered by the shop script below) -->
+    <div class="reveal-up" style="text-align:center;margin:44px 0 18px">
+      <div class="kick" style="display:inline-block">the full catalog</div>
+      <p style="color:var(--dim);font-size:14px;margin-top:8px">Every design, printed on demand by Printful. Checkout opens the moment the store does.</p>
+    </div>
+    <div class="shop-rail reveal-up" id="shop-rail"></div>
   </section>
 
   <!-- SPEND -->
@@ -980,29 +928,30 @@ header.hero{contain:paint}
       <div class="kick" style="display:inline-block">spend</div>
       <h2 class="h2" style="margin:0 auto">Spend your <em class="glitch" data-text="SOL">SOL</em>.</h2>
       <p class="lead" style="margin:16px auto 0;text-align:center">Gift cards, eSIM, top-ups, real-world assets, virtual cards. No bank. No ID. No account.</p>
+      <p style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--dim);margin-top:10px;text-align:center">OPENS IN THE DASHBOARD — THE BACKEND IS TEMPORARILY DOWN, SO THESE FEATURES ARE UNAVAILABLE RIGHT NOW</p>
     </div>
     <div class="grid reveal-up" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
-      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v7.0.html#spend','_blank')">
+      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v6.39.html#spend','_blank')">
         <div style="font-size:48px;margin-bottom:12px">🎁</div>
         <h3 style="font-family:var(--display);font-size:18px;font-weight:500;color:#fff">Gift Cards</h3>
         <p style="font-size:11px;color:var(--dim);margin-top:8px">Amazon, Nike, Starbucks, Netflix, Steam + 15 more. Pay with SOL.</p>
       </div>
-      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v7.0.html#spend','_blank')">
+      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v6.39.html#spend','_blank')">
         <div style="font-size:48px;margin-bottom:12px">📱</div>
         <h3 style="font-family:var(--display);font-size:18px;font-weight:500;color:#fff">eSIM</h3>
         <p style="font-size:11px;color:var(--dim);margin-top:8px">Mobile data in 200+ countries. 1 GB to unlimited. Pay with SOL.</p>
       </div>
-      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v7.0.html#spend','_blank')">
+      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v6.39.html#spend','_blank')">
         <div style="font-size:48px;margin-bottom:12px">⚡</div>
         <h3 style="font-family:var(--display);font-size:18px;font-weight:500;color:#fff">Top-Ups</h3>
         <p style="font-size:11px;color:var(--dim);margin-top:8px">Phone, internet, gaming, streaming. AT&T, T-Mobile, Steam, ChatGPT+.</p>
       </div>
-      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v7.0.html#spend','_blank')">
+      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v6.39.html#spend','_blank')">
         <div style="font-size:48px;margin-bottom:12px">📊</div>
         <h3 style="font-family:var(--display);font-size:18px;font-weight:500;color:#fff">RWA</h3>
-        <p style="font-size:11px;color:var(--dim);margin-top:8px">Fractional gold, stocks, carbon credits, real estate. Tokenized. Tradeable.</p>
+        <p style="font-size:11px;color:var(--dim);margin-top:8px">Real-world assets — gold, stocks, carbon credits, real estate.</p>
       </div>
-      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v7.0.html#spend','_blank')">
+      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v6.39.html#spend','_blank')">
         <div style="font-size:48px;margin-bottom:12px">💳</div>
         <h3 style="font-family:var(--display);font-size:18px;font-weight:500;color:#fff">Virtual Cards</h3>
         <p style="font-size:11px;color:var(--dim);margin-top:8px">Disposable Visa cards. Load with SOL. Use anywhere online. No bank.</p>
@@ -1014,26 +963,27 @@ header.hero{contain:paint}
   <section class="blk" id="hire">
     <div class="reveal-up" style="text-align:center;margin-bottom:40px">
       <div class="kick" style="display:inline-block">hire</div>
-      <h2 class="h2" style="margin:0 auto">Hire with <em class="glitch" data-text="tokens">tokens</em>.</h2>
-      <p class="lead" style="margin:16px auto 0;text-align:center">Freelance marketplace. Pay with SOL, $DREAM, or gift cards. No bank. No account.</p>
+      <h2 class="h2" style="margin:0 auto">Hire with <em class="glitch" data-text="Sparks">Sparks</em>.</h2>
+      <p class="lead" style="margin:16px auto 0;text-align:center">Freelance marketplace. Pay with SOL or gift cards. No bank. No account.</p>
+      <p style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--dim);margin-top:10px;text-align:center">OPENS IN THE DASHBOARD — THE BACKEND IS TEMPORARILY DOWN, SO THESE FEATURES ARE UNAVAILABLE RIGHT NOW</p>
     </div>
     <div class="grid reveal-up" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px">
-      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v7.0.html#hire','_blank')">
+      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v6.39.html#hire','_blank')">
         <div style="font-size:48px;margin-bottom:12px">🎵</div>
         <h3 style="font-family:var(--display);font-size:18px;font-weight:500;color:#fff">Music Production</h3>
         <p style="font-size:11px;color:var(--dim);margin-top:8px">Mix, master, produce, engineer. Pay producers in SOL.</p>
       </div>
-      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v7.0.html#hire','_blank')">
+      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v6.39.html#hire','_blank')">
         <div style="font-size:48px;margin-bottom:12px">🎨</div>
         <h3 style="font-family:var(--display);font-size:18px;font-weight:500;color:#fff">Art & Design</h3>
-        <p style="font-size:11px;color:var(--dim);margin-top:8px">Album covers, logos, branding. Pay artists in $DREAM.</p>
+        <p style="font-size:11px;color:var(--dim);margin-top:8px">Album covers, logos, branding. Pay artists in SOL.</p>
       </div>
-      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v7.0.html#hire','_blank')">
+      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v6.39.html#hire','_blank')">
         <div style="font-size:48px;margin-bottom:12px">💻</div>
         <h3 style="font-family:var(--display);font-size:18px;font-weight:500;color:#fff">Development</h3>
         <p style="font-size:11px;color:var(--dim);margin-top:8px">Websites, dApps, tools. Pay devs in SOL or gift cards.</p>
       </div>
-      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v7.0.html#hire','_blank')">
+      <div class="card" style="cursor:pointer;text-align:center" onclick="window.open('dreamer-dashboard-v6.39.html#hire','_blank')">
         <div style="font-size:48px;margin-bottom:12px">🎬</div>
         <h3 style="font-family:var(--display);font-size:18px;font-weight:500;color:#fff">Video & Motion</h3>
         <p style="font-size:11px;color:var(--dim);margin-top:8px">Music videos, animation, visualizers. Crypto payments.</p>
@@ -1045,7 +995,7 @@ header.hero{contain:paint}
   <section class="blk" id="books">
     <div class="reveal-up" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
       <div>
-        <div class="kick">05 — the library</div>
+        <div class="kick">04 — the library</div>
         <h2 class="h2">The <em class="glitch" data-text="books">books</em>.</h2>
       </div>
       <div style="display:flex;gap:12px">
@@ -1057,49 +1007,9 @@ header.hero{contain:paint}
   </section>
 
   <!-- GAME (small side feature) -->
-  <section class="blk" id="world" style="padding-top:36px;padding-bottom:48px">
-    <div class="reveal-up" style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:32px">
-      <div>
-        <div class="kick" style="margin-bottom:6px">the game</div>
-        <div style="font-family:var(--display);font-size:clamp(20px,3vw,28px);font-weight:300">Dreamers Climb</div>
-      </div>
-      <a class="btn ghost" href="game/dreamers-climb-v25.html">Play →</a>
-    </div>
-  </section>
+  
 
-  <!-- DREAM WORLD -->
-  <section class="blk" id="dreamworld">
-    <div class="reveal-up" style="text-align:center;margin-bottom:40px">
-      <div class="kick" style="display:inline-block">the metaverse</div>
-      <h2 class="h2" style="margin:0 auto">Dream <em class="glitch" data-text="World">World</em>.</h2>
-      <p class="lead" style="margin:16px auto 0;text-align:center;max-width:60ch">A blockchain-integrated creative universe. Build games, own spaces, trade 3D assets, and earn from your art — all powered by $DREAM and NFTs.</p>
-    </div>
-    <div class="pillars reveal-up">
-      <div class="pillar">
-        <div class="n">Spaces</div>
-        <h4>Showcase & Sell</h4>
-        <p>Create your own Space in 3 steps. Upload art, music, or products. Share one link. You're live.</p>
-      </div>
-      <div class="pillar">
-        <div class="n">Build</div>
-        <h4>Create Games</h4>
-        <p>Anyone can build a game, world, or portal. Use our SDK, upload 3D assets, and launch your creation.</p>
-      </div>
-      <div class="pillar">
-        <div class="n">Earn</div>
-        <h4>Artist Economy</h4>
-        <p>Music, art, and 3D assets earn royalties. Every play, sale, and use pays the creator. No gatekeepers.</p>
-      </div>
-      <div class="pillar">
-        <div class="n">Discover</div>
-        <h4>Random Features</h4>
-        <p>Submit assets to the marketplace. Get randomly featured in the world. New creators get exposure.</p>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:32px" class="reveal-up">
-      <a class="btn primary" href="game/dream-world.html">Enter Dream World →</a>
-    </div>
-  </section>
+
 
   <!-- SPACES CALENDAR -->
   <section class="blk" id="calendar">
@@ -1149,9 +1059,9 @@ header.hero{contain:paint}
       </div>
       <div class="pillar">
         <div class="n">Phase 03</div>
-        <h4>$DREAM Economy</h4>
-        <p>SPL token with burn mechanism, revenue sharing, artist royalties, and 3D asset marketplace. Creators earn from every transaction.</p>
-        <div style="margin-top:12px"><span style="font-family:var(--mono);font-size:10px;padding:4px 10px;border:1px solid var(--faint);border-radius:999px;color:var(--faint);letter-spacing:.1em">UPCOMING</span></div>
+        <h4>Platform Economy — Proposal</h4>
+        <p>Sparks is a $1 fixed credit — the only currency inside Dreamers, never a token. No token is considered before 1,000 retained users. Revenue sharing, artist royalties, and a 3D asset marketplace — creators earn from every transaction.</p>
+        <div style="margin-top:12px"><span style="font-family:var(--mono);font-size:10px;padding:4px 10px;border:1px solid var(--faint);border-radius:999px;color:var(--faint);letter-spacing:.1em">PROPOSAL</span></div>
       </div>
       <div class="pillar">
         <div class="n">Phase 04</div>
@@ -1165,13 +1075,13 @@ header.hero{contain:paint}
   <footer>
     <div class="big">enter the dream</div>
     <div class="cta" style="justify-content:center;opacity:1;animation:none">
-      <a class="btn primary" href="dreamer-dashboard-v7.0.html">Enter Dreamers</a>
+      <a class="btn primary" href="dreamer-dashboard-v6.39.html">Enter Dreamers</a>
     </div>
     <div class="connect" style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:26px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase">
       <a class="follow" href="https://x.com/intent/follow?screen_name=DreamersOnSol" target="_blank" rel="noopener">＋ Follow @DreamersOnSol</a>
       <a class="follow" href="https://x.com/intent/follow?screen_name=IzzoSol" target="_blank" rel="noopener">＋ @IzzoSol</a>
       <a class="follow" href="https://x.com/intent/follow?screen_name=ShaddaiAI" target="_blank" rel="noopener">＋ @ShaddaiAI</a>
-      <a class="follow" href="https://www.youtube.com/@CloudzNCrownz?sub_confirmation=1" target="_blank" rel="noopener">▶ YouTube</a>
+      <a class="follow" href="https://www.youtube.com/results?search_query=Izzo+The+Good+Samaritan" target="_blank" rel="noopener">▶ YouTube</a>
     </div>
     <div class="meta">Dreamers® · the platform for the culture of creation · 2026</div>
   </footer>
@@ -1250,12 +1160,9 @@ header.hero{contain:paint}
 const FORM_ENDPOINT='https://formspree.io/f/mjybonno';
 function _post(data){ if(FORM_ENDPOINT){ fetch(FORM_ENDPOINT,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify(data)}).catch(()=>{}); } }
 function joinList(e){ e.preventDefault(); const em=document.getElementById('joinEmail').value.trim(); if(!em)return false; _post({type:'signup',email:em}); const s=JSON.parse(localStorage.getItem('d_signups')||'[]'); s.push(em); localStorage.setItem('d_signups',JSON.stringify(s)); document.getElementById('joinMsg').textContent="You're in — see you on the Space."; e.target.reset(); return false; }
-function _bank(){ return JSON.parse(localStorage.getItem('d_bank')||'[]'); }
-function renderBank(){ const el=document.getElementById('bankList'); if(!el)return; const b=_bank().slice(-40); el.innerHTML=b.map(w=>`<span class="chip${w.mine?' mine':''}">${w.t}</span>`).join('')||'<span class="chip">be the first to add words</span>'; }
-function submitWords(e){ e.preventDefault(); const ws=[document.getElementById('w1').value,document.getElementById('w2').value,document.getElementById('w3').value].map(x=>x.trim()).filter(Boolean); const link=document.getElementById('instru').value.trim(); if(ws.length<3)return false; _post({type:'wordbank',words:ws.join(', '),instrumental:link}); const b=_bank(); ws.forEach(t=>b.push({t,mine:true})); localStorage.setItem('d_bank',JSON.stringify(b)); renderBank(); document.getElementById('wordMsg').textContent='Added to the bank — thank you.'; e.target.reset(); return false; }
 const SPACES=[]; // add completed Spaces here: {title,date,words:['a','b','c'],ytId:'',note:''}
 function renderSpaces(){ const tabs=document.getElementById('spaceTabs'), body=document.getElementById('spaceBody'); if(!tabs||!body)return;
-  if(!SPACES.length){ tabs.innerHTML=''; body.innerHTML='<p style="color:var(--dim);font-size:14px">The first Space drops soon — submit your words above and join the list for the invite.</p>'; return; }
+  if(!SPACES.length){ tabs.innerHTML=''; body.innerHTML='<p style="color:var(--dim);font-size:14px">The first Space drops soon — join the list for the invite.</p>'; return; }
   tabs.innerHTML=SPACES.map((s,i)=>`<button class="space-tab${i===0?' active':''}" onclick="showSpace(${i})">${s.title}</button>`).join('');
   showSpace(0);
 }
@@ -1263,24 +1170,29 @@ function showSpace(i){ const s=SPACES[i]; document.querySelectorAll('.space-tab'
   const yt=s.ytId?`<div class="yt"><iframe src="https://www.youtube.com/embed/${s.ytId}?rel=0" allowfullscreen loading="lazy"></iframe></div>`:'';
   document.getElementById('spaceBody').innerHTML=`<div class="kick" style="margin-bottom:6px">${s.date}</div><div style="font-family:var(--display);font-size:24px;font-weight:300">${s.title}</div><div class="sb-words">${s.words.map(w=>`<span class="chip">${w}</span>`).join('')}</div><p style="color:var(--dim);font-size:14px">${s.note||''}</p>${yt}`;
 }
-renderBank(); renderSpaces();
+renderSpaces();
 // books / library
 const BOOKS=[
-  {t:'Awakening Your Inner Alchemy', s:'Transformation', x:'In progress'},
-  {t:'The Power of Breath', s:'Spiritual & Scientific', x:'In progress'},
+  {t:'Awakening Your Inner Alchemy', s:'Transformation', x:'Coming soon'},
+  {t:'The Power of Breath', s:'Spiritual & Scientific', x:'Coming soon'},
   {t:'The Origin & Meaning of Love', s:'Philosophy', x:'In progress'},
   {t:'The Sacred Art of Intimacy', s:'Ancient Wisdom', x:'In progress'},
   {t:'The Interconnected World of Religion', s:'Comparative', x:'In progress'},
-  {t:'The Roots of Medicine', s:'Healing Traditions', x:'In progress'},
-  {t:'Exploring Ancient Holistics', s:'Benefits & Myths', x:'In progress'},
+  {t:'The Roots of Medicine', s:'Healing Traditions', x:'Gumroad edition', u:'https://izzosol.gumroad.com/l/the-roots-of-medicine'},
+  {t:'Exploring Ancient Holistics', s:'Benefits & Myths', x:'Coming soon'},
   {t:'Pulling Happiness Out of Thin Air', s:'Self-Motivation', x:'In progress'},
   {t:'Embracing Momentum', s:'365 Days', x:'In progress'},
   {t:'Dancing in Shadows', s:'Envy & Jealousy', x:'In progress'},
   {t:'Behind the Masquerade', s:'Artistic Growth', x:'In progress'},
   {t:'Fatherless', s:'Healing', x:'In progress'},
+  {t:'Meditation & Stretch Routine', s:'Guided Practice', x:'Coming soon'},
+  {t:'The Infinity Hour', s:'The Workout', x:'Coming soon'},
+  {t:'THE PLAN — Days', s:'Plan Trilogy · Vol. 1', x:'Coming soon'},
+  {t:'THE PLAN — Weeks', s:'Plan Trilogy · Vol. 2', x:'Coming soon'},
+  {t:'THE PLAN — Months', s:'Plan Trilogy · Vol. 3', x:'Coming soon'},
 ];
 (function renderBooks(){ const rail=document.getElementById('books-rail'); if(!rail)return;
-  rail.innerHTML=BOOKS.map(b=>`<div class="book"><div class="bs">${b.s}</div><div class="bt">${b.t}</div><div class="bx">${b.x}</div></div>`).join('');
+  rail.innerHTML=BOOKS.map(b=>{const inner=`<div class="bs">${b.s}</div><div class="bt">${b.t}</div><div class="bx">${b.x}${b.u?' ↗':''}</div>`;return b.u?`<a class="book" href="${b.u}" target="_blank" rel="noopener">${inner}</a>`:`<div class="book">${inner}</div>`;}).join('');
 })();
 
 // theme switcher (swaps the accent CSS variables; persists)
@@ -1297,12 +1209,12 @@ function setTheme(t){const v=THEMES[t]||THEMES.amethyst;for(const k in v)documen
 setTheme(localStorage.getItem('d_theme')||'amethyst');
 document.addEventListener('click',e=>{if(!e.target.closest('.theme-wrap')){const p=document.getElementById('landingThemePop');if(p)p.classList.remove('open');}});
 
-// shop + good-person frame — Printful products (showcase; Order links out)
-const _orderHref=(n)=>`mailto:cloudzncrownz@gmail.com?subject=Order:%20${encodeURIComponent(n||'')}`;
+// shop catalog — all 74 products are Printful (their images are served from files.cdn.printful.com).
+// Showcase only until the Printful store opens: no checkout yet, so every item shows "Store opening soon".
 fetch('assets/shop/products.json').then(r=>r.json()).then(items=>{
   if(!Array.isArray(items))return;
   const rail=document.getElementById('shop-rail');
-  if(rail) rail.innerHTML=items.map(p=>{const nm=(p.name||'').replace(/"/g,'&quot;');return `<div class="shop-item"><div class="ph">${p.img?`<img src="${p.img}" alt="${nm}" loading="lazy">`:''}</div><div class="info"><div class="nm">${p.name||''}</div>${p.price?`<div class="pr">$${p.price}</div>`:''}<a class="buy" href="${_orderHref(p.name)}">Order →</a></div></div>`;}).join('');
+  if(rail) rail.innerHTML=items.map(p=>{const nm=(p.name||'').replace(/"/g,'&quot;');return `<div class="shop-item"><div class="ph">${p.img?`<img src="${p.img}" alt="${nm}" loading="lazy">`:''}</div><div class="info"><div class="nm">${p.name||''}</div>${p.price?`<div class="pr">$${p.price}</div>`:''}<div class="src">Printful</div><span class="buy soon">Store opening soon</span></div></div>`;}).join('');
   // 3D merch ring — Good Samaritan + Good Person + Dreamers
   buildRing(items.filter(p=>p.img&&/(good person|good samaritan|izzo|dreamer)/i.test(p.name||'')).slice(0,22));
 }).catch(()=>{});
@@ -1311,7 +1223,7 @@ let _ringDeg=0,_ringVel=.05,_ringDrag=false,_ringMoved=0,_lastX=0;
 function buildRing(list){
   const ring=document.getElementById('merch-ring'); if(!ring||!list.length)return;
   const N=list.length, W=(innerWidth<820?110:150), r=Math.round((W/2)/Math.tan(Math.PI/N))+46;
-  ring.innerHTML=list.map((p,i)=>`<a class="m" data-buy="${_orderHref(p.name)}" style="transform:rotateY(${(360/N*i).toFixed(2)}deg) translateZ(${r}px)"><img src="${p.img}" loading="lazy" alt="" onerror="this.closest('.m').classList.add('noimg')"><div class="tag">${(p.name||'').slice(0,26)} · $${p.price}</div></a>`).join('');
+  ring.innerHTML=list.map((p,i)=>`<a class="m" style="transform:rotateY(${(360/N*i).toFixed(2)}deg) translateZ(${r}px)"><img src="${p.img}" loading="lazy" alt="" onerror="this.closest('.m').classList.add('noimg')"><div class="tag">${(p.name||'').slice(0,26)} · $${p.price}</div></a>`).join('');
   const stage=document.getElementById('ring-stage');
   let _ringVis=true,_ringRun=true;
   try{new IntersectionObserver(en=>{_ringVis=en[0].isIntersecting;if(_ringVis&&!_ringRun){_ringRun=true;ringLoop();}}).observe(stage);}catch(_){}
@@ -1321,21 +1233,18 @@ function buildRing(list){
   stage.addEventListener('pointerdown',e=>{_ringDrag=true;_ringMoved=0;_lastX=px(e);});
   addEventListener('pointermove',e=>{ if(!_ringDrag)return; const x=px(e),dx=x-_lastX;_lastX=x;_ringMoved+=Math.abs(dx);_ringDeg+=dx*.3;_ringVel=dx*.04; });
   addEventListener('pointerup',()=>{_ringDrag=false;});
-  ring.addEventListener('click',e=>{ const a=e.target.closest('.m'); if(!a)return; if(_ringMoved>6){e.preventDefault();return;} window.location.href=a.getAttribute('data-buy'); });
+  ring.addEventListener('click',e=>{ const a=e.target.closest('.m'); if(!a)return; if(_ringMoved>6){e.preventDefault();return;} /* showcase only — the store is opening soon, so taps don't check out yet */ });
 }
 
 // ── SPACES CALENDAR ──
 let _calMonth=new Date().getMonth(), _calYear=new Date().getFullYear();
 const CAL_EVENTS=[
   {date:'2026-09-01',name:'Dream World Alpha Launch',type:'launch',color:'var(--amethyst)'},
-  {date:'2026-09-05',name:'OG Dreamers NFT Mint',type:'nft',color:'var(--gold)'},
   {date:'2026-09-10',name:'Music Space Open Call',type:'space',color:'var(--amethyst-2)'},
   {date:'2026-09-15',name:'Community AMA — Izzo',type:'event',color:'var(--iris)'},
   {date:'2026-09-20',name:'Gallery Space Drop',type:'space',color:'var(--amethyst)'},
   {date:'2026-09-25',name:'REFI Integration Testnet',type:'launch',color:'var(--gold)'},
-  {date:'2026-10-01',name:'$DREAM Token Preview',type:'launch',color:'var(--amethyst)'},
   {date:'2026-10-10',name:'Artist Spotlight Week',type:'event',color:'var(--iris)'},
-  {date:'2026-10-15',name:'Tokenized Song Beta',type:'nft',color:'var(--gold)'},
   {date:'2026-10-20',name:'Dream World Grand Opening',type:'launch',color:'var(--amethyst)'},
 ];
 const _MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -1396,11 +1305,6 @@ function _syncCal(){renderCal();renderEventList();}
 _syncCal();
 
 // ── AGENT WORLDS TABS ──
-function showWorld(id){
-  document.querySelectorAll('.world-panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('world-'+id)?.classList.add('active');
-  document.querySelectorAll('.world-tab').forEach(t=>t.classList.toggle('active',t.textContent.toLowerCase().includes(id)));
-}
 
 // scroll reveals
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.15});
@@ -1447,37 +1351,6 @@ function galScroll(dir,railId){
   const step=item ? item.getBoundingClientRect().width + 20 : rail.clientWidth*.8;
   rail.scrollBy({left:dir*step,behavior:'smooth'});
 }
-// 3D gallery — Tripo showcase turntables (looping video tiles)
-const THREED=[
-  {src:'assets/3d/piece-01.mp4', series:'3D · Tripo', name:'Artifact I'},
-  {src:'assets/3d/piece-02.mp4', series:'3D · Tripo', name:'Artifact II'},
-  {src:'assets/3d/dreamers-cereal-3d.mp4', series:'3D · Dreamers', name:'Cereal Box', placeholder:true},
-  {src:'assets/3d/izzo-avatar-3d.mp4', series:'3D · Izzo', name:'Izzo Avatar', placeholder:true},
-];
-(function render3D(){
-  const rail=document.getElementById('d3-rail'); if(!rail) return;
-  const n=THREED.length;
-  rail.innerHTML=THREED.map((p,i)=>`<a class="gal-item" href="${p.src}" target="_blank" rel="noopener">
-    <video src="${p.src}" autoplay muted loop playsinline preload="metadata"></video>
-    <div class="scan"></div>
-    <div class="cap"><div class="t">${p.series} · ${String(i+1).padStart(2,'0')} / ${n}</div><h3>${p.name}</h3></div></a>`).join('');
-  rail.addEventListener('mousemove',e=>{if(_tiltRAF)return;_tiltRAF=requestAnimationFrame(()=>{_tiltRAF=null;const it=e.target.closest('.gal-item');if(!it)return;const r=it.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;it.style.transform=`translateY(-6px) rotateX(${(-py*7).toFixed(2)}deg) rotateY(${(px*7).toFixed(2)}deg)`;});});
-  rail.addEventListener('mouseleave',()=>rail.querySelectorAll('.gal-item').forEach(el=>el.style.transform=''));
-})();
-
-// meteor shower — generates gold meteors with random positions/timing (fewer on mobile for FPS)
-(function initMeteors(){
-  const box=document.getElementById('meteorShower'); if(!box) return;
-  const n=innerWidth<640?5:12;
-  for(let i=0;i<n;i++){
-    const m=document.createElement('div');
-    m.className='meteor';
-    const sz=1+Math.random()*3;
-    m.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${3+Math.random()*5}s,${1+Math.random()*2}s;animation-delay:${Math.random()*8}s,${Math.random()*4}s;`;
-    box.appendChild(m);
-  }
-})();
-
 // ========== ALBUM PLAYER ==========
 const ALBUM_tracks=[
   {n:'Good Person', file:'assets/audio/GoodPeopleMix1.mp3'},
@@ -1578,20 +1451,18 @@ function submitRequest(){
   if(!n||!e||!w){alert('Please fill in all fields');return}
   const itemText=document.getElementById('requestItemDisplay').textContent;
   const qty=parseInt(document.getElementById('requestQty').value)||1;
-  const priceMatch=itemText.match(/([\d.]+)\s*SOL/);
-  const unitPrice=priceMatch?parseFloat(priceMatch[1]):1;
-  const totalSOL=unitPrice*qty;
+  const priceMatch=itemText.match(/\$([\d.]+)/);
+  const unitPrice=priceMatch?parseFloat(priceMatch[1]):0;
+  const totalUSD=unitPrice*qty;
   const requests=JSON.parse(localStorage.getItem('shop_requests')||'[]');
-  requests.push({name:n,email:e,wallet:w,item:itemText,qty:qty,totalSOL:totalSOL,time:Date.now()});
+  requests.push({name:n,email:e,wallet:w,item:itemText,qty:qty,totalUSD:totalUSD,time:Date.now()});
   localStorage.setItem('shop_requests',JSON.stringify(requests));
-  let bonus='';
-  if(totalSOL>=3){bonus='\n\n🎉 SPEND BONUS: You qualify for a FREE Culture Pack sticker pack!'}
-  else if(totalSOL>=2){bonus='\n\n⭐ You\'re close to 3 SOL — spend 3+ SOL to unlock a free bonus item!'}
+  _post({type:'drop-request',name:n,email:e,wallet:w,item:itemText,qty:qty,totalUSD:totalUSD});
   closeRequestModal();
   document.getElementById('requestName').value='';
   document.getElementById('requestEmail').value='';
   document.getElementById('requestWallet').value='';
-  alert('Request submitted for '+qty+'x '+itemText.split(' — ')[0]+'!\nTotal: '+totalSOL+' SOL\nWe\'ll notify you at '+e+' when the drop is ready.'+bonus);
+  alert('Request submitted for '+qty+'x '+itemText.split(' — ')[0]+'!\nTotal: $'+totalUSD.toFixed(2)+'\nWe\'ll notify you at '+e+' when the drop is ready.');
 }
 function shopScroll(idx){
   const rail=document.getElementById('shopRail');
